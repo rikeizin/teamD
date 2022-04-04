@@ -6,13 +6,13 @@ using UnityEngine;
 public class MovementCharacterController : MonoBehaviour
 {
     [SerializeField]
-    private float moveSpeed;
+    private float moveSpeed = 7;
     private Vector3 moveForce;
 
     [SerializeField]
-    private float jumpForce;
+    private float jumpForce = 10;
     [SerializeField]
-    private float gravity;
+    private float gravity = -20;
 
     private CharacterController characterController;
     void Awake()

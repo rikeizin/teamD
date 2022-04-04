@@ -5,7 +5,7 @@ using UnityEngine;
 public class RotateToMouse : MonoBehaviour
 {
     [SerializeField]
-    private float rotCamXAxisSpeed = 5; // 카메라 x축 회전속도
+    private float rotCamXAxisSpeed = 3; // 카메라 x축 회전속도
     [SerializeField]
     private float rotCamYAxisSpeed = 3; // 카메라 y축 회전속도
 
