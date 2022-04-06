@@ -6,19 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Stage_Inn.unity
+    path: Assets/Scenes/Stage/Stage_Inn.unity
     guid: 8b3bfb55ed71665468cd86f6565e2690
   - enabled: 1
-    path: Assets/Scenes/OutOfTower.unity
+    path: Assets/Scenes/Stage/Stage_OutOfTower.unity
     guid: 3b55744e86d90a54f9aa04faa3021b3b
   - enabled: 1
-    path: Assets/Scenes/Stage_Dungeon.unity
+    path: Assets/Scenes/Stage/Stage_Dungeon.unity
     guid: 2228c6fd99045d3448f2a7387b714784
   - enabled: 1
-    path: Assets/Scenes/Stage_EliteBossRoom.unity
+    path: Assets/Scenes/Stage/Stage_EliteBossRoom.unity
     guid: 364f64e7903ea47498a9c60ecf4e1cbd
   - enabled: 1
-    path: Assets/Scenes/Stage_LastBossRoom.unity
+    path: Assets/Scenes/Stage/Stage_LastBossRoom.unity
     guid: 2c351022b3f94484288808e1a43d9b1c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e0117faa8e1449b4eabd0cef30db040d, type: 2}
