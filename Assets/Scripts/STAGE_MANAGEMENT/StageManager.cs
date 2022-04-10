@@ -81,7 +81,7 @@ namespace STAGE_MANAGEMENT
                 else if(i%2 == 1)
                 {
                     // STAGE 순서가 짝수 인경우 타워 외각
-                    stageList.Add(new Stage(i, "OutOfTower"));
+                    stageList.Add(new Stage(i, "Stage_OutOfTower"));
                 }
                 else
                 {
