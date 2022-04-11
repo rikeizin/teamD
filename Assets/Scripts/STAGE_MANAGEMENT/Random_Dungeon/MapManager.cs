@@ -4,11 +4,7 @@ using System.Text;
 using UnityEngine;
 
 namespace RandomMap {
-    enum PurposeOfGate
-    {
-        startPoint,
-        endPoint
-    }
+    
 
     public class MapManager : MonoBehaviour
     {
@@ -26,17 +22,25 @@ namespace RandomMap {
         }
         private Area[,] coordinate; // 좌표
         private Area[] areaArray;
-        private const int TOTAL_DIR_CNT = 4;
 
-        [Header("섹션 초기화")]
-        [SerializeField]
-        private Area thisArea;
+        private const int TOTAL_DIR_CNT = 4;
+        private enum PurposeOfGate
+        {
+            startPoint,
+            endPoint
+        }
+
+        [Header("맵 공간 할당")]
         [SerializeField]
         private int MaxWidth = 5;
         [SerializeField]
         private int MaxDepth = 5;
         [SerializeField]
         private int creatCnt = 5;
+
+        [Header("섹션 초기화")]
+        [SerializeField]
+        private Area thisArea;
         [SerializeField]
         private GameObject section;
         [Range(1, 3)]
@@ -71,32 +75,31 @@ namespace RandomMap {
 
         private void Awake()
         {
-            sectionSize = setSectionSzie;
-            sectionWidth = sectionDefaultWidth * sectionSize;
-            sectionHeight = sectionDefaultHeight * sectionSize;
+            MapBoundSet();
             Initalize();
         }
 
-        // 입/출구 오브젝트 생성
-        private void CreateGate(Area area, Direction direction, PurposeOfGate purpose )
+        private void MapBoundSet()
         {
-            GameObject gate = Instantiate(entranceObj, this.transform);
-            Vector3 postion = new Vector3(area.x, 0, area.z) * sectionWidth;
-            postion.x += sectionWidth / 2;
-            postion.z += sectionWidth / 2;
-            gate.transform.position = postion;
-            DirectionExt.createDirectinalSurface(direction, gate);
-
-            
-            if(purpose == PurposeOfGate.startPoint)
-            {
-                gate.GetComponent<DungeonGate>().enableSpawn();
-            } else if(purpose == PurposeOfGate.endPoint)
-            {
-                gate.GetComponent<DungeonGate>().enableExit();
-            }
+            sectionSize = setSectionSzie;
+            sectionWidth = sectionDefaultWidth * sectionSize;
+            sectionHeight = sectionDefaultHeight * sectionSize;
+            LocalNavMeshBuildBoundSet();
         }
 
+        private void LocalNavMeshBuildBoundSet()
+        {
+            Vector3 m_size = new Vector3(
+                                (sectionWidth * MaxWidth),
+                                (sectionHeight),
+                                (sectionWidth * MaxDepth)
+                            );
+            Vector3 center = transform.position + (m_size / 2);
+            Vector3 boundMargin = new Vector3(5, 5, 5);
+            GameObject.Find("LocalNavMeshBuilder").transform.position = center;
+            GameObject.Find("LocalNavMeshBuilder").GetComponent<LocalNavMeshBuilder>().m_Size = m_size + boundMargin;
+        }
+        
         // 선형 길구조의 맵생성
         public void Initalize() {
             // 맵 초기화
@@ -273,6 +276,27 @@ namespace RandomMap {
             area.passedDir = DirectionExt.GetOpposite(area.passedDir);
 
             return area;
+        }
+
+        // 입/출구 오브젝트 생성
+        private void CreateGate(Area area, Direction direction, PurposeOfGate purpose)
+        {
+            GameObject gate = Instantiate(entranceObj, this.transform);
+            Vector3 postion = new Vector3(area.x, 0, area.z) * sectionWidth;
+            postion.x += sectionWidth / 2;
+            postion.z += sectionWidth / 2;
+            gate.transform.position = postion;
+            DirectionExt.createDirectinalSurface(direction, gate);
+
+
+            if (purpose == PurposeOfGate.startPoint)
+            {
+                gate.GetComponent<DungeonGate>().enableSpawn();
+            }
+            else if (purpose == PurposeOfGate.endPoint)
+            {
+                gate.GetComponent<DungeonGate>().enableExit();
+            }
         }
     }
 }

@@ -1810,21 +1810,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66d0e59447fd7f4b9d8b7a569e01737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxWidth: 10
+  MaxDepth: 10
+  creatCnt: 10
   thisArea:
     Exist: 0
     gameObject: {fileID: 0}
     script: {fileID: 0}
     Index: 0
-    x: 0
-    z: 0
+    x: 5
+    z: 5
     passedDir: 3
     nextDir: 0
     blockedDir: 
     IsExit: 0
     IsSpawn: 0
-  MaxWidth: 10
-  MaxDepth: 4
-  creatCnt: 10
   section: {fileID: 12672034506839517, guid: c588dbe34bb97f34cb3bbd0630129cfd, type: 3}
   setSectionSzie: 3
   entranceObj: {fileID: 1726251015460917300, guid: 3c294464f902c0b4db535b332f388a77, type: 3}

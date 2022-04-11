@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RandomMap
 {
@@ -10,6 +11,8 @@ namespace RandomMap
         private GameObject[] UDSides;
         private GameObject[] enCounters;
 
+        private GameObject floor;
+        private GameObject ceiling;
         private GameObject eastWall;
         private GameObject westWall;
         private GameObject southWall;
@@ -77,8 +80,8 @@ namespace RandomMap
         private void CreatFloor()
         {
             int Index = Random.Range(0, UDSides.Length);
-            GameObject floor = new GameObject("Floor");
-            GameObject ceiling = new GameObject("Ceiling");
+            floor = new GameObject("Floor");
+            ceiling = new GameObject("Ceiling");
             IncreaseSize(ceiling, UDSides[Index], Direction.UP); // 玫厘积己
             IncreaseSize(floor, UDSides[Index], Direction.Down); // 官蹿积己
         }
@@ -194,22 +197,43 @@ namespace RandomMap
         {
             encounterCnt = Random.Range(0, maxEncounterCnt);
 
-
             for (int i = 0; i < encounterCnt; i++)
             {
                 //Debug.Log("利积己");
                 int index = Random.Range(0, enCounters.Length);
-                GameObject encounter = Instantiate(enCounters[index], this.transform);
+                GameObject encounter = Instantiate(enCounters[index]);
                 Vector3 spawnPos = encounter.transform.localPosition;
-                Debug.Log(spawnPos);
-
                 spawnPos.x = Random.Range(1, 6);
                 spawnPos.z = Random.Range(1, 6);
-
+                //encounter.transform.localPosition = spawnPos;
+                //Debug.Log(floor.transform.position);
+                Vector3 floorPivot = transform.position + new Vector3(MapManager.SectionWidth, 0, MapManager.SectionWidth)/2;
+                Vector3 randomPoint = floorPivot + Random.insideUnitSphere * (MapManager.SectionWidth / 2 - 1);
+                NavMeshHit hit;
+                NavMesh.SamplePosition(randomPoint, out hit, 1, NavMesh.AllAreas);
+                
+                spawnPos.x = (int)Random.Range(floorPivot.x - MapManager.SectionWidth/2 +1, floorPivot.x + MapManager.SectionWidth/2 -1);
+                spawnPos.z = (int)Random.Range(floorPivot.z - MapManager.SectionWidth/2 +1, floorPivot.z + MapManager.SectionWidth/2 -1);
                 encounter.transform.localPosition = spawnPos;
             }
         }
 
+        //private void OnDrawGizmos()
+        //{
+        //    Vector3 floorPivot = transform.position + new Vector3(MapManager.SectionWidth, 0, MapManager.SectionWidth) / 2;
+        //    Vector3 randomPoint = floorPivot + Random.insideUnitSphere * (MapManager.SectionWidth / 2 - 1);
+
+        //    NavMeshHit hit;
+        //    if (NavMesh.SamplePosition(randomPoint, out hit, 1, NavMesh.AllAreas))
+        //    {
+        //        //encounter.transform.position = hit.position;
+        //        vector = hit.position;
+        //        Gizmos.color = Color.yellow;
+        //        Gizmos.DrawSphere(hit.position, 1);
+        //    }
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawSphere(floorPivot, 1);   
+        //}
 
         //private void OnCreateRamp()
         //{

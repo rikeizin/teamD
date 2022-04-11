@@ -40,8 +40,6 @@ namespace STAGE_MANAGEMENT
             {
                 instance = this;
 
-                TestPlayer = Instantiate(TestPlayer, this.transform);
-
                 instance.Initalize();
                 DontDestroyOnLoad(this.gameObject); // 다른 씬이 로드되더라도 삭제되지 않는다.
             }
@@ -58,6 +56,15 @@ namespace STAGE_MANAGEMENT
         public void Initalize()
         {
             stageList = new List<Stage>();
+
+            TestPlayer = Instantiate(TestPlayer);
+            DontDestroyOnLoad(TestPlayer);
+
+            PlayerSpawn spawn = FindObjectOfType<PlayerSpawn>();
+            if(spawn != null)
+            {
+                spawn.ReSpawn();
+            }
 
             // 랜덤 스테이지 확률 설정
             RandPercent percentage = new RandPercent();
