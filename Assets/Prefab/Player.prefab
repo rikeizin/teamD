@@ -3652,6 +3652,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 01a6e202-1b17-4b37-ba36-43950fc0e1df
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6281573761138972233}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Walk
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 312438db-4b01-4e3e-b1a1-ea18dc48e04e
+    m_ActionName: Player/Walk[/Keyboard/leftCtrl]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -3695,7 +3711,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7af817065cea24da4e1620559dfab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
+  runSpeed: 8
+  walkSpeed: 4
+  applySpeed: 0
   jumpForce: 10
   gravity: -20
 --- !u!1 &6281573761139069621
