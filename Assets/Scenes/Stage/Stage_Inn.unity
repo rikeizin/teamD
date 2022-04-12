@@ -589,6 +589,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1138772252}
     - target: {fileID: 3476440343622749263, guid: e8282025fcebd194fb3a948103889eaf, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+    - target: {fileID: 3476440343622749263, guid: e8282025fcebd194fb3a948103889eaf, type: 3}
       propertyPath: m_Name
       value: "PlayerSpawnPosition(\uD50C\uB808\uC774\uC5B4 \uC2A4\uD3F0 \uC704\uCE58
         \uCD08\uAE30\uD654)"
