@@ -100,6 +100,7 @@ namespace STAGE_MANAGEMENT
             }
 
             PlayerSetStartPostion spawn = FindObjectOfType<PlayerSetStartPostion>();
+
             if (spawn != null)
             {
                 spawn.Respawn();
@@ -117,7 +118,9 @@ namespace STAGE_MANAGEMENT
             }
 
             string sceneName = stageList[CurrentStageIndex].sceneName;
+            Player.SetActive(false);
             SceneManager.LoadScene(sceneName);
+            Player.SetActive(true);
         }
 
     }

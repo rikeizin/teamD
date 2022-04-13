@@ -14,9 +14,10 @@ public class MovementCharacterController : MonoBehaviour
     private float runSpeed = 8;              // 뛰는 속도
     [SerializeField]
     private float walkSpeed = 4;             // 걷는 속도
-
+    [SerializeField]
     private float applySpeed = 0;            // 적용되는 속도
     private float _applySpeed = 0;
+
     [SerializeField]
     private float jumpForce = 10;            // 점프력
     [SerializeField]                        
@@ -57,7 +58,7 @@ public class MovementCharacterController : MonoBehaviour
         {                                                   // isJumping이 false일 경우에만 && 현재 실행중인 애니메이션 State가 Jumping일때만
             if (!animator.GetBool("isJumping") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping"))
             {
-                Jump();                            // 점프
+                Jump();                                     // 점프
                 animator.SetBool("isJumping", true);        // 점프할 때 isJumping = true
             }
         }
@@ -72,7 +73,7 @@ public class MovementCharacterController : MonoBehaviour
         {
             applySpeed = 0;
         }
-        else
+        else if (!animator.GetBool("isWalking"))
         {
             applySpeed = _applySpeed;
         }
@@ -107,7 +108,7 @@ public class MovementCharacterController : MonoBehaviour
         }
     }
 
-    public void Rolling(InputAction.CallbackContext context)
+    public void Roll(InputAction.CallbackContext context)
     {
         if (context.started)
         {
