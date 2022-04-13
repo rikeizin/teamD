@@ -71,11 +71,32 @@ namespace RandomMap {
 
         private void Awake()
         {
+            MapBoundSet();
+            Initalize();
+        }
+
+        #region 맵 공간 및 네브메쉬 베이크 공간 할당
+        private void MapBoundSet()
+        {
             sectionSize = setSectionSzie;
             sectionWidth = sectionDefaultWidth * sectionSize;
             sectionHeight = sectionDefaultHeight * sectionSize;
-            Initalize();
+            LocalNavMeshBuildBoundSet();
         }
+
+        private void LocalNavMeshBuildBoundSet()
+        {
+            Vector3 m_size = new Vector3(
+                                (sectionWidth * MaxWidth),
+                                (sectionHeight),
+                                (sectionWidth * MaxDepth)
+                            );
+            Vector3 center = transform.position + (m_size / 2);
+            Vector3 boundMargin = new Vector3(5, 5, 5);
+            GameObject.Find("LocalNavMeshBuilder").transform.position = center;
+            GameObject.Find("LocalNavMeshBuilder").GetComponent<LocalNavMeshBuilder>().m_Size = m_size + boundMargin;
+        }
+        #endregion
 
         // 입/출구 오브젝트 생성
         private void CreateGate(Area area, Direction direction, PurposeOfGate purpose )
