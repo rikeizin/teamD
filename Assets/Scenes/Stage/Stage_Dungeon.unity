@@ -235,9 +235,9 @@ MonoBehaviour:
     blockedDir: 
     IsExit: 0
     IsSpawn: 0
-  MaxWidth: 5
-  MaxDepth: 5
-  creatCnt: 5
+  MaxWidth: 20
+  MaxDepth: 20
+  creatCnt: 15
   section: {fileID: 12672034506839517, guid: d3115994011d4c0498da18c5abef1114, type: 3}
   setSectionSzie: 3
   entranceObj: {fileID: 1726251015460917300, guid: 754150322af9b10418bb24473da97c51, type: 3}

@@ -201,7 +201,6 @@ namespace RandomMap
                 int index = Random.Range(0, enCounters.Length);
                 GameObject encounter = Instantiate(enCounters[index], this.transform);
                 Vector3 spawnPos = encounter.transform.localPosition;
-                Debug.Log(spawnPos);
 
                 spawnPos.x = Random.Range(1, 6);
                 spawnPos.z = Random.Range(1, 6);
