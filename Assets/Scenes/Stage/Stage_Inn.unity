@@ -455,7 +455,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2128465809}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9, y: 0.944, z: -2.99}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentStageIndex: 0
   TotalFloor: 4
-  TestPlayer: {fileID: 6281573761139069619, guid: 17f7cb787e710e942a6cb42230087ee9, type: 3}
+  Player: {fileID: 8508893349416425440, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
 --- !u!1001 &803788187442252285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -550,7 +550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3476440343622749260, guid: e8282025fcebd194fb3a948103889eaf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.944
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3476440343622749260, guid: e8282025fcebd194fb3a948103889eaf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -589,9 +589,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1138772252}
     - target: {fileID: 3476440343622749263, guid: e8282025fcebd194fb3a948103889eaf, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+    - target: {fileID: 3476440343622749263, guid: e8282025fcebd194fb3a948103889eaf, type: 3}
       propertyPath: m_Name
-      value: "PlayerSpawnPosition(\uD50C\uB808\uC774\uC5B4 \uC2A4\uD3F0 \uC704\uCE58
-        \uCD08\uAE30\uD654)"
+      value: PlayerSpawnPosition
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8282025fcebd194fb3a948103889eaf, type: 3}

@@ -32,16 +32,13 @@ namespace STAGE_MANAGEMENT
         public int TotalFloor = 4;
 
         [SerializeField]
-        private GameObject TestPlayer;
+        private GameObject Player;
 
         private void Awake()
         {
             if (instance == null) // 제일 처음 만들어진 인스턴스이다.
             {
                 instance = this;
-
-                TestPlayer = Instantiate(TestPlayer, this.transform);
-
                 instance.Initalize();
                 DontDestroyOnLoad(this.gameObject); // 다른 씬이 로드되더라도 삭제되지 않는다.
             }
@@ -57,6 +54,8 @@ namespace STAGE_MANAGEMENT
 
         public void Initalize()
         {
+            PlayerSpawn();
+
             stageList = new List<Stage>();
 
             // 랜덤 스테이지 확률 설정
@@ -67,28 +66,44 @@ namespace STAGE_MANAGEMENT
             int TotalStageCount = (TotalFloor * 2) - 1;
             for (int i = 0; i < TotalStageCount; i++)
             {
-                if(i == 0) 
+                if (i == 0)
                 {
                     // 첫 STAGE는 여관 고정
                     stageList.Add(new Stage(i, "Stage_Inn"));
                     CurrentStageIndex = 0;
-                } 
-                else if(i == TotalStageCount -1)
+                }
+                else if (i == TotalStageCount - 1)
                 {
                     // 마지막 STAGE는 최종보스던전 고정
                     stageList.Add(new Stage(i, "Stage_LastBossRoom"));
                 }
-                else if(i%2 == 1)
+                else if (i % 2 == 1)
                 {
                     // STAGE 순서가 짝수 인경우 타워 외각
-                    stageList.Add(new Stage(i, "OutOfTower"));
+                    stageList.Add(new Stage(i, "Stage_OutOfTower"));
                 }
                 else
                 {
                     // 호출된 랜덤 스테이지 정보 삽입 percentage.CallResult()
                     stageList.Add(new Stage(i, percentage.CallResult()));
                 }
-                Debug.Log($"{stageList[i].index} : {stageList[i].sceneName}");
+                //Debug.Log($"{stageList[i].index} : {stageList[i].sceneName}");
+            }
+        }
+
+        public void PlayerSpawn()
+        {
+            if (GameObject.FindGameObjectWithTag("Player") == null)
+            {
+                Player = Instantiate(Player);
+                DontDestroyOnLoad(Player);
+            }
+
+            PlayerSetStartPostion spawn = FindObjectOfType<PlayerSetStartPostion>();
+
+            if (spawn != null)
+            {
+                spawn.Respawn();
             }
         }
 
@@ -103,9 +118,10 @@ namespace STAGE_MANAGEMENT
             }
 
             string sceneName = stageList[CurrentStageIndex].sceneName;
+            Player.SetActive(false);
             SceneManager.LoadScene(sceneName);
+            Player.SetActive(true);
         }
 
     }
 }
-
