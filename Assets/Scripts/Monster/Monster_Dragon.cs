@@ -56,7 +56,7 @@ public class Monster_Dragon : MonsterController
     #endregion
 
     protected float m_currentTime = 0.0f;
-    protected float m_spitTime = 15.0f;
+    protected float m_spitTime = 5.0f;
 
     public override void Attack()
     {
