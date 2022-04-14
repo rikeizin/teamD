@@ -37,10 +37,10 @@ public class MonsterController : MonoBehaviour
 
     [SerializeField]
     protected eMonsterState m_state;
-    protected GameObject player;
-    protected NavMeshAgent navAgent;
-    protected Animator anim;
-    public float dir;
+    protected GameObject m_player;
+    protected NavMeshAgent m_navAgent;
+    protected Animator m_anim;
+    public float m_dir;
     public Status m_status;
     public bool isDead;
 
@@ -50,7 +50,7 @@ public class MonsterController : MonoBehaviour
         if(!isDead)
         {
             SetState(eMonsterState.Idle);
-            anim.SetBool("Attack", false);
+            m_anim.SetBool("Attack", false);
         }
     }
     #endregion
@@ -70,54 +70,54 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    public void Idle()
+    public virtual void Idle()
     {
-        dir = SearchTarget();
+        m_dir = SearchTarget();
         
-        if (dir < m_status.m_attackRange)
+        if (m_dir < m_status.m_attackRange)
         {
             SetState(eMonsterState.Attack);
         }
-        else if( dir < m_status.m_trackingRange)
+        else if( m_dir < m_status.m_trackingRange)
         {
             SetState(eMonsterState.Move);
         }
     }
 
-    public void Move()
+    public virtual void Move()
     {
-        dir = SearchTarget();
-        navAgent.SetDestination(player.transform.position);
-        anim.SetBool("Move", true);
+        m_dir = SearchTarget();
+        m_navAgent.SetDestination(m_player.transform.position);
+        m_anim.SetBool("Move", true);
 
-        if (dir < m_status.m_attackRange)
+        if (m_dir < m_status.m_attackRange)
         {
             ResetMove();
             SetState(eMonsterState.Attack);
-            anim.SetBool("Move", false);
+            m_anim.SetBool("Move", false);
         }
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
-        anim.SetBool("Attack", true);
+        m_anim.SetBool("Attack", true);
         ResetMove();
     }
 
-    public void Hit()
+    public virtual void Hit()
     {
-        anim.SetBool("Hit", true);
+        m_anim.SetBool("Hit", true);
     }
 
-    public void Dead()
+    public virtual void Dead()
     {
-        anim.SetBool("Dead", true);
+        m_anim.SetBool("Dead", true);
         isDead = true;
     }
                                    
     public float SearchTarget()
     {
-        var direction = player.transform.position - this.transform.position;
+        var direction = m_player.transform.position - this.transform.position;
         RaycastHit hit;
         if (Physics.Raycast(transform.position + Vector3.up * 1f, direction.normalized, out hit, m_status.m_trackingRange))
         {
@@ -135,8 +135,8 @@ public class MonsterController : MonoBehaviour
 
     public void ResetMove()
     {
-        navAgent.isStopped = true;
-        navAgent.ResetPath();
+        m_navAgent.isStopped = true;
+        m_navAgent.ResetPath();
     }
 
     private void Update()
@@ -170,9 +170,9 @@ public class MonsterController : MonoBehaviour
     {        
         SetMonster();
         isDead = false;
-        navAgent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        m_navAgent = GetComponent<NavMeshAgent>();
+        m_anim = GetComponent<Animator>();
+        m_player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Awake()
