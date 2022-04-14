@@ -4,12 +4,7 @@ using System.Text;
 using UnityEngine;
 
 namespace RandomMap {
-    enum PurposeOfGate
-    {
-        startPoint,
-        endPoint
-    }
-
+    
     public class MapManager : MonoBehaviour
     {
         private MapManager instance = null;
@@ -68,7 +63,11 @@ namespace RandomMap {
         [Header("플레이어 스타트 포인트")]
         public Transform playerSpawnPosition;
 
-
+        enum PurposeOfGate
+        {
+            startPoint,
+            endPoint
+        }
         private void Awake()
         {
             MapBoundSet();
