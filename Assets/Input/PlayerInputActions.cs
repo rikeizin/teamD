@@ -65,6 +65,22 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""b59df262-1ba1-44c5-9083-bb3297c0dafb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Attack2"",
+                    ""type"": ""Button"",
+                    ""id"": ""e3017beb-7f37-40c8-b8ea-7516cbc43cbb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -318,6 +334,28 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Roll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7642126-e8fd-419e-abcd-54aa4e5a28d0"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62d4b278-917a-4421-9051-589d7465a026"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Attack2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -901,6 +939,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Roll = m_Player.FindAction("Roll", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Attack2 = m_Player.FindAction("Attack2", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -968,6 +1008,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Roll;
+    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Attack2;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -978,6 +1020,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Roll => m_Wrapper.m_Player_Roll;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Attack2 => m_Wrapper.m_Player_Attack2;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1005,6 +1049,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Roll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
                 @Roll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
                 @Roll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
+                @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Attack2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
+                @Attack2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
+                @Attack2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1027,6 +1077,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Roll.started += instance.OnRoll;
                 @Roll.performed += instance.OnRoll;
                 @Roll.canceled += instance.OnRoll;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
+                @Attack2.started += instance.OnAttack2;
+                @Attack2.performed += instance.OnAttack2;
+                @Attack2.canceled += instance.OnAttack2;
             }
         }
     }
@@ -1189,6 +1245,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnWalk(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnAttack2(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
