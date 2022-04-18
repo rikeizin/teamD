@@ -36,9 +36,12 @@ namespace RandomMap
 
         public static List<Direction> AddDirection(List<Direction> dirList, Direction checkDir)
         {
-            bool duplicate = CheckdDirList(dirList, checkDir);
-            if (duplicate == false)
-                dirList.Add(checkDir);
+            if(checkDir != Direction.None)
+            {
+                bool duplicate = CheckdDirList(dirList, checkDir);
+                if (duplicate == false)
+                    dirList.Add(checkDir);
+            }
             return dirList;
         }
 

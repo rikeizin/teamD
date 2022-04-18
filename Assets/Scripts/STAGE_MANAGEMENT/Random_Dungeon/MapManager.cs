@@ -22,10 +22,11 @@ namespace RandomMap {
         private Area[,] coordinate; // 좌표
         private Area[] areaArray;
         private const int TOTAL_DIR_CNT = 4;
+        private Area thisArea;
+
 
         [Header("섹션 초기화")]
-        [SerializeField]
-        private Area thisArea;
+        
         [SerializeField]
         private int MaxWidth = 5;
         [SerializeField]
@@ -57,17 +58,21 @@ namespace RandomMap {
             }
         }
 
+        [Header("시작 입구 위치")]
+        [SerializeField]
+        private int startX;
+        [SerializeField]
+        private int startZ;
+
         [Header("던전 출입구 오브젝트")]
         public GameObject entranceObj;
-
-        [Header("플레이어 스타트 포인트")]
-        public Transform playerSpawnPosition;
 
         enum PurposeOfGate
         {
             startPoint,
             endPoint
         }
+
         private void Awake()
         {
             MapBoundSet();
@@ -97,94 +102,120 @@ namespace RandomMap {
         }
         #endregion
 
-        // 입/출구 오브젝트 생성
-        private void CreateGate(Area area, Direction direction, PurposeOfGate purpose )
-        {
-            GameObject gate = Instantiate(entranceObj, this.transform);
-            Vector3 postion = new Vector3(area.x, 0, area.z) * sectionWidth;
-            postion.x += sectionWidth / 2;
-            postion.z += sectionWidth / 2;
-            gate.transform.position = postion;
-            DirectionExt.createDirectinalSurface(direction, gate);
-
-            
-            if(purpose == PurposeOfGate.startPoint)
-            {
-                gate.GetComponent<DungeonGate>().enableSpawn();
-            } else if(purpose == PurposeOfGate.endPoint)
-            {
-                gate.GetComponent<DungeonGate>().enableExit();
-            }
-        }
-
         // 선형 길구조의 맵생성
-        public void Initalize() {
+        public void Initalize()
+        {
             // 맵 초기화
             coordinate = new Area[MaxWidth, MaxDepth];
             areaArray = new Area[creatCnt];
-            //Debug.Log($"생성 반복회수 : {areaArray.Length}");
 
             for (int i = 0; i < areaArray.Length; i++)
             {
-                //Debug.Log($"{i}번째 Section");
-                
+                thisArea = new Area();
+                thisArea.Index = i;
                 if (i > 0)
                 {
-                    thisArea = new Area();
                     thisArea.x = areaArray[i - 1].x;
                     thisArea.z = areaArray[i - 1].z;
                     thisArea.passedDir = areaArray[i - 1].nextDir;
                     thisArea = TransDir(thisArea); // 다음 방향위치로 생성
+                } else if (i == 0)
+                {
+                    thisArea.x = startX;
+                    thisArea.z = startZ;
                 }
 
                 thisArea.gameObject = GameObject.Instantiate(section, this.transform);
+                thisArea.gameObject.name += "(" + i + ")";
                 thisArea.script = thisArea.gameObject.GetComponent<Section>();
                 thisArea.gameObject.transform.position = new Vector3(thisArea.x, 0, thisArea.z) * sectionWidth;
-                // 던전에 할당된 좌표에 신규생성된 class정보 참조
-                coordinate[thisArea.x, thisArea.z] = thisArea;
 
                 // 1. 최대허용 범위 및 인접한 영역에 대한 벽생성
                 thisArea.blockedDir = createBlockedDir(thisArea);
                 // 2. 다음 진출 방향들에 이전 방향 추가하여 차단
                 thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);
-                
+
                 // 3. 막힌 지역외 다음 진출 방향 결정
                 if (thisArea.blockedDir.Count < TOTAL_DIR_CNT)
                 {
                     thisArea.nextDir = randomNextDir(thisArea.blockedDir);
+
                 }
                 // 4. 지나온 방향, 다음 진출 방향 제외 벽 재생성
-                thisArea.blockedDir = ReBlockDir(thisArea.passedDir, thisArea.nextDir);
+                thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.passedDir);
+                thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.nextDir);
+                thisArea.blockedDir = ReBlockDir(thisArea.openDir);
+
+
+
+                if (thisArea.blockedDir.Count >= TOTAL_DIR_CNT)
+                {
+                    #region 재생성
+                    // 재생성 섹션 초기화
+                    int reindex = GetReIndex(i);
+                    //Debug.Log($"막힌 구간 : {i} /  재생성 인덱스 : {reindex}");
+                    thisArea.openDir = new List<Direction>();
+                    thisArea.x = areaArray[reindex].x;
+                    thisArea.z = areaArray[reindex].z;
+                    thisArea.blockedDir = createBlockedDir(thisArea);
+                    thisArea.passedDir = randomNextDir(thisArea.blockedDir);
+                    
+
+                    thisArea = TransDir(thisArea);
+                    // 현재섹션의 위치를 재생성 섹션위치에서 다음 방향 좌표 이동
+
+                    // 재생성 위치에서 이동후 해당 좌표에서 벽 재구성
+                    thisArea.gameObject.transform.position = new Vector3(thisArea.x * sectionWidth, 0, thisArea.z * sectionWidth);
+                    thisArea.blockedDir = createBlockedDir(thisArea);
+                    if (thisArea.blockedDir.Count < TOTAL_DIR_CNT)
+                    {
+                        thisArea.nextDir = randomNextDir(thisArea.blockedDir);
+                        thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.nextDir);
+                    }
+
+                    // 재생성 섹션에서 추가 생성된 섹션 방향과의 통로를 재구성
+                    areaArray[reindex].openDir = DirectionExt.AddDirection(areaArray[reindex].openDir, DirectionExt.GetOpposite(thisArea.passedDir));
+                    areaArray[reindex].blockedDir = ReBlockDir(areaArray[reindex].openDir);
+                    areaArray[reindex].script.area = areaArray[reindex];
+
+                    thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.passedDir);
+                    thisArea.blockedDir = ReBlockDir(thisArea.openDir);
+                    #endregion
+                }
+
 
                 // 5. 던전 입/출구 방향 오브젝트 작업
                 if (i == 0)
                 {
                     // 0번째 구역인경우 던전 시작 스폰지점 생성
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);
-                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint );// 던전입구 생성
+                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);   // 첫구역 입구방향 벽추가
+                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint); // 던전입구 생성
                 }
-                else if (thisArea.blockedDir.Count == TOTAL_DIR_CNT)
-                {
-                    // 3-2 방향이 막힌경우 마지막 구역으로 처리
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);
-                    CreateGate(thisArea, DirectionExt.GetOpposite(areaArray[i - 1].passedDir), PurposeOfGate.endPoint);// 던전출구 생성
-                    break;
-                }
-                else if(i == areaArray.Length - 1)
+                else if (i == areaArray.Length - 1)
                 {
                     // 마지막 구역 생성
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);
-                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint);// 던전출구 생성
+                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
+                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
                 }
 
                 thisArea.script.area = thisArea;    // 생성된 구역오브젝트에 현재 생성으로 정의된 구역class 참조
-                thisArea.script.OnInit(); // 구역 생성 초기화
+                coordinate[thisArea.x, thisArea.z] = thisArea;// 던전에 할당된 좌표에 신규생성된 class정보 참조
                 areaArray[i] = thisArea;  // 해당 생성순서의 index에 현재 생성 정보 저장
+            }
+
+            for (int i = 0; i < areaArray.Length; i++)
+            {
+                //Debug.Log($"{i}번째 인덱스 최종 생성");
+                areaArray[i].script.OnInit();
             }
         }
 
+        
+
         List<Direction> createBlockedDir(Area area)
         {
+            area.blockedDir = new List<Direction>();
+
             if (area.z == (MaxDepth - 1))
             {
                 area.blockedDir.Add(Direction.N);
@@ -238,7 +269,7 @@ namespace RandomMap {
             return area.blockedDir;
         }
 
-        List<Direction> ReBlockDir(Direction passedDir, Direction nextDir)
+        List<Direction> ReBlockDir(List<Direction> openDir)
         {
             List<Direction> dirList = new List<Direction>();
             dirList.Add(Direction.N);
@@ -246,8 +277,12 @@ namespace RandomMap {
             dirList.Add(Direction.S);
             dirList.Add(Direction.W);
 
-            dirList.Remove(passedDir);
-            dirList.Remove(nextDir);
+            foreach(Direction dir in openDir)
+            {
+                dirList.Remove(dir);
+            }
+            //dirList.Remove(passedDir);
+            //dirList.Remove(nextDir);
             return dirList;
         }
 
@@ -256,6 +291,7 @@ namespace RandomMap {
             //Debug.Log($"중복 회수 : {blockedDir.Count}");
             Direction nextDir;
             bool isClash;
+            int loopNum = 0;
 
             while (true)
             {
@@ -264,6 +300,16 @@ namespace RandomMap {
 
                 if (isClash == false)
                 {
+                    break;
+                }
+                if (loopNum++ > 50)
+                {
+                    Debug.Log($"Infinite Loop // {thisArea.Index}");
+                    foreach(Direction data in blockedDir)
+                    {
+                        Debug.Log($"data : {data}");
+                    }
+                    ExistMap();
                     break;
                 }
             }
@@ -287,12 +333,88 @@ namespace RandomMap {
                     area.x -= 1;
                     break;
                 default:
-                    Debug.Log("방향셋팅중 오류");
+                    Debug.Log("다음 이동할 방향이 없음");
                     break;
             }
             area.passedDir = DirectionExt.GetOpposite(area.passedDir);
 
             return area;
         }
+
+        // 입/출구 오브젝트 생성
+        private void CreateGate(Area area, Direction direction, PurposeOfGate purpose)
+        {
+            GameObject gate = Instantiate(entranceObj, this.transform);
+            Vector3 postion = new Vector3(area.x, 0, area.z) * sectionWidth;
+            postion.x += sectionWidth / 2;
+            postion.z += sectionWidth / 2;
+            gate.transform.position = postion;
+            DirectionExt.createDirectinalSurface(direction, gate);
+
+
+            if (purpose == PurposeOfGate.startPoint)
+            {
+                gate.GetComponent<DungeonGate>().enableSpawn();
+            }
+            else if (purpose == PurposeOfGate.endPoint)
+            {
+                gate.GetComponent<DungeonGate>().enableExit();
+            }
+        }
+
+        private int GetReIndex(int i)
+        {
+            Debug.Log($"-------------막힌 구간 : {i}--------------");
+            List<int> reindexList = new List<int>();
+            Area tempArea = new Area();
+
+            for (int preIndex = 0; preIndex < i; preIndex++)
+            {
+                tempArea.x = areaArray[preIndex].x;
+                tempArea.z = areaArray[preIndex].z;
+                List<Direction> dirs = createBlockedDir(tempArea);
+
+                if (dirs.Count < TOTAL_DIR_CNT && preIndex > 0)
+                {
+                    // 재생성 후보에서 시작지점 제외 = 미로맵 생성시 입구 바로 옆의 출구생성 사태벌어짐
+                    reindexList.Add(preIndex);
+                }
+            }
+            
+            StringBuilder temp = new StringBuilder();
+            temp.Append("재생성 후보 : ");
+            foreach (int idx in reindexList)
+            {
+                temp.Append(idx+", ");
+            }
+
+            int reindex = reindexList[Random.Range(0, reindexList.Count)];
+            Debug.Log($"{temp} / 결정 번호 : {reindex}");
+            Debug.Log($"------------------------------------------");
+            return reindex;
+        }
+
+        #region 오류 확인용도
+        private void ExistMap()
+        {
+            for (int i = MaxDepth - 1; i > -1; i--)
+            {
+                StringBuilder temp = new StringBuilder();
+                for (int j = 0; j < MaxWidth; j++)
+                {
+                    if (coordinate[j, i] != null)
+                    {
+                        temp.Append(1);
+                    }
+                    else
+                    {
+                        temp.Append(0);
+                    }
+                    temp.Append(", ");
+                }
+                Debug.Log(temp);
+            }
+        }
+        #endregion
     }
 }
