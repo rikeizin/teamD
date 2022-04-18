@@ -8,7 +8,7 @@ namespace STAGE_MANAGEMENT
     {
         //[Header("스폰시킬 플레이어")]
         public Transform player = null;
-        float time = 0;
+        //float time = 0;
         CharacterController ctrl = null;
 
         private void OnEnable()
@@ -16,17 +16,17 @@ namespace STAGE_MANAGEMENT
             Respawn();
         }
 
-        private void Update()
-        {
-            time += Time.deltaTime;
+        //private void Update()
+        //{
+        //    time += Time.deltaTime;
 
-            if (time>3)
-            {
-                //player.position = thisVector;
-                Debug.Log(player.position);
-                time = 0;
-            }
-        }
+        //    if (time>3)
+        //    {
+        //        //player.position = thisVector;
+        //        //Debug.Log(player.position);
+        //        time = 0;
+        //    }
+        //}
 
         public void Respawn()
         {

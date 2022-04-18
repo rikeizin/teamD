@@ -18,6 +18,7 @@ namespace RandomMap
         public Direction passedDir;
         public Direction nextDir;
         public List<Direction> blockedDir = new List<Direction>();
+        public List<Direction> openDir = new List<Direction>();
 
         public bool IsExit = false;
         public bool IsSpawn = false;
