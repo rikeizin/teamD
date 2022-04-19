@@ -14,10 +14,12 @@ namespace RandomMap
         public Section script;
         public int Index;
         public int x;
+        public int y;
         public int z;
         public Direction passedDir;
         public Direction nextDir;
         public List<Direction> blockedDir = new List<Direction>();
+        public List<Direction> openDir = new List<Direction>();
 
         public bool IsExit = false;
         public bool IsSpawn = false;
