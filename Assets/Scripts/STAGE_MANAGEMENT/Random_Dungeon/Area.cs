@@ -14,6 +14,7 @@ namespace RandomMap
         public Section script;
         public int Index;
         public int x;
+        public int y;
         public int z;
         public Direction passedDir;
         public Direction nextDir;

@@ -11,8 +11,8 @@ namespace RandomMap
         , E
         , S
         , W
+        , Up
         , Down
-        , UP
     }
 
     public static class DirectionExt
@@ -29,6 +29,10 @@ namespace RandomMap
                     return Direction.N;
                 case Direction.W:
                     return Direction.E;
+                case Direction.Up:
+                    return Direction.Down;
+                case Direction.Down:
+                    return Direction.Up;
                 default:
                     return Direction.None;
             }
