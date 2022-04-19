@@ -14,6 +14,9 @@ namespace RandomMap
         private GameObject westWall;
         private GameObject southWall;
         private GameObject nothWall;
+        private GameObject ceiling;
+        private GameObject floor;
+
 
         [SerializeField]
         public Area area;
@@ -34,7 +37,7 @@ namespace RandomMap
         public void OnInit()
         {
             // 바닥 및 천장 생성
-            CreatFloor();
+            //CreatFloor();
             // 벽 생성
             OnCreateSection();
             // 메인 조명 활성화
@@ -45,6 +48,7 @@ namespace RandomMap
 
         private void OnCreateSection()
         {
+            int Index = Random.Range(0, UDSides.Length);
             foreach (Direction dir in area.blockedDir)
             {
                 switch (dir)
@@ -68,6 +72,14 @@ namespace RandomMap
                         nothWall = new GameObject("nothWall");
                         IncreaseSize(nothWall, nothWall, dir);
                         break;
+                    case Direction.Up:
+                        ceiling = new GameObject("Ceiling");
+                        IncreaseSize(ceiling, UDSides[Index], Direction.Up);
+                        break;
+                    case Direction.Down:
+                        floor = new GameObject("Floor");
+                        IncreaseSize(floor, UDSides[Index], Direction.Down);
+                        break;
                     default:
                         break;
                 }
@@ -78,8 +90,8 @@ namespace RandomMap
         {
             int Index = Random.Range(0, UDSides.Length);
             GameObject floor = new GameObject("Floor");
-            GameObject ceiling = new GameObject("Ceiling");
-            IncreaseSize(ceiling, UDSides[Index], Direction.UP); // 천장생성
+            //GameObject ceiling = new GameObject("Ceiling");
+            //IncreaseSize(ceiling, UDSides[Index], Direction.Up); // 천장생성
             IncreaseSize(floor, UDSides[Index], Direction.Down); // 바닥생성
         }
 
@@ -148,7 +160,7 @@ namespace RandomMap
                             }
                             break;
 
-                        case Direction.UP:
+                        case Direction.Up:
                             Peace = Instantiate(_peace, side.transform);
 
                             sidePos.x += MapManager.sectionDefaultWidth * i;
@@ -208,16 +220,5 @@ namespace RandomMap
                 encounter.transform.localPosition = spawnPos;
             }
         }
-
-
-        //private void OnCreateRamp()
-        //{
-        //    // 조명 생성 / 조건 : 방향이 꺽일때
-        //    if (area.passedDir != DirectionExt.GetOpposite(area.nextDir))
-        //    {
-        //        GameObject prefab = Instantiate(Chandelier, this.transform);
-        //        Chandelier.transform.position = new Vector3(2, 4, 2);
-        //    }
-        //}
     }
 }

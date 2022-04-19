@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &219350156
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -319,12 +319,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9ff4ff9ee8494bbcbb963454485b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: 5
-  MaxDepth: 5
-  creatCnt: 25
+  MaxWidth: 3
+  MaxDepth: 3
+  MaxHeight: 3
   section: {fileID: 12672034506839517, guid: d3115994011d4c0498da18c5abef1114, type: 3}
   setSectionSzie: 3
-  startX: 0
+  creatCnt: 50
+  startX: 1
+  startY: 1
   startZ: 1
   entranceObj: {fileID: 1726251015460917300, guid: 754150322af9b10418bb24473da97c51, type: 3}
 --- !u!1 &705507993

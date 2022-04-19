@@ -6532,7 +6532,7 @@ MonoBehaviour:
   runSpeed: 8
   walkSpeed: 4
   applySpeed: 0
-  jumpForce: 10
+  jumpForce: 100
   gravity: -20
 --- !u!1 &8508893349416425442
 GameObject:
