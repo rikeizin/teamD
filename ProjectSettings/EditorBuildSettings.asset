@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage/Stage_LastBossRoom.unity
     guid: 2c351022b3f94484288808e1a43d9b1c
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 5299144de7f2b1144be62bce6e3b4533
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e0117faa8e1449b4eabd0cef30db040d, type: 2}

@@ -8,7 +8,7 @@ public class Title : MonoBehaviour
     public void StartButton()
     {
         Debug.Log("Start");
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Stage_Inn");
     }
 
     public void LoadButton()
