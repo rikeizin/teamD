@@ -11,152 +11,212 @@ public class MovementCharacterController : MonoBehaviour
     public float zInput;                     // 앞뒤 입력 받아오는 변수
 
     [SerializeField]
-    private float runSpeed = 8;              // 뛰는 속도
+    private float PLAYER_GRAVITY = -20;
     [SerializeField]
-    private float walkSpeed = 4;             // 걷는 속도
+    private float RUN_SPEED = 8;
     [SerializeField]
-    private float applySpeed = 0;            // 적용되는 속도
-    private float _applySpeed = 0;
+    private float WALK_SPEED = 4;
+    [SerializeField]
+    private float JUMP_FORCE = 10;
 
     [SerializeField]
-    private float jumpForce = 10;            // 점프력
+    private float _playerSpeed = 0;
+
+    private Vector3 _moveForce;
+
     [SerializeField]
-    private float gravity = -20;             // 중력
+    private GameObject _attackCollision;
+    private Animator _animator = null;                                // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
+    private CharacterController _characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
 
-    private Vector3 moveForce;
+    #region hashes
+    // State
+    private readonly int hashIsRunning = Animator.StringToHash("isRunning");
+    private readonly int hashIsJumping = Animator.StringToHash("isJumping");
+    private readonly int hashIsWalking = Animator.StringToHash("isWalking");
 
-    private Animator animator = null;                                // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
-    private CharacterController characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
+    // Trigger
+    private readonly int hashDoJumping = Animator.StringToHash("doJumping");
+    private readonly int hashDoRolling = Animator.StringToHash("doRolling");
+    private readonly int hashDoAttack = Animator.StringToHash("doAttack");
+    private readonly int hashDoAttack2 = Animator.StringToHash("doAttack2");
+
+    // Animation
+    private readonly int hashWalking = Animator.StringToHash("Walking");
+    private readonly int hashJumping = Animator.StringToHash("Jumping");
+    private readonly int hashRolling = Animator.StringToHash("Rolling");
+    private readonly int hashAttackRight = Animator.StringToHash("Attack_Right");
+    private readonly int hashAttackLeft0 = Animator.StringToHash("Attack_Left_0");
+    private readonly int hashAttackLeft1 = Animator.StringToHash("Attack_Left_1");
+    private readonly int hashAttackLeft2 = Animator.StringToHash("Attack_Left_2");
+
+    // Values
+    private readonly int hashAttackComboInteger = Animator.StringToHash("AttackCombo");
+
+    #endregion
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
+        _characterController = GetComponent<CharacterController>();
     }
 
     private void Start()
     {
-        applySpeed = runSpeed;
-        _applySpeed = applySpeed;
+        _playerSpeed = RUN_SPEED;
     }
 
     void Update()
     {
-        IsGravity();
-        characterController.Move(moveForce * Time.deltaTime);       // 실제 Move 함수
+        ApplyGravity();
+        Move();
+    }
+
+    private void Move()
+    {
+        _characterController.Move(_moveForce * Time.deltaTime);
     }
 
     public void Jump()
     {
-        if (characterController.isGrounded&!animator.GetCurrentAnimatorStateInfo(0).IsName("Rolling")& !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")
-            &!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-        {
-            moveForce.y = jumpForce;
-        }
+        _moveForce.y = JUMP_FORCE;
     }
-    public void Jump(InputAction.CallbackContext context)   // 인풋 시스템 점프
+
+    public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {                                                   // isJumping이 false일 경우에만 && 현재 실행중인 애니메이션 State가 Jumping이 아닐때만
-            if (!animator.GetBool("isJumping") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping"))
-            {
-                Jump();                                     // 점프
-                animator.SetBool("isJumping", true);        // 점프할 때 isJumping = true
-            }
+        if (!context.started) return;
+        
+        if (!_animator.GetBool(hashIsJumping)
+            && !IsJumpAnimating() && !IsRollAnimating() && !IsAttackAnimating())
+        {
+            _animator.SetBool(hashIsJumping, true);
+            _animator.SetTrigger(hashDoJumping);
+            _animator.applyRootMotion = false;
+            Jump();
         }
     }
 
     public void MoveTo(Vector3 direction)
     {
+        _animator.SetFloat("dirX", xInput, 0.1f, Time.deltaTime);   // 애니메이션 블렌드 부드럽게
+        _animator.SetFloat("dirZ", zInput, 0.1f, Time.deltaTime);   // 애니메이션 블렌드 부드럽게2
         direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
-        moveForce = new Vector3(direction.x * applySpeed, moveForce.y, direction.z * applySpeed);
+        _moveForce = new Vector3(direction.x * _playerSpeed, _moveForce.y, direction.z * _playerSpeed);
 
-        MoveAllow();
+        MoveSpeed();
     }
-    public void Move(InputAction.CallbackContext context)   // 인풋 시스템 무브
+
+    public void OnMove(InputAction.CallbackContext context)
     {
         // 이동 입력값 받기
         Vector2 input = context.ReadValue<Vector2>();       // 입력값을 받아서 회전 정도랑 이동 정도를 받아옴
         xInput = input.x;
-        animator.SetFloat("dirX", xInput);
+        //animator.SetFloat("dirX", xInput);
         zInput = input.y;
-        animator.SetFloat("dirZ", zInput);
+        //animator.SetFloat("dirZ", zInput);
 
         MoveTo(new Vector3(xInput, 0, zInput));
 
         // 애니메이션 설정
         if (context.started)
         {
-            animator.SetBool("isRunning", true);            // 움직일 때 isRunning = true
+            _animator.SetBool(hashIsRunning, true);
         }
         else if (context.canceled)
         {
-            animator.SetBool("isRunning", false);           // 멈췄을 때 isRunning = false
+            _animator.SetBool(hashIsRunning, false);
         }
     }
 
-    public void Attack(InputAction.CallbackContext context)
+    public void OnAttackLeft(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            animator.SetTrigger("onAttack");
-        }
+        if (context.started) return;
 
+        if (!IsAttackLeftAnimating())
+        {
+            _animator.SetTrigger(hashDoAttack);
+        }
+        else if (IsAttackLeft0Animating())
+        {
+            _animator.SetInteger(hashAttackComboInteger, 1);
+        }
+        else if (IsAttackLeft1Animating())
+        {
+            _animator.SetInteger(hashAttackComboInteger, 2);
+        }
     }
 
-    public void Attack2(InputAction.CallbackContext context)
+    public void OnAttackRight(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (!context.started) return;
+
+        if (!IsAttackRightAnimating())
         {
-            animator.SetTrigger("onAttack2");
+            _animator.SetTrigger(hashDoAttack2);
         }
     }
 
-    public void Walk(InputAction.CallbackContext context)
+    public void OnWalk(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            animator.SetBool("isWalking", true);
-            applySpeed = walkSpeed;
+            _animator.SetBool(hashIsWalking, true);
         }
 
         if (context.canceled)
         {
-            animator.SetBool("isWalking", false);
-            applySpeed = runSpeed;
+            _animator.SetBool(hashIsWalking, false);
         }
     }
 
-    public void Roll(InputAction.CallbackContext context)
+    public void OnRoll(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            animator.SetBool("isRolling", true);
-        }
+        if (!context.started) return;
 
-        if (context.canceled)
+        if (!IsJumpAnimating() && !IsRollAnimating())
         {
-            animator.SetBool("isRolling", false);
+            _animator.SetTrigger(hashDoRolling);
         }
     }
 
-    public void IsGravity() // 중력
+    public void ApplyGravity()
     {
-        if (!characterController.isGrounded)
+        if (!_characterController.isGrounded)
         {
-            moveForce.y += gravity * Time.deltaTime;
+            _moveForce.y += PLAYER_GRAVITY * Time.deltaTime;
         }
     }
 
-    public void MoveAllow()
+    public void OnAttackCollision()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Rolling"))
-            applySpeed = 0;
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-            applySpeed = 0;
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack2"))
-            applySpeed = 0;
-        else if (!animator.GetBool("isWalking"))
-            applySpeed = _applySpeed;
+        _attackCollision.SetActive(true);
+        _animator.SetInteger(hashAttackComboInteger, 0);
     }
+
+    public void MoveSpeed()
+    {
+        if (IsRollAnimating() || IsAttackAnimating())
+        {
+            _playerSpeed = 0;
+        }
+        else if (IsWalkAnimating())
+        {
+            _playerSpeed = WALK_SPEED;
+        }
+        else
+        {
+            _playerSpeed = RUN_SPEED;
+        }
+    }
+    
+    private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;
+    private bool IsWalkAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashWalking;
+    private bool IsRollAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashRolling;
+
+    private bool IsAttackAnimating() => IsAttackLeftAnimating() || IsAttackRightAnimating();
+    private bool IsAttackRightAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRight;
+    private bool IsAttackLeftAnimating() => IsAttackLeft0Animating() || IsAttackLeft1Animating() || IsAttackLeft2Animating();
+    private bool IsAttackLeft0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft0;
+    private bool IsAttackLeft1Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft1;
+    private bool IsAttackLeft2Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft2;
 }
