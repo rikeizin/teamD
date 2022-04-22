@@ -81,6 +81,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Swap"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a62e895-5c63-4d96-bdf7-819ecd9791b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -356,6 +364,50 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""OnAttackRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d05ff3aa-2fad-41a7-97aa-af13890d4078"",
+                    ""path"": ""keyboard/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Swap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b553880e-3bd8-4f05-b33f-60810691dfdc"",
+                    ""path"": ""keyboard/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Swap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b59682d-1dc9-4534-a831-25ffb68f34b7"",
+                    ""path"": ""keyboard/3"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Swap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4902324-82c0-45d9-8134-c904a00a1562"",
+                    ""path"": ""keyboard/4"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Swap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -941,6 +993,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_OnRoll = m_Player.FindAction("OnRoll", throwIfNotFound: true);
         m_Player_OnAttackLeft = m_Player.FindAction("OnAttackLeft", throwIfNotFound: true);
         m_Player_OnAttackRight = m_Player.FindAction("OnAttackRight", throwIfNotFound: true);
+        m_Player_Swap = m_Player.FindAction("Swap", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1010,6 +1063,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_OnRoll;
     private readonly InputAction m_Player_OnAttackLeft;
     private readonly InputAction m_Player_OnAttackRight;
+    private readonly InputAction m_Player_Swap;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1022,6 +1076,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @OnRoll => m_Wrapper.m_Player_OnRoll;
         public InputAction @OnAttackLeft => m_Wrapper.m_Player_OnAttackLeft;
         public InputAction @OnAttackRight => m_Wrapper.m_Player_OnAttackRight;
+        public InputAction @Swap => m_Wrapper.m_Player_Swap;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1055,6 +1110,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @OnAttackRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnAttackRight;
                 @OnAttackRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnAttackRight;
                 @OnAttackRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnAttackRight;
+                @Swap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwap;
+                @Swap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwap;
+                @Swap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwap;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1083,6 +1141,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @OnAttackRight.started += instance.OnOnAttackRight;
                 @OnAttackRight.performed += instance.OnOnAttackRight;
                 @OnAttackRight.canceled += instance.OnOnAttackRight;
+                @Swap.started += instance.OnSwap;
+                @Swap.performed += instance.OnSwap;
+                @Swap.canceled += instance.OnSwap;
             }
         }
     }
@@ -1247,6 +1308,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnOnRoll(InputAction.CallbackContext context);
         void OnOnAttackLeft(InputAction.CallbackContext context);
         void OnOnAttackRight(InputAction.CallbackContext context);
+        void OnSwap(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

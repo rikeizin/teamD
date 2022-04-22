@@ -71,37 +71,46 @@ public class MonsterController : MonoBehaviour
     }
 
     public virtual void Idle()
-    {
-        m_dir = SearchTarget();
-        
-        if (m_dir < m_status.m_attackRange)
-        {
-            SetState(eMonsterState.Attack);
-        }
-        else if( m_dir < m_status.m_trackingRange)
+    {   
+        ResetMove();
+        // 인식 범위 안쪽일 때 Move
+        if (m_dir < m_status.m_trackingRange)
         {
             SetState(eMonsterState.Move);
         }
     }
 
     public virtual void Move()
-    {
-        m_dir = SearchTarget();
+    {   
+        ResetMove();
+        // 플레이어 쫓아가기
         m_navAgent.SetDestination(m_player.transform.position);
         m_anim.SetBool("Move", true);
 
+        // 공격사거리 안쪽일 때 Attack 
         if (m_dir < m_status.m_attackRange)
         {
-            ResetMove();
             SetState(eMonsterState.Attack);
+            m_anim.SetBool("Move", false);
+        }// 인식 범위 바깥일 때 Idle
+        else if(m_dir> m_status.m_trackingRange)
+        {
+            SetState(eMonsterState.Idle);
             m_anim.SetBool("Move", false);
         }
     }
 
     public virtual void Attack()
     {
-        m_anim.SetBool("Attack", true);
         ResetMove();
+        FollowTarget();
+        m_anim.SetBool("Attack", true);
+        // 공격사거리 바깥일 때 Move
+        if (m_dir > m_status.m_attackRange)
+        {
+            SetState(eMonsterState.Move);
+            m_anim.SetBool("Attack", false);
+        }
     }
 
     public virtual void Hit()
@@ -111,8 +120,11 @@ public class MonsterController : MonoBehaviour
 
     public virtual void Dead()
     {
-        m_anim.SetBool("Dead", true);
-        isDead = true;
+        if (!isDead)
+        {
+            m_anim.SetTrigger("doDead");
+            isDead = true;
+        }
     }
                                    
     public float SearchTarget()
@@ -141,7 +153,18 @@ public class MonsterController : MonoBehaviour
 
     private void Update()
     {
-        BehaviourProcess();
+        m_dir = SearchTarget();
+        BehaviourProcess(); 
+        //if(m_navAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && m_navAgent.remainingDistance <= 0.1f)
+        //{
+        //    m_anim.SetBool("Walk", false);
+        //}
+        //else if(m_navAgent.desiredVelocity.sqrMagnitude >= 0.1f * 0.1f)
+        //{
+        //    Vector3 direction = m_navAgent.desiredVelocity;
+        //    Quaternion targetAngle = Quaternion.LookRotation(direction);
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
+        //}
     }
 
     public virtual void BehaviourProcess()
@@ -173,6 +196,7 @@ public class MonsterController : MonoBehaviour
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
         m_player = GameObject.FindGameObjectWithTag("Player");
+        //m_navAgent.updateRotation = false;
     }
 
     private void Awake()
@@ -183,5 +207,15 @@ public class MonsterController : MonoBehaviour
     protected virtual void OnAwake()
     {        
         Initialize();        
+    }
+
+    // ATTACK일때 플레이어를 제자리회전으로 보게해주는 함수
+    void FollowTarget()
+    {
+        if (m_dir < m_status.m_trackingRange)
+        {
+            Vector3 dir = m_player.transform.position - this.transform.position;
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 1);
+        }
     }
 }

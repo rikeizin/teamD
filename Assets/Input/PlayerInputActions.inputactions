@@ -68,6 +68,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Swap",
+                    "type": "Button",
+                    "id": "7a62e895-5c63-4d96-bdf7-819ecd9791b1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -343,6 +351,50 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "OnAttackRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d05ff3aa-2fad-41a7-97aa-af13890d4078",
+                    "path": "keyboard/1",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Swap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b553880e-3bd8-4f05-b33f-60810691dfdc",
+                    "path": "keyboard/2",
+                    "interactions": "",
+                    "processors": "Scale(factor=2)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Swap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0b59682d-1dc9-4534-a831-25ffb68f34b7",
+                    "path": "keyboard/3",
+                    "interactions": "",
+                    "processors": "Scale(factor=3)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Swap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c4902324-82c0-45d9-8134-c904a00a1562",
+                    "path": "keyboard/4",
+                    "interactions": "",
+                    "processors": "Scale(factor=4)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Swap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

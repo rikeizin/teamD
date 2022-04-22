@@ -130,11 +130,12 @@ public class MovementCharacterController : MonoBehaviour
 
     public void OnAttackLeft(InputAction.CallbackContext context)
     {
-        if (context.started) return;
+        if (!context.started) return;
 
         if (!IsAttackLeftAnimating())
         {
             _animator.SetTrigger(hashDoAttack);
+            _animator.SetInteger(hashAttackComboInteger, 0);
         }
         else if (IsAttackLeft0Animating())
         {
@@ -179,6 +180,12 @@ public class MovementCharacterController : MonoBehaviour
         }
     }
 
+    public void OnSwap(InputAction.CallbackContext context)
+    {
+        float input = context.ReadValue<float>();
+        if(context.started)
+            Debug.Log(input);
+    }
     public void ApplyGravity()
     {
         if (!_characterController.isGrounded)
@@ -190,7 +197,6 @@ public class MovementCharacterController : MonoBehaviour
     public void OnAttackCollision()
     {
         _attackCollision.SetActive(true);
-        _animator.SetInteger(hashAttackComboInteger, 0);
     }
 
     public void MoveSpeed()
@@ -220,3 +226,4 @@ public class MovementCharacterController : MonoBehaviour
     private bool IsAttackLeft1Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft1;
     private bool IsAttackLeft2Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft2;
 }
+

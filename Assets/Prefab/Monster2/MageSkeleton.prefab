@@ -582,7 +582,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 6141a9fc24c39bf47aa5031a9e9c7f86, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -603,8 +603,6 @@ MonoBehaviour:
   m_state: 0
   m_dir: 0
   isDead: 0
-  particle: 0
-  particleObject: {fileID: 5883102177733607352}
 --- !u!195 &5883102177668479239
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -7,6 +7,6 @@ public class Skeleton_warrior : MonsterController
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(100, 10.0f, 3.0f, 1.0f, 70.0f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange
+        m_status = new Status(100, 10.0f, 5.0f, 3.0f, 70.0f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange
     }
 }
