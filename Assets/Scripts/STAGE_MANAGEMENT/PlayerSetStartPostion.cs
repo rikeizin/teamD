@@ -45,7 +45,7 @@ namespace STAGE_MANAGEMENT
 
                 //player.position = this.transform.position;
                 //player.GetComponent<CharacterController>().Move(this.transform.position);
-                Debug.Log($"플레이어 : {player.position} / 스폰 : {this.transform.position}");
+                //Debug.Log($"플레이어 : {player.position} / 스폰 : {this.transform.position}");
             }
         }
     }
