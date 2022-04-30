@@ -23,6 +23,7 @@ namespace RandomMap {
         private Area[,,] coordinate; // 좌표
         private Area[] areaArray;
         private const int TOTAL_DIR_CNT = 6;
+        private const int HORIZONTAL_DIR_CNT = 4;
         private Area thisArea;
 
 
@@ -74,7 +75,11 @@ namespace RandomMap {
         private int startZ = 0;
 
         [Header("던전 출입구 오브젝트")]
-        public GameObject entranceObj;
+        [SerializeField]
+        private GameObject entranceObj;
+        [Header("층간 이동 오브젝트")]
+        [SerializeField]
+        private GameObject[] liftObjs;
 
         enum PurposeOfGate
         {
@@ -137,19 +142,19 @@ namespace RandomMap {
         // 선형 길구조의 맵생성
         public void GenerateMap()
         {
-            for (int i = 0; i < areaArray.Length; i++)
+            for (int index = 0; index < areaArray.Length; index++)
             {
                 thisArea = new Area();
-                thisArea.Index = i;
-                if (i > 0)
+                thisArea.Index = index;
+                if (index > 0)
                 {
-                    thisArea.x = areaArray[i - 1].x;
-                    thisArea.y = areaArray[i - 1].y;
-                    thisArea.z = areaArray[i - 1].z;
-                    thisArea.passedDir = areaArray[i - 1].nextDir;
-                    thisArea = TransDir(thisArea); // 다음 방향위치로 생성
+                    thisArea.x = areaArray[index - 1].x;
+                    thisArea.y = areaArray[index - 1].y;
+                    thisArea.z = areaArray[index - 1].z;
+                    thisArea.passedDir = areaArray[index - 1].nextDir;
+                    thisArea = TransCoordinate(thisArea); // 다음 방향위치로 생성
                 }
-                else if (i == 0)
+                else if (index == 0)
                 {
                     thisArea.x = startX;
                     thisArea.y = startY;
@@ -157,7 +162,7 @@ namespace RandomMap {
                 }
 
                 thisArea.gameObject = GameObject.Instantiate(section, this.transform);
-                thisArea.gameObject.name += "(" + i + ")";
+                thisArea.gameObject.name += "(" + index + ")";
                 thisArea.script = thisArea.gameObject.GetComponent<Section>();
                 thisArea.gameObject.transform.position = new Vector3(thisArea.x * sectionWidth
                                                                        , thisArea.y * sectionHeight
@@ -171,46 +176,149 @@ namespace RandomMap {
                 // 3. 막힌 지역외 다음 진출 방향 결정
                 if (thisArea.blockedDir.Count < TOTAL_DIR_CNT)
                 {
-                    thisArea.nextDir = randomNextDir(thisArea.blockedDir);
-
+                    if (index < 1)
+                    {
+                        thisArea.nextDir = randomNextDir(thisArea.blockedDir, true); // 수평 방향 기준으로 4방향 제한
+                    }
+                    else
+                    {
+                        thisArea.nextDir = randomNextDir(thisArea.blockedDir);
+                    }
                 }
                 // 4. 지나온 방향, 다음 진출 방향 제외 벽 재생성
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.passedDir);
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.nextDir);
                 thisArea.blockedDir = ReBlockDir(thisArea.openDir);
 
-                if (thisArea.blockedDir.Count >= TOTAL_DIR_CNT)
+                if (thisArea.blockedDir.Count > TOTAL_DIR_CNT - 1)
                 {
-                    ReGenerateSection(i);
+                    ReGenerateSection(index);
                 }
 
+                StackFloors(index);
+
+                
+
+                thisArea.script.area = thisArea;    // 생성된 구역오브젝트에 현재 생성으로 정의된 구역class 참조
+                coordinate[thisArea.x, thisArea.y, thisArea.z] = thisArea;// 던전에 할당된 좌표에 신규생성된 class정보 참조
+                areaArray[index] = thisArea;  // 해당 생성순서의 index에 현재 생성 정보 저장
+            }
+
+            for (int index = 0; index < areaArray.Length; index++)
+            {
+
+                thisArea = areaArray[index];
+
+                //Debug.Log($"{i}번째 인덱스 최종 생성");
+                thisArea.script.OnInit();
 
                 // 5. 던전 입/출구 방향 오브젝트 작업
-                if (i == 0)
+                if (index == 0)
                 {
                     // 0번째 구역인경우 던전 시작 스폰지점 생성
                     thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);   // 첫구역 입구방향 벽추가
                     CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint); // 던전입구 생성
                 }
-                else if (i == areaArray.Length - 1)
+                else if (index == areaArray.Length - 1)
                 {
                     // 마지막 구역 생성
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
-                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
+                    if (thisArea.floorCount > 0 && thisArea.passedDir == Direction.Down)
+                    {
+                        // 마지막섹션이 연속되는 층의 최상층의 섹션인경우 출구오브젝트를 1층섹션에서 생성
+                        CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
+                    }
+                    else
+                    {
+                        // 일반적인경우
+                        thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
+                        CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
+                    }
                 }
 
-                thisArea.script.area = thisArea;    // 생성된 구역오브젝트에 현재 생성으로 정의된 구역class 참조
-                coordinate[thisArea.x, thisArea.y, thisArea.z] = thisArea;// 던전에 할당된 좌표에 신규생성된 class정보 참조
-                areaArray[i] = thisArea;  // 해당 생성순서의 index에 현재 생성 정보 저장
-            }
-
-            for (int i = 0; i < areaArray.Length; i++)
-            {
-                //Debug.Log($"{i}번째 인덱스 최종 생성");
-                areaArray[i].script.OnInit();
+                
             }
         }
 
+        private void StackFloors(int index)
+        {
+            if (index > 0)
+            {
+                Area beforeArea = areaArray[index - 1];
+                if (beforeArea.nextDir == Direction.Up || beforeArea.nextDir == Direction.Down)
+                {
+
+                    if (beforeArea.floorCount == 0)
+                    {
+                        beforeArea.upStairsNextDir = beforeArea.passedDir;
+                        beforeArea.firstFloorArea = beforeArea;
+                    }
+                    beforeArea.floorCount++;
+                    thisArea.floorCount = beforeArea.floorCount;
+                    thisArea.upStairsNextDir = beforeArea.upStairsNextDir;
+                    thisArea.firstFloorArea = beforeArea.firstFloorArea;
+                }
+                else
+                {
+                    if (beforeArea.floorCount > 0)
+                    {
+                        Direction upStairsNextDir = Direction.None;
+                        Quaternion liftDirection = Quaternion.identity;
+                        Vector3 liftVector = beforeArea.gameObject.transform.position;
+                        float minHeight = 0;
+                        float maxHeight = 0;
+
+                        if (beforeArea.passedDir == Direction.Up)
+                        {
+                            upStairsNextDir = beforeArea.upStairsNextDir;
+                            maxHeight = beforeArea.floorCount * SectionHeight;
+                            Debug.Log($"위에서 아래로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {upStairsNextDir} / by {index - 1}index");
+                        }
+                        else if (beforeArea.passedDir == Direction.Down)
+                        {
+                            upStairsNextDir = beforeArea.nextDir;
+                            minHeight = -(beforeArea.floorCount * SectionHeight);
+                            Debug.Log($"아래에서 위로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {upStairsNextDir} / by {index - 1}index");
+                        } 
+                        else
+                        {
+                            upStairsNextDir = (Direction)Random.Range(1, HORIZONTAL_DIR_CNT + 1);
+                        }
+
+                        switch (upStairsNextDir)
+                        {
+                            case Direction.N:
+                                liftDirection = Quaternion.Euler(0, 180, 0);
+                                liftVector.x += sectionWidth / 2;
+                                liftVector.z += sectionWidth;
+                                break;
+                            case Direction.E:
+                                liftDirection = Quaternion.Euler(0, 270, 0);
+                                liftVector.x += sectionWidth;
+                                liftVector.z += sectionWidth / 2;
+                                break;
+                            case Direction.S:
+                                liftDirection = Quaternion.Euler(0, 0, 0);
+                                liftVector.x += sectionWidth / 2;
+                                break;
+                            case Direction.W:
+                                liftDirection = Quaternion.Euler(0, 90, 0);
+                                liftVector.z += sectionWidth / 2;
+                                break;
+                            default:
+                                Debug.Log($"승강 오브젝트 방향셋팅 오류!!! by {index}");
+                                //isGenerate = false;
+                                break;
+                        }
+
+                        GameObject liftObj = Instantiate(liftObjs[0], liftVector, liftDirection, beforeArea.gameObject.transform);
+                        ILift lift = liftObj.GetComponentInChildren<ILift>();
+                        lift.InitLift(beforeArea.nextDir, minHeight, maxHeight);
+                    }
+                }
+            }
+        }
+
+        #region Section순차적 생성용도의 함수
         List<Direction> createBlockedDir(Area area)
         {
             area.blockedDir = new List<Direction>();
@@ -303,7 +411,7 @@ namespace RandomMap {
             return dirList;
         }
 
-        Direction randomNextDir(List<Direction> blockedDir)
+        Direction randomNextDir(List<Direction> blockedDir, bool isOnlyHorizonDirection = false)
         {
             //Debug.Log($"중복 회수 : {blockedDir.Count}");
             Direction nextDir;
@@ -312,9 +420,17 @@ namespace RandomMap {
 
             while (true)
             {
-                nextDir = (Direction)Random.Range(1, TOTAL_DIR_CNT + 1);
-                isClash = DirectionExt.CheckdDirList(blockedDir, nextDir);
+                if (isOnlyHorizonDirection)
+                {
+                    nextDir = (Direction)Random.Range(1, HORIZONTAL_DIR_CNT + 1);
+                }
+                else
+                {
+                    nextDir = (Direction)Random.Range(1, TOTAL_DIR_CNT + 1);
+                }
 
+                isClash = DirectionExt.CheckdDirList(blockedDir, nextDir);
+                
                 if (isClash == false)
                 {
                     break;
@@ -333,7 +449,7 @@ namespace RandomMap {
             return nextDir;
         }
 
-        private Area TransDir(Area area)
+        private Area TransCoordinate(Area area)
         {
             switch (area.passedDir)
             {
@@ -363,25 +479,27 @@ namespace RandomMap {
 
             return area;
         }
+        #endregion
 
-        private int GetReIndex(int i)
+        #region 재생성
+        private int GetReIndex(int index)
         {
-            Debug.Log($"-------------막힌 구간 : {i}--------------");
+            Debug.Log($"-------------막힌 구간 : {index}--------------");
             List<int> reindexList = new List<int>();
             Area tempArea = new Area();
 
-            for (int preIndex = 0; preIndex < i; preIndex++)
+            for (int preIndex = 1; preIndex < index; preIndex++)
             {
                 tempArea.x = areaArray[preIndex].x;
                 tempArea.y = areaArray[preIndex].y;
                 tempArea.z = areaArray[preIndex].z;
                 List<Direction> dirs = createBlockedDir(tempArea);
 
-                if (dirs.Count < TOTAL_DIR_CNT && preIndex > 0)
+                if (dirs.Count < TOTAL_DIR_CNT)
                 {
-                    // 재생성 후보에서 시작지점 제외 = 미로맵 생성시 입구 바로 옆의 출구생성 사태벌어짐
-                    reindexList.Add(preIndex);
+                   reindexList.Add(preIndex);
                 }
+                
             }
             
             StringBuilder temp = new StringBuilder();
@@ -397,11 +515,10 @@ namespace RandomMap {
             return reindex;
         }
 
-        private void ReGenerateSection(int i)
+        private void ReGenerateSection(int index)
         {
-            #region 재생성
             // 재생성 섹션 초기화
-            int reindex = GetReIndex(i);
+            int reindex = GetReIndex(index);
             //Debug.Log($"막힌 구간 : {i} /  재생성 인덱스 : {reindex}");
             thisArea.openDir = new List<Direction>();
             thisArea.x = areaArray[reindex].x;
@@ -411,7 +528,7 @@ namespace RandomMap {
             thisArea.passedDir = randomNextDir(thisArea.blockedDir);
 
 
-            thisArea = TransDir(thisArea);
+            thisArea = TransCoordinate(thisArea);
             // 현재섹션의 위치를 재생성 섹션위치에서 다음 방향 좌표 이동
 
             // 재생성 위치에서 이동후 해당 좌표에서 벽 재구성
@@ -432,23 +549,24 @@ namespace RandomMap {
 
             thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.passedDir);
             thisArea.blockedDir = ReBlockDir(thisArea.openDir);
-            #endregion
         }
+        #endregion
 
         // 입/출구 오브젝트 생성
         private void CreateGate(Area area, Direction direction, PurposeOfGate purpose)
         {
-            GameObject gate = Instantiate(entranceObj, this.transform);
-            Vector3 postion = new Vector3(  area.x * sectionWidth
-                                           ,area.y * sectionHeight
-                                           ,area.z * sectionWidth);
-            postion.x += sectionWidth / 2;
-            //postion.y += sectionHeight / 2;
-            postion.z += sectionWidth / 2;
-            gate.transform.position = postion;
-            DirectionExt.createDirectinalSurface(direction, gate);
+            Vector3 postion = Vector3.zero;
+            Quaternion rotation = Quaternion.identity;
 
+            OrientationInSection(direction, ref postion, ref rotation);
+            // TEST
+            GameObject gate = Instantiate(entranceObj
+                                        , area.gameObject.transform.position + postion
+                                        , rotation
+                                        , area.gameObject.transform
+                                        );
 
+            
             if (purpose == PurposeOfGate.startPoint)
             {
                 gate.GetComponent<DungeonGate>().enableSpawn();
@@ -456,6 +574,35 @@ namespace RandomMap {
             else if (purpose == PurposeOfGate.endPoint)
             {
                 gate.GetComponent<DungeonGate>().enableExit();
+            }
+        }
+
+        private void OrientationInSection(Direction direction, ref Vector3 position, ref Quaternion rotation)
+        {
+            switch (direction)
+            {
+                case Direction.N:
+                    rotation = Quaternion.Euler(0, 180, 0);
+                    position.x += sectionWidth / 2;
+                    position.z += sectionWidth;
+                    break;
+                case Direction.E:
+                    rotation = Quaternion.Euler(0, 270, 0);
+                    position.x += sectionWidth;
+                    position.z += sectionWidth / 2;
+                    break;
+                case Direction.S:
+                    rotation = Quaternion.Euler(0, 0, 0);
+                    position.x += sectionWidth / 2;
+                    break;
+                case Direction.W:
+                    rotation = Quaternion.Euler(0, 90, 0);
+                    position.z += sectionWidth / 2;
+                    break;
+                default:
+                    Debug.Log($"승강 오브젝트 방향셋팅 오류!!");
+                    //isGenerate = false;
+                    break;
             }
         }
 

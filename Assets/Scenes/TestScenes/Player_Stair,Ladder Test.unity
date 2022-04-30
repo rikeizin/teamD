@@ -1194,7 +1194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8767968916967801399, guid: 75e8bc6c89836aa4f9330e289de51f36, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8767968916967801399, guid: 75e8bc6c89836aa4f9330e289de51f36, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1308,7 +1308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8508893349416126976, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8508893349416126976, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1447,6 +1447,10 @@ PrefabInstance:
       propertyPath: liftObject
       value: 
       objectReference: {fileID: 1877076359}
+    - target: {fileID: 8256985831123403735, guid: d5fbceafdcec0bf45a0b0df5991db72a, type: 3}
+      propertyPath: minLowerHeight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8533249937389409918, guid: d5fbceafdcec0bf45a0b0df5991db72a, type: 3}
       propertyPath: m_Name
       value: Lifting
