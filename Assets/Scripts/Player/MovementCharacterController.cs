@@ -66,7 +66,7 @@ public class MovementCharacterController : MonoBehaviour
         _playerSpeed = RUN_SPEED;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         ApplyGravity();
         Move();

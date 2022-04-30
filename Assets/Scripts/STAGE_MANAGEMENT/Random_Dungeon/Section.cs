@@ -43,7 +43,7 @@ namespace RandomMap
             // 메인 조명 활성화
             OnLightSettings();
             // 랜덤 인카운터
-            OnCreateEncouter();
+            //OnCreateEncouter();
         }
 
         private void OnCreateSection()

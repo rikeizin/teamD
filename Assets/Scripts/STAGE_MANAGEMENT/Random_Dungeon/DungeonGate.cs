@@ -12,7 +12,7 @@ namespace RandomMap
         private void Awake()
         {
             localPivot = transform.Find("LocalPivot");
-            
+
             // 구역 사이즈가 1인경우 필요 없는 오브젝트 제거
             if (MapManager.sectionSize == 1)
             {
@@ -20,10 +20,7 @@ namespace RandomMap
                 NoneReqiredObjs = localPivot.Find("NoneRequiredObject").gameObject;
                 Destroy(NoneReqiredObjs);
             }
-            else
-            {
-                localPivot.localPosition = new Vector3(0, 0, -(MapManager.SectionWidth / 2) + (MapManager.sectionDefaultWidth/2));
-            }
+
         }
 
         public void enableSpawn()

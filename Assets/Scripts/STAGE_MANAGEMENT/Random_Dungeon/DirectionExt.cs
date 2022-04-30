@@ -65,7 +65,7 @@ namespace RandomMap
             return check;
         }
 
-        public static void createDirectinalSurface(Direction direction, GameObject prefab)
+        public static void RotateToDirection(Direction direction, GameObject prefab)
         {
             switch (direction)
             {
