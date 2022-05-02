@@ -5,11 +5,13 @@ using UnityEngine.InputSystem;
 
 public class MovementCharacterController : MonoBehaviour
 {
+    // Move 입력 받아오는 변수(RotateToMouse에서 접근)
     [HideInInspector]
-    public float xInput;                     // 좌우 입력 받아오는 변수
+    public float xInput;
     [HideInInspector]
-    public float zInput;                     // 앞뒤 입력 받아오는 변수
+    public float zInput;
 
+    // 환경 변수
     [SerializeField]
     private float PLAYER_GRAVITY = -20;
     [SerializeField]
@@ -28,7 +30,7 @@ public class MovementCharacterController : MonoBehaviour
     private GameObject _attackCollision;
     private Animator _animator = null;                                // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
     private CharacterController _characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
-
+    private Player _player = null;
     #region hashes
     // State
     private readonly int hashIsRunning = Animator.StringToHash("isRunning");
@@ -45,10 +47,10 @@ public class MovementCharacterController : MonoBehaviour
     private readonly int hashWalking = Animator.StringToHash("Walking");
     private readonly int hashJumping = Animator.StringToHash("Jumping");
     private readonly int hashRolling = Animator.StringToHash("Rolling");
-    private readonly int hashAttackRight = Animator.StringToHash("Attack_Right");
-    private readonly int hashAttackLeft0 = Animator.StringToHash("Attack_Left_0");
-    private readonly int hashAttackLeft1 = Animator.StringToHash("Attack_Left_1");
-    private readonly int hashAttackLeft2 = Animator.StringToHash("Attack_Left_2");
+    private readonly int hashAttackRight00 = Animator.StringToHash("Attack_Right_00");
+    private readonly int hashAttackLeft00 = Animator.StringToHash("Attack_Left_00");
+    private readonly int hashAttackLeft01 = Animator.StringToHash("Attack_Left_01");
+    private readonly int hashAttackLeft02 = Animator.StringToHash("Attack_Left_02");
 
     // Values
     private readonly int hashAttackComboInteger = Animator.StringToHash("AttackCombo");
@@ -59,6 +61,7 @@ public class MovementCharacterController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
+        _player = GetComponent<Player>();
     }
 
     private void Start()
@@ -72,11 +75,6 @@ public class MovementCharacterController : MonoBehaviour
         Move();
     }
 
-    private void Move()
-    {
-        _characterController.Move(_moveForce * Time.deltaTime);
-    }
-
     public void Jump()
     {
         _moveForce.y = JUMP_FORCE;
@@ -85,7 +83,7 @@ public class MovementCharacterController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!context.started) return;
-        
+
         if (!_animator.GetBool(hashIsJumping)
             && !IsJumpAnimating() && !IsRollAnimating() && !IsAttackAnimating())
         {
@@ -96,6 +94,10 @@ public class MovementCharacterController : MonoBehaviour
         }
     }
 
+    private void Move()
+    {
+        _characterController.Move(_moveForce * Time.deltaTime);
+    }
     public void MoveTo(Vector3 direction)
     {
         _animator.SetFloat("dirX", xInput, 0.1f, Time.deltaTime);   // 애니메이션 블렌드 부드럽게
@@ -108,8 +110,8 @@ public class MovementCharacterController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        // 이동 입력값 받기
-        Vector2 input = context.ReadValue<Vector2>();       // 입력값을 받아서 회전 정도랑 이동 정도를 받아옴
+        // 입력값을 받아서 회전 정도랑 이동 정도를 받아옴
+        Vector2 input = context.ReadValue<Vector2>();
         xInput = input.x;
         //animator.SetFloat("dirX", xInput);
         zInput = input.y;
@@ -180,12 +182,6 @@ public class MovementCharacterController : MonoBehaviour
         }
     }
 
-    public void OnSwap(InputAction.CallbackContext context)
-    {
-        float input = context.ReadValue<float>();
-        if(context.started)
-            Debug.Log(input);
-    }
     public void ApplyGravity()
     {
         if (!_characterController.isGrounded)
@@ -214,16 +210,16 @@ public class MovementCharacterController : MonoBehaviour
             _playerSpeed = RUN_SPEED;
         }
     }
-    
+
     private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;
     private bool IsWalkAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashWalking;
     private bool IsRollAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashRolling;
 
     private bool IsAttackAnimating() => IsAttackLeftAnimating() || IsAttackRightAnimating();
-    private bool IsAttackRightAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRight;
+    private bool IsAttackRightAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRight00;
     private bool IsAttackLeftAnimating() => IsAttackLeft0Animating() || IsAttackLeft1Animating() || IsAttackLeft2Animating();
-    private bool IsAttackLeft0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft0;
-    private bool IsAttackLeft1Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft1;
-    private bool IsAttackLeft2Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft2;
+    private bool IsAttackLeft0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft00;
+    private bool IsAttackLeft1Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft01;
+    private bool IsAttackLeft2Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft02;
 }
 

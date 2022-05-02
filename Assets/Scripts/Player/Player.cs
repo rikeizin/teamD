@@ -5,11 +5,25 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public enum PlayerState
+    {
+        Idle,
+        Move,
+        Attack,
+        Hit,
+        Dead
+    };
+
+    // Stat
+    public int p_hp;
+    public int p_hpMax;
+    public float p_attack;
+    public float p_speed;
+
     private MovementCharacterController movement = null;             // MovementCharacterController 스크립트의 moveTo 함수를 사용하기 위해 movement라는 이름으로 받아온다.
     private RotateToMouse rotateToMouse = null;                      // 캐릭터 시야 회전 스크립트를 받아온다. 
     private CharacterController characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
     private Animator animator = null;                                // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
-
 
     private void Awake()
     {
