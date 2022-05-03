@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 /* MonsterController
  * by 최지은
@@ -40,6 +41,7 @@ public class MonsterController : MonoBehaviour
     protected GameObject m_player;
     protected NavMeshAgent m_navAgent;
     protected Animator m_anim;
+    protected Slider m_hpBar;
     public float m_dir;
     public Status m_status;
     public bool isDead;
@@ -60,6 +62,7 @@ public class MonsterController : MonoBehaviour
         gameObject.SetActive(true);
         SetState(eMonsterState.Idle);
         m_status.m_hp = m_status.m_hpMax;
+        //m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
     }
 
     public void SetState(eMonsterState state)
@@ -74,7 +77,7 @@ public class MonsterController : MonoBehaviour
     {   
         ResetMove();
         // 인식 범위 안쪽일 때 Move
-        if (m_dir < m_status.m_trackingRange)
+        if (m_dir < m_status.m_trackingRange && SearchTarget() == true)
         {
             SetState(eMonsterState.Move);
         }
@@ -93,7 +96,7 @@ public class MonsterController : MonoBehaviour
             SetState(eMonsterState.Attack);
             m_anim.SetBool("Move", false);
         }// 인식 범위 바깥일 때 Idle
-        else if(m_dir> m_status.m_trackingRange)
+        else if(m_dir > m_status.m_trackingRange && SearchTarget() == false)
         {
             SetState(eMonsterState.Idle);
             m_anim.SetBool("Move", false);
@@ -116,6 +119,7 @@ public class MonsterController : MonoBehaviour
     public virtual void Hit()
     {
         m_anim.SetBool("Hit", true);
+        //m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
     }
 
     public virtual void Dead()
@@ -126,8 +130,9 @@ public class MonsterController : MonoBehaviour
             isDead = true;
         }
     }
-                                   
-    public float SearchTarget()
+                              
+    // 플레이어와의 거리를 잴 때, Ray를 쏴서 방해물을 피해 감지하는 bool 함수
+    public bool SearchTarget()
     {
         var direction = m_player.transform.position - this.transform.position;
         RaycastHit hit;
@@ -135,14 +140,24 @@ public class MonsterController : MonoBehaviour
         {
             if(hit.collider.CompareTag("Player"))
             {
-                return direction.sqrMagnitude;
+                return true;
             }
             else
             {
-                return direction.sqrMagnitude;
+                return false;
             }
         }
-        return direction.sqrMagnitude;
+        return false;
+    }
+
+    // ATTACK일때 플레이어를 제자리회전으로 보게해주는 함수
+    void FollowTarget()
+    {
+        if (m_dir < m_status.m_trackingRange)
+        {
+            Vector3 dir = m_player.transform.position - this.transform.position;
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 1);
+        }
     }
 
     public void ResetMove()
@@ -153,18 +168,8 @@ public class MonsterController : MonoBehaviour
 
     private void Update()
     {
-        m_dir = SearchTarget();
+        m_dir = (m_player.transform.position - this.transform.position).sqrMagnitude;
         BehaviourProcess(); 
-        //if(m_navAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && m_navAgent.remainingDistance <= 0.1f)
-        //{
-        //    m_anim.SetBool("Walk", false);
-        //}
-        //else if(m_navAgent.desiredVelocity.sqrMagnitude >= 0.1f * 0.1f)
-        //{
-        //    Vector3 direction = m_navAgent.desiredVelocity;
-        //    Quaternion targetAngle = Quaternion.LookRotation(direction);
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
-        //}
     }
 
     public virtual void BehaviourProcess()
@@ -196,7 +201,6 @@ public class MonsterController : MonoBehaviour
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
         m_player = GameObject.FindGameObjectWithTag("Player");
-        //m_navAgent.updateRotation = false;
     }
 
     private void Awake()
@@ -207,15 +211,5 @@ public class MonsterController : MonoBehaviour
     protected virtual void OnAwake()
     {        
         Initialize();        
-    }
-
-    // ATTACK일때 플레이어를 제자리회전으로 보게해주는 함수
-    void FollowTarget()
-    {
-        if (m_dir < m_status.m_trackingRange)
-        {
-            Vector3 dir = m_player.transform.position - this.transform.position;
-            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 1);
-        }
     }
 }
