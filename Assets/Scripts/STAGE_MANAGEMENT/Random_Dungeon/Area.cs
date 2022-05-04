@@ -27,7 +27,9 @@ namespace RandomMap
 
         // 위/아래 층 이동용 구조물 생성용도
         public Area firstFloorArea = null;
+        public Area lastFloorArea = null;
         public int floorCount = 0; // 누적층 정보
-        public Direction upStairsNextDir= Direction.None; // 누적된 최상층에서 다음 경로
+        public Direction upStairsNextDir = Direction.None; // 누적된 최상층에서 다음 경로
+         
     }
 }
