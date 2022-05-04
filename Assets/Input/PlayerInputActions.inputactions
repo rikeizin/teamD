@@ -76,6 +76,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "GainItem",
+                    "type": "Button",
+                    "id": "bf643fd3-08d5-4bce-833d-a28d90b9f206",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -395,6 +403,17 @@
                     "processors": "Scale(factor=4)",
                     "groups": "Keyboard&Mouse",
                     "action": "Swap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc7ef74a-b66f-46bd-95db-7f2b827f0c01",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "GainItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

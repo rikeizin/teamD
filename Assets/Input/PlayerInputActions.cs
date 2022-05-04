@@ -89,6 +89,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""GainItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf643fd3-08d5-4bce-833d-a28d90b9f206"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -408,6 +416,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": ""Scale(factor=4)"",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Swap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc7ef74a-b66f-46bd-95db-7f2b827f0c01"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GainItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -994,6 +1013,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_OnAttackLeft = m_Player.FindAction("OnAttackLeft", throwIfNotFound: true);
         m_Player_OnAttackRight = m_Player.FindAction("OnAttackRight", throwIfNotFound: true);
         m_Player_Swap = m_Player.FindAction("Swap", throwIfNotFound: true);
+        m_Player_GainItem = m_Player.FindAction("GainItem", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1064,6 +1084,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_OnAttackLeft;
     private readonly InputAction m_Player_OnAttackRight;
     private readonly InputAction m_Player_Swap;
+    private readonly InputAction m_Player_GainItem;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1077,6 +1098,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @OnAttackLeft => m_Wrapper.m_Player_OnAttackLeft;
         public InputAction @OnAttackRight => m_Wrapper.m_Player_OnAttackRight;
         public InputAction @Swap => m_Wrapper.m_Player_Swap;
+        public InputAction @GainItem => m_Wrapper.m_Player_GainItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1113,6 +1135,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Swap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwap;
                 @Swap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwap;
                 @Swap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwap;
+                @GainItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGainItem;
+                @GainItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGainItem;
+                @GainItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGainItem;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1144,6 +1169,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Swap.started += instance.OnSwap;
                 @Swap.performed += instance.OnSwap;
                 @Swap.canceled += instance.OnSwap;
+                @GainItem.started += instance.OnGainItem;
+                @GainItem.performed += instance.OnGainItem;
+                @GainItem.canceled += instance.OnGainItem;
             }
         }
     }
@@ -1309,6 +1337,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnOnAttackLeft(InputAction.CallbackContext context);
         void OnOnAttackRight(InputAction.CallbackContext context);
         void OnSwap(InputAction.CallbackContext context);
+        void OnGainItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

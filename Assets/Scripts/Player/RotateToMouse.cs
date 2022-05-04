@@ -9,7 +9,9 @@ public class RotateToMouse : MonoBehaviour
     [SerializeField]
     private float rotCamYAxisSpeed = 3;         // 카메라 y축 회전속도
 
+    [SerializeField]
     private float limitMinX = -20;              // 카메라 x축 회전 범위(최소)
+    [SerializeField]
     private float limitMaxX = 20;               // 카메라 x축 회전 범위(최대)
     private float eulerAngleX;
     private float eulerAngleY;

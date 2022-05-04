@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_Swap : MonoBehaviour
+public class Player_Swap : PlayerStatus
 {
     public GameObject[] Runes;
     public int[] hasRunes;
     public GameObject[] Weapons;
     public bool[] hasWeapons;
+    Rune rune1 = null;
 
+    Animator animator = null;
     GameObject nearobject;
     GameObject equipWeapons;
     int weaponIndex = -1;
     int equipWeaponIndex = -1;
+    [HideInInspector]
+    public int runeIndex = 0;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     public void Swap(InputAction.CallbackContext context)
     {
@@ -21,34 +30,38 @@ public class Player_Swap : MonoBehaviour
         float input = context.ReadValue<float>();
         if (context.started)
         {
-            if(equipWeapons != null)
+            if (equipWeapons != null)
                 equipWeapons.SetActive(false);
             switch (input)
             {
                 case 1:
-                        weaponIndex = 0;
-                        equipWeapons = Weapons[weaponIndex];
+                    weaponIndex = 0;
+                    equipWeapons = Weapons[weaponIndex];
+                    animator.SetInteger("EquipState", 1);
                     if (hasWeapons[weaponIndex + 1])
                         equipWeapons = Weapons[weaponIndex + 1];
                     equipWeapons.SetActive(true);
                     break;
                 case 2:
-                        weaponIndex = 1;
-                        equipWeapons = Weapons[weaponIndex + 1];
+                    weaponIndex = 1;
+                    equipWeapons = Weapons[weaponIndex + 1];
+                    animator.SetInteger("EquipState", 11);
                     if (!hasWeapons[weaponIndex+1])
                         return;
                     equipWeapons.SetActive(true);
                     break;
                 case 3:
-                        weaponIndex = 2;
-                        equipWeapons = Weapons[weaponIndex + 1];
+                    weaponIndex = 2;
+                    equipWeapons = Weapons[weaponIndex + 1];
+                    animator.SetInteger("EquipState", 21);
                     if (!hasWeapons[weaponIndex+1])
                         return;
                     equipWeapons.SetActive(true);
                     break;
                 case 4:
-                        weaponIndex = 3;
-                        equipWeapons = Weapons[weaponIndex + 1];
+                    weaponIndex = 3;
+                    equipWeapons = Weapons[weaponIndex + 1];
+                    animator.SetInteger("EquipState", 31);
                     if (!hasWeapons[weaponIndex+1])
                         return;
                     equipWeapons.SetActive(true);
@@ -57,7 +70,7 @@ public class Player_Swap : MonoBehaviour
         }
     }
 
-    public void interation(InputAction.CallbackContext context)
+    public void GainItem(InputAction.CallbackContext context)
     {
         if (context.started)
         {
@@ -66,9 +79,9 @@ public class Player_Swap : MonoBehaviour
                 if(nearobject.tag == "Rune")
                 {
                     Rune rune = nearobject.GetComponent<Rune>();
-                    int runeIndex = rune.value;
+                    runeIndex = rune.value;
                     hasRunes[runeIndex]++;
-                
+                    rune.GainRunes();
                     Destroy(nearobject);
                 }
 
