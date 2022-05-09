@@ -264,6 +264,8 @@ GameObject:
   - component: {fileID: 95025375702580604}
   - component: {fileID: 6445941514442802345}
   - component: {fileID: 1503836470}
+  - component: {fileID: 2879070712387567227}
+  - component: {fileID: 8941902301358638158}
   m_Layer: 0
   m_Name: Monster_Polygonal
   m_TagString: Enemy
@@ -336,6 +338,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_state: 0
+  m_hpBar: {fileID: 6608760206505989033}
+  m_ciriDamage: 0
   m_dir: 0
   isDead: 0
   m_SpitPrefab: {fileID: 6333256624079250304, guid: d2b7b3d4443d4ce48bfc76e9d61ebcf6, type: 3}
@@ -363,6 +367,35 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &2879070712387567227
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128758269040250}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.9
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!54 &8941902301358638158
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128758269040250}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1130806907750044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1948,6 +1981,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4941842412951058312, guid: 848051586d420b54bae6b7474fe2dd0d, type: 3}
   m_PrefabInstance: {fileID: 8752822555851671597}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6608760206505989033 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2508309115446893444, guid: 848051586d420b54bae6b7474fe2dd0d, type: 3}
+  m_PrefabInstance: {fileID: 8752822555851671597}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4419687062015385239 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4912763406571919034, guid: 848051586d420b54bae6b7474fe2dd0d, type: 3}

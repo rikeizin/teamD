@@ -110,6 +110,13 @@ public class Monster_Dragon : MonsterController
         }
     }
 
+    public override void Hit()
+    {
+        base.Hit();
+        m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
+        m_MonsterHp.GetComponent<Text>().text = (m_status.m_hp + "/" + m_status.m_hpMax);
+    }
+
     public override void Attack()
     {
         m_currentTime += Time.deltaTime;

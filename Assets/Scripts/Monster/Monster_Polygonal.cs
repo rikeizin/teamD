@@ -42,7 +42,14 @@ public class Monster_Polygonal : MonsterController
 
     protected float m_currentTime = 5.0f;
     protected float m_spitTime = 5.0f;
-    
+
+    public override void Hit()
+    {
+        base.Hit();
+        m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
+        m_MonsterHp.GetComponent<Text>().text = (m_status.m_hp + "/" + m_status.m_hpMax);
+    }
+
     public override void Attack()
     {
         m_currentTime += Time.deltaTime;

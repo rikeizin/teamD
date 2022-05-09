@@ -42,10 +42,10 @@ public class MonsterController : MonoBehaviour
     protected GameObject m_player;
     protected NavMeshAgent m_navAgent;
     protected Animator m_anim;
-    protected Slider m_hpBar;
+    public Slider m_hpBar;
+    public Status m_status;
     public float m_ciriDamage;
     public float m_dir;
-    public Status m_status;
     public bool isDead;
 
     #region Animation Event Methods
@@ -55,6 +55,15 @@ public class MonsterController : MonoBehaviour
         {
             SetState(eMonsterState.Idle);
             m_anim.SetBool("Attack", false);
+        }
+    }
+
+    protected virtual void AnimEvent_HitFinish()
+    {
+        if (!isDead)
+        {
+            SetState(eMonsterState.Idle);
+            m_anim.SetBool("Hit", false);
         }
     }
     #endregion
@@ -124,7 +133,6 @@ public class MonsterController : MonoBehaviour
             SetState(eMonsterState.Dead);
         }
         m_anim.SetBool("Hit", true);
-        //m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
     }
 
     public virtual void Dead()
@@ -136,31 +144,70 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(gameObject.CompareTag("Weapons"))
+        if (other.CompareTag("Weapons"))
         {
+            Debug.Log("OK");
             SetState(eMonsterState.Hit);
-            switch (collision.gameObject.name)
+            switch (other.gameObject.name)
             {
-                case "Sword":
+                case "Sword_Sample":
+                    SetState(eMonsterState.Hit);
                     m_status.m_hp -= 5;
                     break;
-                case "Wand":
+                case "Wand_Sample":
+                    SetState(eMonsterState.Hit);
                     m_status.m_hp -= 5;
                     break;
-                case "Mace":
+                case "Mace_Sample":
+                    SetState(eMonsterState.Hit);
                     m_status.m_hp -= 5;
                     break;
-                case "Bow":
+                case "Bow_Sample":
+                    SetState(eMonsterState.Hit);
                     m_status.m_hp -= 5;
                     break;
-                case "Arrow":
+                case "Arrow_Sample":
+                    SetState(eMonsterState.Hit);
                     m_status.m_hp -= 5;
                     break;
             }
         }
     }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (gameObject.CompareTag("Weapons"))
+    //    {
+    //        Debug.Log("OK");
+    //        SetState(eMonsterState.Hit);
+    //        switch (collision.gameObject.name)
+    //        {
+    //            case "Sword_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Wand_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Mace_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Bow_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Arrow_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //        }
+
+    //    }
+    //}
 
     // 플레이어와의 거리를 잴 때, Ray를 쏴서 방해물을 피해 감지하는 bool 함수
     public bool SearchTarget()
@@ -231,7 +278,6 @@ public class MonsterController : MonoBehaviour
         isDead = false;
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
-        m_hpBar = GetComponent<Slider>();
         m_player = GameObject.FindGameObjectWithTag("Player");
     }
 
