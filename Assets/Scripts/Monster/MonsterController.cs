@@ -18,6 +18,7 @@ public class MonsterController : MonoBehaviour
         Dead
     };
 
+
     public struct Status
     {
         public int m_hp;
@@ -41,9 +42,10 @@ public class MonsterController : MonoBehaviour
     protected GameObject m_player;
     protected NavMeshAgent m_navAgent;
     protected Animator m_anim;
-    protected Slider m_hpBar;
-    public float m_dir;
+    public Slider m_hpBar;
     public Status m_status;
+    public float m_ciriDamage;
+    public float m_dir;
     public bool isDead;
 
     #region Animation Event Methods
@@ -55,6 +57,15 @@ public class MonsterController : MonoBehaviour
             m_anim.SetBool("Attack", false);
         }
     }
+
+    protected virtual void AnimEvent_HitFinish()
+    {
+        if (!isDead)
+        {
+            SetState(eMonsterState.Idle);
+            m_anim.SetBool("Hit", false);
+        }
+    }
     #endregion
 
     public void SetMonster()
@@ -62,7 +73,6 @@ public class MonsterController : MonoBehaviour
         gameObject.SetActive(true);
         SetState(eMonsterState.Idle);
         m_status.m_hp = m_status.m_hpMax;
-        //m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
     }
 
     public void SetState(eMonsterState state)
@@ -118,8 +128,11 @@ public class MonsterController : MonoBehaviour
 
     public virtual void Hit()
     {
+        if( m_status.m_hp == 0)
+        {
+            SetState(eMonsterState.Dead);
+        }
         m_anim.SetBool("Hit", true);
-        //m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
     }
 
     public virtual void Dead()
@@ -130,7 +143,72 @@ public class MonsterController : MonoBehaviour
             isDead = true;
         }
     }
-                              
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Weapons"))
+        {
+            Debug.Log("OK");
+            SetState(eMonsterState.Hit);
+            switch (other.gameObject.name)
+            {
+                case "Sword_Sample":
+                    SetState(eMonsterState.Hit);
+                    m_status.m_hp -= 5;
+                    break;
+                case "Wand_Sample":
+                    SetState(eMonsterState.Hit);
+                    m_status.m_hp -= 5;
+                    break;
+                case "Mace_Sample":
+                    SetState(eMonsterState.Hit);
+                    m_status.m_hp -= 5;
+                    break;
+                case "Bow_Sample":
+                    SetState(eMonsterState.Hit);
+                    m_status.m_hp -= 5;
+                    break;
+                case "Arrow_Sample":
+                    SetState(eMonsterState.Hit);
+                    m_status.m_hp -= 5;
+                    break;
+            }
+        }
+    }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (gameObject.CompareTag("Weapons"))
+    //    {
+    //        Debug.Log("OK");
+    //        SetState(eMonsterState.Hit);
+    //        switch (collision.gameObject.name)
+    //        {
+    //            case "Sword_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Wand_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Mace_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Bow_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //            case "Arrow_Sample":
+    //                SetState(eMonsterState.Hit);
+    //                m_status.m_hp -= 5;
+    //                break;
+    //        }
+
+    //    }
+    //}
+
     // 플레이어와의 거리를 잴 때, Ray를 쏴서 방해물을 피해 감지하는 bool 함수
     public bool SearchTarget()
     {

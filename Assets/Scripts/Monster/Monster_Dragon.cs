@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Monster_Dragon : MonsterController
 {
     public GameObject m_EffectFlame;
     public GameObject m_EffectLanding;
+    public Text m_MonsterName = null;
+    public Text m_MonsterHp = null;
 
     protected override void OnAwake()
     {
@@ -15,6 +18,10 @@ public class Monster_Dragon : MonsterController
         m_EffectLanding = GameObject.Find("LandingPoint").gameObject;
         m_EffectFlame.SetActive(false);
         m_EffectLanding.SetActive(false);
+
+        m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
+        m_MonsterName.GetComponent<Text>().text = "DRAGON";
+        m_MonsterHp.GetComponent<Text>().text = (m_status.m_hp + "/" + m_status.m_hpMax);
     }
 
     #region Animation Event Methods
@@ -101,6 +108,13 @@ public class Monster_Dragon : MonsterController
         {
             base.Move();
         }
+    }
+
+    public override void Hit()
+    {
+        base.Hit();
+        m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
+        m_MonsterHp.GetComponent<Text>().text = (m_status.m_hp + "/" + m_status.m_hpMax);
     }
 
     public override void Attack()
