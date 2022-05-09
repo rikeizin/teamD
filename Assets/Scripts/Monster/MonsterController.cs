@@ -18,6 +18,7 @@ public class MonsterController : MonoBehaviour
         Dead
     };
 
+
     public struct Status
     {
         public int m_hp;
@@ -42,6 +43,7 @@ public class MonsterController : MonoBehaviour
     protected NavMeshAgent m_navAgent;
     protected Animator m_anim;
     protected Slider m_hpBar;
+    public float m_ciriDamage;
     public float m_dir;
     public Status m_status;
     public bool isDead;
@@ -62,7 +64,6 @@ public class MonsterController : MonoBehaviour
         gameObject.SetActive(true);
         SetState(eMonsterState.Idle);
         m_status.m_hp = m_status.m_hpMax;
-        //m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
     }
 
     public void SetState(eMonsterState state)
@@ -118,6 +119,10 @@ public class MonsterController : MonoBehaviour
 
     public virtual void Hit()
     {
+        if( m_status.m_hp == 0)
+        {
+            SetState(eMonsterState.Dead);
+        }
         m_anim.SetBool("Hit", true);
         //m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
     }
@@ -130,7 +135,33 @@ public class MonsterController : MonoBehaviour
             isDead = true;
         }
     }
-                              
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(gameObject.CompareTag("Weapons"))
+        {
+            SetState(eMonsterState.Hit);
+            switch (collision.gameObject.name)
+            {
+                case "Sword":
+                    m_status.m_hp -= 5;
+                    break;
+                case "Wand":
+                    m_status.m_hp -= 5;
+                    break;
+                case "Mace":
+                    m_status.m_hp -= 5;
+                    break;
+                case "Bow":
+                    m_status.m_hp -= 5;
+                    break;
+                case "Arrow":
+                    m_status.m_hp -= 5;
+                    break;
+            }
+        }
+    }
+
     // 플레이어와의 거리를 잴 때, Ray를 쏴서 방해물을 피해 감지하는 bool 함수
     public bool SearchTarget()
     {
@@ -200,6 +231,7 @@ public class MonsterController : MonoBehaviour
         isDead = false;
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
+        m_hpBar = GetComponent<Slider>();
         m_player = GameObject.FindGameObjectWithTag("Player");
     }
 

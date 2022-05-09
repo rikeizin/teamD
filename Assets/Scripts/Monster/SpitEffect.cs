@@ -16,9 +16,10 @@ public class SpitEffect : MonoBehaviour
     private void Update()
     {
         m_currentTime += Time.deltaTime;
-        m_rigid.AddForce (Vector3.forward * 100.0f * Time.deltaTime);
+        transform.forward = m_rigid.velocity;
+        m_rigid.AddRelativeForce(Vector3.forward * 2.0f);
 
-        if( m_currentTime > m_destoryTime)
+        if (m_currentTime > m_destoryTime)
         {
             Destroy(gameObject);
         }
