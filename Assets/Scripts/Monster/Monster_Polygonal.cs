@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class Monster_Polygonal : MonsterController
 {
     public GameObject m_SpitPrefab;
+    private GameObject m_SpitPoint;
     public Text m_MonsterName = null;
     public Text m_MonsterHp = null;
-    private GameObject m_SpitPoint;
 
     protected override void OnAwake()
     {
@@ -46,7 +46,7 @@ public class Monster_Polygonal : MonsterController
     public override void Hit()
     {
         base.Hit();
-        m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
+        m_hpBar.value = (float) m_status.m_hp / (float) m_status.m_hpMax * 100;
         m_MonsterHp.GetComponent<Text>().text = (m_status.m_hp + "/" + m_status.m_hpMax);
     }
 
