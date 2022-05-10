@@ -18,7 +18,6 @@ public class MonsterController : MonoBehaviour
         Dead
     };
 
-
     public struct Status
     {
         public int m_hp;
@@ -37,16 +36,37 @@ public class MonsterController : MonoBehaviour
         }
     }
 
+    public struct WeaponsDamage
+    {
+        public int m_sword;
+        public int m_wand;
+        public int m_mace;
+        public int m_bow;
+        public int m_arrow;
+        public WeaponsDamage(int sword, int wand, int mace, int bow, int arrow)
+        {
+            m_sword = sword;
+            m_wand = wand;
+            m_mace = mace;
+            m_bow = bow;
+            m_arrow = arrow;
+        }
+    }
+
     [SerializeField]
     protected eMonsterState m_state;
     protected GameObject m_player;
     protected NavMeshAgent m_navAgent;
     protected Animator m_anim;
+    protected Collider m_collider;
     public Slider m_hpBar;
+    //public Text m_damage;
     public Status m_status;
+    public WeaponsDamage m_weaponsDamage;
     public float m_ciriDamage;
     public float m_dir;
-    public bool isDead;
+    public bool m_getHit = false;
+    public bool isDead = false;
 
     #region Animation Event Methods
     protected virtual void AnimEvent_AttackFinish()
@@ -62,10 +82,17 @@ public class MonsterController : MonoBehaviour
     {
         if (!isDead)
         {
+            m_getHit = false;
             SetState(eMonsterState.Idle);
-            m_anim.SetBool("Hit", false);
+            m_anim.ResetTrigger("doHit");
         }
     }
+
+    protected virtual void AnimEvent_DeadFinish()
+    {
+        Destroy(gameObject);
+    }
+
     #endregion
 
     public void SetMonster()
@@ -128,86 +155,58 @@ public class MonsterController : MonoBehaviour
 
     public virtual void Hit()
     {
-        if( m_status.m_hp == 0)
+        if( m_status.m_hp <= 0)
         {
             SetState(eMonsterState.Dead);
         }
-        m_anim.SetBool("Hit", true);
     }
 
     public virtual void Dead()
     {
         if (!isDead)
         {
-            m_anim.SetTrigger("doDead");
             isDead = true;
+            m_collider.enabled = false;
+            m_anim.SetTrigger("doDead");
         }
     }
 
     private void OnTriggerEnter(Collider other)
-    {
+    { 
         if (other.CompareTag("Weapons"))
         {
-            Debug.Log("OK");
             SetState(eMonsterState.Hit);
+            m_anim.ResetTrigger("doHit");
             switch (other.gameObject.name)
             {
                 case "Sword_Sample":
-                    SetState(eMonsterState.Hit);
-                    m_status.m_hp -= 5;
+                    m_status.m_hp -= m_weaponsDamage.m_sword;
+                    m_anim.SetTrigger("doHit");
+                    //m_damage.text = m_weaponsDamage.m_sword.ToString();
                     break;
                 case "Wand_Sample":
-                    SetState(eMonsterState.Hit);
-                    m_status.m_hp -= 5;
+                    m_status.m_hp -= m_weaponsDamage.m_wand;
+                    m_anim.SetTrigger("doHit");
+                    //m_damage.text = m_weaponsDamage.m_wand.ToString();
                     break;
                 case "Mace_Sample":
-                    SetState(eMonsterState.Hit);
-                    m_status.m_hp -= 5;
+                    m_status.m_hp -= m_weaponsDamage.m_mace;
+                    m_anim.SetTrigger("doHit");
+                    //m_damage.text = m_weaponsDamage.m_mace.ToString();
                     break;
                 case "Bow_Sample":
-                    SetState(eMonsterState.Hit);
-                    m_status.m_hp -= 5;
+                    m_status.m_hp -= m_weaponsDamage.m_bow;
+                    m_anim.SetTrigger("doHit");
+                    //m_damage.text = m_weaponsDamage.m_bow.ToString();
                     break;
                 case "Arrow_Sample":
-                    SetState(eMonsterState.Hit);
-                    m_status.m_hp -= 5;
+                    m_status.m_hp -= m_weaponsDamage.m_arrow;
+                    m_anim.SetTrigger("doHit");
+                    //m_damage.text = m_weaponsDamage.m_arrow.ToString();
                     break;
             }
         }
     }
-
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (gameObject.CompareTag("Weapons"))
-    //    {
-    //        Debug.Log("OK");
-    //        SetState(eMonsterState.Hit);
-    //        switch (collision.gameObject.name)
-    //        {
-    //            case "Sword_Sample":
-    //                SetState(eMonsterState.Hit);
-    //                m_status.m_hp -= 5;
-    //                break;
-    //            case "Wand_Sample":
-    //                SetState(eMonsterState.Hit);
-    //                m_status.m_hp -= 5;
-    //                break;
-    //            case "Mace_Sample":
-    //                SetState(eMonsterState.Hit);
-    //                m_status.m_hp -= 5;
-    //                break;
-    //            case "Bow_Sample":
-    //                SetState(eMonsterState.Hit);
-    //                m_status.m_hp -= 5;
-    //                break;
-    //            case "Arrow_Sample":
-    //                SetState(eMonsterState.Hit);
-    //                m_status.m_hp -= 5;
-    //                break;
-    //        }
-
-    //    }
-    //}
 
     // 플레이어와의 거리를 잴 때, Ray를 쏴서 방해물을 피해 감지하는 bool 함수
     public bool SearchTarget()
@@ -278,7 +277,10 @@ public class MonsterController : MonoBehaviour
         isDead = false;
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
+        m_collider = GetComponent<Collider>();
+        //m_damage = GetComponent<Text>();
         m_player = GameObject.FindGameObjectWithTag("Player");
+        m_weaponsDamage = new WeaponsDamage(5, 6, 7, 1, 2); // (int sword, int wand, int mace, int bow, int arrow)
     }
 
     private void Awake()
