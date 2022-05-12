@@ -440,6 +440,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2128465810}
   - component: {fileID: 2128465811}
+  - component: {fileID: 2128465812}
   m_Layer: 0
   m_Name: StageManage
   m_TagString: Untagged
@@ -473,9 +474,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d073936286faa44973e18eee638eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentStageIndex: 0
+  currentStageIndex: 0
   TotalFloor: 4
   Player: {fileID: 8508893349416425440, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
+--- !u!114 &2128465812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128465809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea3f18eb2b38084b845d2bd6690fbea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &803788187442252285
 PrefabInstance:
   m_ObjectHideFlags: 0
