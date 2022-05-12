@@ -28,8 +28,13 @@ namespace STAGE_MANAGEMENT
         }
 
         private List<Stage> stageList;
-        public int CurrentStageIndex;
+        public int currentStageIndex;
         public int TotalFloor = 4;
+
+        RandPercent percentage = null;
+
+        // BGM관리
+        private BGMExeManager bgm = null;
 
         [SerializeField]
         private GameObject Player;
@@ -54,14 +59,39 @@ namespace STAGE_MANAGEMENT
 
         public void Initalize()
         {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            bgm = GetComponent<BGMExeManager>();
             PlayerSpawn();
+            bgm.AddAudioToCAM();
 
-            stageList = new List<Stage>();
 
             // 랜덤 스테이지 확률 설정
-            RandPercent percentage = new RandPercent();
+            percentage  = new RandPercent();
             percentage.regist.Add("Stage_Dungeon", 70);
             percentage.regist.Add("Stage_EliteBossRoom", 30);
+            
+            StageInit();
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (currentStageIndex < 1)
+            {
+                bgm.PlayInnBGM();
+            }
+            else if (currentStageIndex > 0 && currentStageIndex < (stageList.Count - 1))
+            {
+                bgm.PlayNormalStageBGM();
+            }
+            else if (currentStageIndex == (stageList.Count - 1))
+            {
+                bgm.PlayBossStageBGM();
+            }
+        }
+
+        private void StageInit()
+        {
+            stageList = new List<Stage>();
 
             int TotalStageCount = (TotalFloor * 2) - 1;
             for (int i = 0; i < TotalStageCount; i++)
@@ -70,7 +100,7 @@ namespace STAGE_MANAGEMENT
                 {
                     // 첫 STAGE는 여관 고정
                     stageList.Add(new Stage(i, "Stage_Inn"));
-                    CurrentStageIndex = 0;
+                    currentStageIndex = 0;
                 }
                 else if (i == TotalStageCount - 1)
                 {
@@ -109,17 +139,21 @@ namespace STAGE_MANAGEMENT
 
         public void NextStage()
         {
-            CurrentStageIndex++;
+            currentStageIndex++;
 
             // 마지막 스테이지 clear이후 이동시 초기화
-            if(CurrentStageIndex == stageList.Count)
+            if(currentStageIndex == stageList.Count)
             {
-                Initalize();
-            }
+                stageList.Clear();
+                StageInit();
+            } 
+            
 
-            string sceneName = stageList[CurrentStageIndex].sceneName;
+            string sceneName = stageList[currentStageIndex].sceneName;
             Player.SetActive(false);
             SceneManager.LoadScene(sceneName);
+            
+
             Player.SetActive(true);
         }
 
