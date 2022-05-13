@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RotateToMouse : MonoBehaviour
 {
@@ -46,5 +47,4 @@ public class RotateToMouse : MonoBehaviour
 
         return Mathf.Clamp(angle, min, max);
     }
-
 }

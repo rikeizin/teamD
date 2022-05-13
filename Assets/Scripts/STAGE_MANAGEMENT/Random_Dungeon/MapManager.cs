@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace RandomMap {
     
     public class MapManager : MonoBehaviour
     {
         #region 맴버 변수
-        private static MapManager instance = null;
-        public static MapManager Inst
+        private MapManager instance = null;
+        public MapManager Inst
         {
             get
             {
@@ -82,21 +81,6 @@ namespace RandomMap {
         [SerializeField]
         private GameObject[] liftObjs;
 
-        [Header("인카운터 설정")]
-        private int spawnCount = 0;
-        public int minSpawnCount = 10;
-        public int maxSpawnCount = 15;
-        public GameObject[] EncounterPrefabs;
-        private static List<Area> enableSpawnAreas;
-        public static List<Area> EnableSpawnAreas
-        {
-            get
-            {
-                return enableSpawnAreas;
-            }
-        }
-
-
         enum PurposeOfGate
         {
             startPoint,
@@ -108,16 +92,7 @@ namespace RandomMap {
         {
             MapBoundSet();
             LocalNavMeshBuildBoundSet();
-            PreCalculateMapStructure();
-            RealizedRenderMap();
-            PreCalculateReadEnableSpawnZone();
-        }
-
-        
-
-        private void OnApplicationQuit()
-        {
-            enableSpawnAreas.Clear();
+            GenerateMap();
         }
 
         #region 맵 공간 및 네브메쉬 베이크 공간 할당
@@ -164,7 +139,8 @@ namespace RandomMap {
         }
         #endregion
 
-        private void PreCalculateMapStructure()
+        // 선형 길구조의 맵생성
+        public void GenerateMap()
         {
             for (int index = 0; index < areaArray.Length; index++)
             {
@@ -189,8 +165,8 @@ namespace RandomMap {
                 thisArea.gameObject.name += "(" + index + ")";
                 thisArea.script = thisArea.gameObject.GetComponent<Section>();
                 thisArea.gameObject.transform.position = new Vector3(thisArea.x * sectionWidth
-                                                                    , thisArea.y * sectionHeight
-                                                                    , thisArea.z * sectionWidth);
+                                                                       , thisArea.y * sectionHeight
+                                                                       , thisArea.z * sectionWidth);
 
                 // 1. 최대허용 범위 및 인접한 영역에 대한 벽생성
                 thisArea.blockedDir = createBlockedDir(thisArea);
@@ -207,16 +183,11 @@ namespace RandomMap {
                     else
                     {
                         thisArea.nextDir = randomNextDir(thisArea.blockedDir);
-
-                        // 테스트
-                        //if (index == 1)
-                        //    thisArea.nextDir = Direction.Down;
                     }
                 }
                 // 4. 지나온 방향, 다음 진출 방향 제외 벽 재생성
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.passedDir);
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.nextDir);
-                thisArea.blockedDir.Clear();
                 thisArea.blockedDir = ReBlockDir(thisArea.openDir);
 
                 if (thisArea.blockedDir.Count > TOTAL_DIR_CNT - 1)
@@ -226,25 +197,71 @@ namespace RandomMap {
 
                 StackFloors(index);
 
+                
+
                 thisArea.script.area = thisArea;    // 생성된 구역오브젝트에 현재 생성으로 정의된 구역class 참조
                 coordinate[thisArea.x, thisArea.y, thisArea.z] = thisArea;// 던전에 할당된 좌표에 신규생성된 class정보 참조
                 areaArray[index] = thisArea;  // 해당 생성순서의 index에 현재 생성 정보 저장
             }
-        }
 
-        private void RealizedRenderMap()
-        {
             for (int index = 0; index < areaArray.Length; index++)
             {
 
                 thisArea = areaArray[index];
-                //Debug.Log($"{i}번째 인덱스 최종 생성");
 
-                if (index > 0)
+                //Debug.Log($"{i}번째 인덱스 최종 생성");
+                thisArea.script.OnInit();
+
+                // 5. 던전 입/출구 방향 오브젝트 작업
+                if (index == 0)
                 {
-                    Area beforeArea = areaArray[index - 1];
-                    if (beforeArea.floorCount > 0 && !(beforeArea.nextDir == Direction.Up || beforeArea.nextDir == Direction.Down))
+                    // 0번째 구역인경우 던전 시작 스폰지점 생성
+                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);   // 첫구역 입구방향 벽추가
+                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint); // 던전입구 생성
+                }
+                else if (index == areaArray.Length - 1)
+                {
+                    // 마지막 구역 생성
+                    if (thisArea.floorCount > 0 && thisArea.passedDir == Direction.Down)
                     {
+                        // 마지막섹션이 연속되는 층의 최상층의 섹션인경우 출구오브젝트를 1층섹션에서 생성
+                        CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
+                    }
+                    else
+                    {
+                        // 일반적인경우
+                        thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
+                        CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
+                    }
+                }
+
+                
+            }
+        }
+
+        private void StackFloors(int index)
+        {
+            if (index > 0)
+            {
+                Area beforeArea = areaArray[index - 1];
+                if (beforeArea.nextDir == Direction.Up || beforeArea.nextDir == Direction.Down)
+                {
+
+                    if (beforeArea.floorCount == 0)
+                    {
+                        beforeArea.upStairsNextDir = beforeArea.passedDir;
+                        beforeArea.firstFloorArea = beforeArea;
+                    }
+                    beforeArea.floorCount++;
+                    thisArea.floorCount = beforeArea.floorCount;
+                    thisArea.upStairsNextDir = beforeArea.upStairsNextDir;
+                    thisArea.firstFloorArea = beforeArea.firstFloorArea;
+                }
+                else
+                {
+                    if (beforeArea.floorCount > 0)
+                    {
+                        Direction upStairsNextDir = Direction.None;
                         Quaternion liftDirection = Quaternion.identity;
                         Vector3 liftVector = beforeArea.gameObject.transform.position;
                         float minHeight = 0;
@@ -252,16 +269,22 @@ namespace RandomMap {
 
                         if (beforeArea.passedDir == Direction.Up)
                         {
+                            upStairsNextDir = beforeArea.upStairsNextDir;
                             maxHeight = beforeArea.floorCount * SectionHeight;
-                            Debug.Log($"위에서 아래로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {beforeArea.upStairsNextDir} / by {index - 1}index");
+                            Debug.Log($"위에서 아래로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {upStairsNextDir} / by {index - 1}index");
                         }
                         else if (beforeArea.passedDir == Direction.Down)
                         {
+                            upStairsNextDir = beforeArea.nextDir;
                             minHeight = -(beforeArea.floorCount * SectionHeight);
-                            Debug.Log($"아래에서 위로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {beforeArea.upStairsNextDir} / by {index - 1}index");
+                            Debug.Log($"아래에서 위로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {upStairsNextDir} / by {index - 1}index");
+                        } 
+                        else
+                        {
+                            upStairsNextDir = (Direction)Random.Range(1, HORIZONTAL_DIR_CNT + 1);
                         }
 
-                        switch (beforeArea.upStairsNextDir)
+                        switch (upStairsNextDir)
                         {
                             case Direction.N:
                                 liftDirection = Quaternion.Euler(0, 180, 0);
@@ -287,90 +310,10 @@ namespace RandomMap {
                                 break;
                         }
 
-                        GameObject liftObj = Instantiate(liftObjs[Random.Range(0, liftObjs.Length)], liftVector, liftDirection, beforeArea.gameObject.transform);
+                        GameObject liftObj = Instantiate(liftObjs[0], liftVector, liftDirection, beforeArea.gameObject.transform);
                         ILift lift = liftObj.GetComponentInChildren<ILift>();
-                        lift.InitLift(beforeArea.passedDir, minHeight, maxHeight);
+                        lift.InitLift(beforeArea.nextDir, minHeight, maxHeight);
                     }
-                }
-
-                // 5. 던전 입/출구 방향 오브젝트 작업
-                if (index == 0)
-                {
-                    // 0번째 구역인경우 던전 시작 스폰지점 생성
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);   // 첫구역 입구방향 벽추가
-                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint); // 던전입구 생성
-                }
-                else if (index == areaArray.Length - 1)
-                {
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
-                    // 마지막 구역 생성
-                    if (thisArea.floorCount > 0 && thisArea.passedDir == Direction.Down)
-                    {
-                        // 마지막섹션이 연속되는 층의 최상층의 섹션인경우 출구오브젝트를 1층섹션에서 생성
-                        CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
-                    }
-                    else
-                    {
-                        // 일반적인경우
-                        if (thisArea.passedDir == Direction.Up || thisArea.passedDir == Direction.Down || thisArea.passedDir == Direction.None)
-                        {
-                            Direction dir = (Direction)Random.Range(1, HORIZONTAL_DIR_CNT + 1);
-                            Debug.Log($"마지막 : {dir}");
-                            CreateGate(thisArea, dir, PurposeOfGate.endPoint); // 던전출구 생성
-                        }
-                        else
-                        {
-                            CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
-                        }
-                    }
-                }
-
-                thisArea.script.OnInit();
-            }
-        }
-
-        private void StackFloors(int index)
-        {
-            if (index > 0)
-            {
-                Area beforeArea = areaArray[index - 1];
-                if (thisArea.passedDir == Direction.Up || thisArea.passedDir == Direction.Down)
-                {
-                    if (beforeArea.floorCount == 0)
-                    {
-                        beforeArea.upStairsNextDir = beforeArea.passedDir;
-                        beforeArea.firstFloorArea = beforeArea;
-                        if (beforeArea.nextDir == Direction.Down)
-                        {
-                            thisArea.lastFloorArea = beforeArea;
-                        }
-                    } 
-                    else
-                    {
-                        thisArea.lastFloorArea = beforeArea.lastFloorArea;
-                    }
-                    thisArea.floorCount = beforeArea.floorCount+1;
-                    thisArea.upStairsNextDir = beforeArea.upStairsNextDir;
-                    thisArea.firstFloorArea = beforeArea.firstFloorArea;
-                }
-                else
-                {
-                    Direction upStairsNextDir = Direction.None;
-                    if (beforeArea.passedDir == Direction.Up)
-                    {
-                        upStairsNextDir = beforeArea.upStairsNextDir;
-                        //Debug.Log($"위에서 아래로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {upStairsNextDir} / by {index - 1}index");
-                    }
-                    else if (beforeArea.passedDir == Direction.Down)
-                    {
-                        upStairsNextDir = beforeArea.nextDir;
-                        //Debug.Log($"아래에서 위로) 누적 층 수 : {beforeArea.floorCount + 1}층, 다음 옆면 이동방향 : {upStairsNextDir} / by {index - 1}index");
-                    } 
-                    else
-                    {
-                        upStairsNextDir = (Direction)Random.Range(1, HORIZONTAL_DIR_CNT + 1);
-                    }
-                    beforeArea.upStairsNextDir = upStairsNextDir;
                 }
             }
         }
@@ -378,7 +321,6 @@ namespace RandomMap {
         #region Section순차적 생성용도의 함수
         List<Direction> createBlockedDir(Area area)
         {
-            area.blockedDir.Clear();
             area.blockedDir = new List<Direction>();
 
             if (area.x == 0)
@@ -464,6 +406,8 @@ namespace RandomMap {
             {
                 dirList.Remove(dir);
             }
+            //dirList.Remove(passedDir);
+            //dirList.Remove(nextDir);
             return dirList;
         }
 
@@ -568,7 +512,6 @@ namespace RandomMap {
             int reindex = reindexList[Random.Range(0, reindexList.Count)];
             Debug.Log($"{temp} / 결정 번호 : {reindex}");
             Debug.Log($"------------------------------------------");
-            reindexList.Clear();
             return reindex;
         }
 
@@ -577,7 +520,6 @@ namespace RandomMap {
             // 재생성 섹션 초기화
             int reindex = GetReIndex(index);
             //Debug.Log($"막힌 구간 : {i} /  재생성 인덱스 : {reindex}");
-            thisArea.openDir.Clear();
             thisArea.openDir = new List<Direction>();
             thisArea.x = areaArray[reindex].x;
             thisArea.y = areaArray[reindex].y;
@@ -585,9 +527,10 @@ namespace RandomMap {
             thisArea.blockedDir = createBlockedDir(thisArea);
             thisArea.passedDir = randomNextDir(thisArea.blockedDir);
 
-            // 현재섹션의 위치를 재생성 섹션위치에서 다음 방향 좌표 이동
+
             thisArea = TransCoordinate(thisArea);
-            
+            // 현재섹션의 위치를 재생성 섹션위치에서 다음 방향 좌표 이동
+
             // 재생성 위치에서 이동후 해당 좌표에서 벽 재구성
             thisArea.gameObject.transform.position =  new Vector3(thisArea.x * sectionWidth
                                                                  ,thisArea.y * sectionHeight
@@ -601,46 +544,11 @@ namespace RandomMap {
 
             // 재생성 섹션에서 추가 생성된 섹션 방향과의 통로를 재구성
             areaArray[reindex].openDir = DirectionExt.AddDirection(areaArray[reindex].openDir, DirectionExt.GetOpposite(thisArea.passedDir));
-            areaArray[reindex].blockedDir.Clear();
             areaArray[reindex].blockedDir = ReBlockDir(areaArray[reindex].openDir);
             areaArray[reindex].script.area = areaArray[reindex];
 
             thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.passedDir);
-            thisArea.blockedDir.Clear();
             thisArea.blockedDir = ReBlockDir(thisArea.openDir);
-
-
-            if (areaArray[reindex].floorCount > 0)  // 층구조의 통로임을 확인
-            {
-                int loopNum = 0;
-                int nextFloor = 0;
-                while (true)
-                {
-                    nextFloor++;
-                    // 현재 좌표기준 위아래 통로로 재생성시 연결
-                    if (thisArea.passedDir == Direction.Up)
-                    {
-                        Area beforeArea = coordinate[thisArea.x, Mathf.Clamp(thisArea.y + nextFloor, 0, MaxHeight - 1), thisArea.z];
-                    }
-                    else if (thisArea.passedDir == Direction.Down)
-                    {
-                        Area beforeArea = coordinate[thisArea.x, Mathf.Clamp( thisArea.y - nextFloor, 0, MaxHeight - 1), thisArea.z];
-                        if(beforeArea.floorCount < 1)
-                        {
-                            thisArea.floorCount = beforeArea.floorCount + 1;
-                            break;
-                            //coordinate[thisArea.x, Mathf.Clamp(thisArea.y - nextFloor, 0, MaxHeight - 1), thisArea.z];
-                            
-                        }
-                    }
-
-                    if (loopNum++ > 50)
-                    {
-                        break;
-                    }
-                }
-            }
-            
         }
         #endregion
 
@@ -697,44 +605,6 @@ namespace RandomMap {
                     break;
             }
         }
-        private void PreCalculateReadEnableSpawnZone()
-        {
-            if (EncounterPrefabs.Length > 0)
-            {
-                enableSpawnAreas = new List<Area>();
-                for (int index = 0; index < areaArray.Length; index++)
-                {
-                    if (areaArray[index].blockedDir.Contains(Direction.Down))
-                    {
-                        enableSpawnAreas.Add(areaArray[index]);
-                    }
-                }
-            }
-            SpawnEncounters();
-        }
-
-        public void SpawnEncounters()
-        {
-            GameObject.Find("LocalNavMeshBuilder").GetComponent<LocalNavMeshBuilder>().UpdateNavMesh(false);
-            if (enableSpawnAreas.Count > 0)
-            {
-                GameObject encounterGroup = new GameObject("Encounters");
-                spawnCount = Random.Range(minSpawnCount, maxSpawnCount + 1);
-                for (int i = 0; i < spawnCount; i++)
-                {
-                    int randSpawnIndex = Random.Range(0, enableSpawnAreas.Count);
-                    Vector3 spawnPos = enableSpawnAreas[randSpawnIndex].gameObject.transform.position
-                                        + new Vector3(Random.Range(0, sectionWidth), 0, Random.Range(0, sectionWidth));
-                    NavMeshHit hit;
-                    bool FindNavMeshHit = NavMesh.SamplePosition(spawnPos, out hit, 2.5f, NavMesh.AllAreas);
-                    if (FindNavMeshHit)
-                    {
-                        spawnPos = hit.position;
-                    }
-                    Instantiate(EncounterPrefabs[Random.Range(0, EncounterPrefabs.Length)], spawnPos, Quaternion.identity, encounterGroup.transform);
-                }
-            }
-        }
 
         #region 오류 확인용도
         private void ExistMap()
@@ -762,7 +632,6 @@ namespace RandomMap {
                 temp.Append("\n");
             }
             Debug.Log(temp);
-            temp.Clear();
         }
         #endregion
     }

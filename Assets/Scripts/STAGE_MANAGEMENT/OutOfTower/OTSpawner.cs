@@ -18,15 +18,13 @@ public class OTSpawner : MonoBehaviour
             
             for (int i = 0; i < spawnCount; i++)
             {
-                GameObject spawnPos = Instantiate(new GameObject("Spanwer"));
+                GameObject spawnPos = Instantiate(new GameObject("Spanwer"), this.transform);
 
-                spawnPos.transform.parent = this.transform;
                 spawnPos.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
                 spawnPos.transform.position = spawnPos.transform.right * 17;
                 Vector3 VerticalPosOffset = spawnPos.transform.position;
                 VerticalPosOffset.y = this.transform.position.y;
                 spawnPos.transform.position = VerticalPosOffset;
-
 
                 NavMeshHit hit;
                 if (NavMesh.SamplePosition(spawnPos.transform.position, out hit, 2.5f, NavMesh.AllAreas))
