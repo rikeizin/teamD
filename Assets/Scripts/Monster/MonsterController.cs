@@ -19,13 +19,13 @@ public class MonsterController : MonoBehaviour
 
     public struct Status
     {
-        public int m_hp;
-        public int m_hpMax;
+        public float m_hp;
+        public float m_hpMax;
         public float m_attack;
         public float m_attackRange;
         public float m_hitRange;
         public float m_trackingRange;
-        public Status(int hp, float attack, float attackRange, float hitRange, float trackingRange)
+        public Status(float hp, float attack, float attackRange, float hitRange, float trackingRange)
         {
             m_hp = m_hpMax = hp;
             m_attack = attack;
