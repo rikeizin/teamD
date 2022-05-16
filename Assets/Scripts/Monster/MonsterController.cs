@@ -155,9 +155,17 @@ public class MonsterController : MonoBehaviour
 
     public virtual void Hit()
     {
-        if( m_status.m_hp <= 0)
+        if (m_status.m_hp < 0)
         {
-            SetState(eMonsterState.Dead);
+            m_status.m_hp = 0;
+        }
+
+        if ( m_status.m_hp <= 0)
+        {
+            if(!isDead)
+            {
+                SetState(eMonsterState.Dead);
+            }
         }
     }
 
@@ -165,9 +173,9 @@ public class MonsterController : MonoBehaviour
     {
         if (!isDead)
         {
+            m_anim.SetTrigger("doDead");
             isDead = true;
             m_collider.enabled = false;
-            m_anim.SetTrigger("doDead");
         }
     }
 
@@ -280,7 +288,7 @@ public class MonsterController : MonoBehaviour
         m_collider = GetComponent<Collider>();
         //m_damage = GetComponent<Text>();
         m_player = GameObject.FindGameObjectWithTag("Player");
-        m_weaponsDamage = new WeaponsDamage(5, 6, 7, 1, 2); // (int sword, int wand, int mace, int bow, int arrow)
+        m_weaponsDamage = new WeaponsDamage(7, 6, 10, 1, 2); // (int sword, int wand, int mace, int bow, int arrow)
     }
 
     private void Awake()
