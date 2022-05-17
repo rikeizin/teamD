@@ -163,8 +163,7 @@ public class Monster_Dragon : MonsterController
         if(Input.GetKeyDown(KeyCode.P))
         {
             m_status.m_hp -= 50;
-            m_hpBar.value = (float)m_status.m_hp / (float)m_status.m_hpMax * 100;
-            m_MonsterHp.GetComponent<Text>().text = (m_status.m_hp + "/" + m_status.m_hpMax);
+            Debug.Log(m_status.m_hp);
         }
         base.BehaviourProcess();
     }
