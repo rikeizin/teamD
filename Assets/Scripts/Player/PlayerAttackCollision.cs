@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerAttackCollision : MonoBehaviour
 {
+    Animator animator = null;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     private void OnEnable()
     {
         StartCoroutine("AutoDisable");
@@ -15,6 +22,11 @@ public class PlayerAttackCollision : MonoBehaviour
         {
             other.GetComponent<MonsterController>().Hit();
         }
+    }
+
+    public void OnAttackCollision()
+    {
+        gameObject.SetActive(true);
     }
 
     private IEnumerator AutoDisable()

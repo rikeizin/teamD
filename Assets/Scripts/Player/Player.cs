@@ -15,27 +15,33 @@ public class Player : MonoBehaviour
     };
 
     // Stat
-    public int p_hp;
-    public int p_hpMax;
-    public float p_attack;
-    public float p_speed;
+    public float hp;
+    public float maxHp;
+    public float defence; 
+    public float attackPower;
+    public float attackSpeed;
+    public float critical; 
+    public float speed;
+    public float jump; 
+    public float gold;
+    public bool IsAttack { get; set; }
 
-    private MovementCharacterController movement = null;             // MovementCharacterController 스크립트의 moveTo 함수를 사용하기 위해 movement라는 이름으로 받아온다.
-    private RotateToMouse rotateToMouse = null;                      // 캐릭터 시야 회전 스크립트를 받아온다. 
-    private CharacterController characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
-    private Animator animator = null;                                // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
+    private PlayerController playerCtrl = null;                   // MovementCharacterController 스크립트의 moveTo 함수를 사용하기 위해 movement라는 이름으로 받아온다.
+    private RotateToMouse rotateToMouse = null;                   // 캐릭터 시야 회전 스크립트를 받아온다. 
+    private CharacterController characterController = null;       // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
+    public Animator animator = null;                             // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         rotateToMouse = GetComponent<RotateToMouse>();               //스크립트를 받아온다.
-        movement = GetComponent<MovementCharacterController>();      //스크립트를 받아온다.
+        playerCtrl = GetComponent<PlayerController>();      //스크립트를 받아온다.
     }
 
     private void Update()
     {
-        UpdateRotate();
+        //UpdateRotate();
         UpdateMove();
         GroundCheck();
     }
@@ -50,7 +56,7 @@ public class Player : MonoBehaviour
 
     private void UpdateMove() // 캐릭터 움직임
     {
-        movement.MoveTo(new Vector3(movement.xInput, 0, movement.zInput));
+        playerCtrl.MoveTo(new Vector3(playerCtrl.xInput, 0, playerCtrl.zInput));
     }
 
     public void GroundCheck() // 땅 밟고 있는지

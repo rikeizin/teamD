@@ -97,6 +97,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""2DMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""84588607-9aea-4a22-a153-70fbe28c014d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -429,6 +437,39 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""GainItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""1128e225-4eef-4aed-80a9-a33c6bb08658"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""2DMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""abb24ed8-d88f-49fa-a3fa-46a4a3784128"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""2DMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""594f3d48-6ff5-4fd9-adfc-b741a63fc721"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""2DMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1014,6 +1055,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_OnAttackRight = m_Player.FindAction("OnAttackRight", throwIfNotFound: true);
         m_Player_Swap = m_Player.FindAction("Swap", throwIfNotFound: true);
         m_Player_GainItem = m_Player.FindAction("GainItem", throwIfNotFound: true);
+        m_Player__2DMove = m_Player.FindAction("2DMove", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1085,6 +1127,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_OnAttackRight;
     private readonly InputAction m_Player_Swap;
     private readonly InputAction m_Player_GainItem;
+    private readonly InputAction m_Player__2DMove;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1099,6 +1142,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @OnAttackRight => m_Wrapper.m_Player_OnAttackRight;
         public InputAction @Swap => m_Wrapper.m_Player_Swap;
         public InputAction @GainItem => m_Wrapper.m_Player_GainItem;
+        public InputAction @_2DMove => m_Wrapper.m_Player__2DMove;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1138,6 +1182,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @GainItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGainItem;
                 @GainItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGainItem;
                 @GainItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGainItem;
+                @_2DMove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.On_2DMove;
+                @_2DMove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.On_2DMove;
+                @_2DMove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.On_2DMove;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1172,6 +1219,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @GainItem.started += instance.OnGainItem;
                 @GainItem.performed += instance.OnGainItem;
                 @GainItem.canceled += instance.OnGainItem;
+                @_2DMove.started += instance.On_2DMove;
+                @_2DMove.performed += instance.On_2DMove;
+                @_2DMove.canceled += instance.On_2DMove;
             }
         }
     }
@@ -1338,6 +1388,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnOnAttackRight(InputAction.CallbackContext context);
         void OnSwap(InputAction.CallbackContext context);
         void OnGainItem(InputAction.CallbackContext context);
+        void On_2DMove(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
