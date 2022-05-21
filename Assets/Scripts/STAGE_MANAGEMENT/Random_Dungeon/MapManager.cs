@@ -209,9 +209,6 @@ namespace RandomMap {
 
                 thisArea = areaArray[index];
 
-                //Debug.Log($"{i}번째 인덱스 최종 생성");
-                thisArea.script.OnInit();
-
                 // 5. 던전 입/출구 방향 오브젝트 작업
                 if (index == 0)
                 {
@@ -235,7 +232,8 @@ namespace RandomMap {
                     }
                 }
 
-                
+                //Debug.Log($"{i}번째 인덱스 최종 생성");
+                thisArea.script.OnInit();
             }
         }
 
