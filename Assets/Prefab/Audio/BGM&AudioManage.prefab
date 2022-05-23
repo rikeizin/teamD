@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2275121613826105544}
   - component: {fileID: 2275121613826105546}
   m_Layer: 0
-  m_Name: BGM
+  m_Name: BGM&AudioManage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmMixGroup: {fileID: -2694171805289995914, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
+  effectMixGroup: {fileID: 2763782583288775273, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
   bgmOnOff: 0
   maxPlayListCount: 10
   InnTrack: []

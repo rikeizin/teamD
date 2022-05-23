@@ -28,15 +28,19 @@ namespace STAGE_MANAGEMENT
         }
 
         private List<Stage> stageList;
-        public int currentStageIndex;
-        public int TotalFloor = 4;
-        //public int currentFloor;
+        [SerializeField]
+        private int currentStageIndex;
+        [SerializeField]
+        private int TotalFloor = 4;
+        [SerializeField]
+        private int currentFloor = 0;
+        public int CurrentFloor { get => currentFloor; } //StageManager.Inst.CurrentFloor
 
         RandPercent percentage = null;
 
         // BGM관리
         [SerializeField]
-        private BGMExeManager bgm = null;
+        private AudioManager bgm = null;
 
         [SerializeField]
         private GameObject Player;
@@ -62,7 +66,7 @@ namespace STAGE_MANAGEMENT
         public void Initalize()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            bgm = BGMExeManager.Inst;
+            bgm = AudioManager.Inst;
             PlayerSpawn();
             //bgm.InitAudioToCAM();
 
@@ -79,22 +83,21 @@ namespace STAGE_MANAGEMENT
         {
             if (currentStageIndex < 1)
             {
-                bgm.ChangeSoundTrack(SoundTrack.Inn);
+                bgm.PlaySoundTrack(SoundTrack.Inn);
             }
             else if (currentStageIndex == 1) // && currentStageIndex < (stageList.Count - 1)
             {
-                bgm.ChangeSoundTrack(SoundTrack.NormalStage);
+                bgm.PlaySoundTrack(SoundTrack.NormalStage);
             }
             else if (currentStageIndex == (stageList.Count - 1))
             {
-                bgm.ChangeSoundTrack(SoundTrack.BossStage);
+                bgm.PlaySoundTrack(SoundTrack.BossStage);
             }
         }
 
         private void StageInit()
         {
             stageList = new List<Stage>();
-
             int TotalStageCount = (TotalFloor * 2) - 1;
             for (int i = 0; i < TotalStageCount; i++)
             {
@@ -148,14 +151,17 @@ namespace STAGE_MANAGEMENT
             {
                 stageList.Clear();
                 StageInit();
-            } 
+                currentFloor = 0;
+            }  
+            else if( currentStageIndex % 2 == 1 )
+            {
+                currentFloor++;
+            }
             
-
             string sceneName = stageList[currentStageIndex].sceneName;
             Player.SetActive(false);
             SceneManager.LoadScene(sceneName);
             
-
             Player.SetActive(true);
         }
 

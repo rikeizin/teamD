@@ -11,17 +11,19 @@ public enum SoundTrack : byte
 }
 
 [RequireComponent(typeof(AudioSource))]
-public class BGMExeManager : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
     #region 맴버변수 필드
-    private static BGMExeManager instance = null;
-    public static BGMExeManager Inst { get => instance; }
+    private static AudioManager instance = null;
+    public static AudioManager Inst { get => instance; }
 
     private AudioSource m_AudioSource = null;
 
     [Header("MIX GROUP SETTING")]
     [SerializeField]
     private AudioMixerGroup bgmMixGroup = null;
+    [SerializeField]
+    private AudioMixerGroup effectMixGroup = null;
 
     [Header("배경음 온 오프")]
     public bool bgmOnOff = false;
@@ -94,15 +96,18 @@ public class BGMExeManager : MonoBehaviour
             bossStageTrack = Resources.LoadAll<AudioClip>("Sounds/BGM/BossBGM");
         }
 
-        if (bgmMixGroup == null)
+        if (bgmMixGroup == null || effectMixGroup == null)
         {
             AudioMixerGroup[] mixGroups = Resources.Load<AudioMixer>("AudioMixer").FindMatchingGroups("Master");
             foreach (var mixGroup in mixGroups)
             {
-                if (mixGroup.name == "BGM")
+                if (mixGroup.name == "BGM" && bgmMixGroup == null)
                 {
                     bgmMixGroup = mixGroup;
-
+                } 
+                else if (mixGroup.name == "Effect" && effectMixGroup == null)
+                {
+                    effectMixGroup = mixGroup;
                 }
             }
         }
@@ -111,6 +116,11 @@ public class BGMExeManager : MonoBehaviour
         {
             m_AudioSource.outputAudioMixerGroup = bgmMixGroup;
         }
+    }
+
+    private void Start()
+    {
+        PlaySoundTrack(SoundTrack.Inn);
     }
 
     private void OnValidate()
@@ -152,7 +162,7 @@ public class BGMExeManager : MonoBehaviour
     /// 사운드 트랙 변경
     /// </summary>
     /// <param name="track"></param>
-    public void ChangeSoundTrack(SoundTrack track)
+    public void PlaySoundTrack(SoundTrack track)
     {
         StopSoundTrack();
         switch (track)
