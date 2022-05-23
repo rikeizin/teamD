@@ -1,58 +1,173 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
-namespace STAGE_MANAGEMENT
+public enum SoundTrack : byte
 {
-    public class BGMExeManager : MonoBehaviour
+    Inn = 0,
+    NormalStage,
+    BossStage
+}
+
+[RequireComponent(typeof(AudioSource))]
+public class BGMExeManager : MonoBehaviour
+{
+    #region 맴버변수 필드
+    private static BGMExeManager instance = null;
+    public static BGMExeManager Inst { get => instance; }
+
+    private AudioSource m_AudioSource = null;
+
+    [Header("MIX GROUP SETTING")]
+    [SerializeField]
+    private AudioMixerGroup bgmMixGroup = null;
+
+    [Header("배경음 온 오프")]
+    public bool bgmOnOff = false;
+    
+    [Header("사운드 트랙")]
+    private AudioClip[] playList;
+    [SerializeField]
+    private uint maxPlayListCount = 10;
+    [SerializeField]
+    private AudioClip[] InnTrack = null;
+    [SerializeField]
+    public AudioClip[] normalStageTrack = null;
+    [SerializeField]
+    public AudioClip[] bossStageTrack = null;
+
+    public bool BGMOnOff
     {
-        public AudioSource audioByCAM = null;
-
-        AudioClip[] innBGMs = null;
-        AudioClip[] normalStageBGMs = null;
-        AudioClip[] bossStageBGMs = null;
-
-        
-        private void Awake()
+        get => bgmOnOff;
+        set
         {
-            innBGMs = Resources.LoadAll<AudioClip>("Sounds/BGM/InnBGM");
-            normalStageBGMs = Resources.LoadAll<AudioClip>("Sounds/BGM/NomarlBGM");
-            bossStageBGMs = Resources.LoadAll<AudioClip>("Sounds/BGM/BossBGM");
-        }
-
-
-        public void AddAudioToCAM()
-        {
-            audioByCAM = Camera.main.gameObject.AddComponent<AudioSource>();
-            if (audioByCAM.isPlaying)
+            bgmOnOff = value;
+            if (m_AudioSource != null)
             {
-                audioByCAM.Stop();
+                if (bgmOnOff)
+                {
+                    m_AudioSource.mute = false;
+                }
+                else
+                {
+                    m_AudioSource.mute = true;
+                }
             }
         }
+    }
+    #endregion
 
-        public void PlayInnBGM()
+    private void Awake()
+    {
+        if(instance == null)
         {
-            Debug.Log("여관 BGM OnPlay");
-            audioByCAM.Stop();
-            audioByCAM.clip = innBGMs[Random.Range(0, innBGMs.Length)];
-            audioByCAM.Play();
+            instance = this;
+            instance.Initalize();
+            DontDestroyOnLoad(this.gameObject);
+        } 
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    private void Initalize()
+    {
+        m_AudioSource = GetComponent<AudioSource>();
+
+        if (InnTrack.Length < 1)
+        {
+            InnTrack = Resources.LoadAll<AudioClip>("Sounds/BGM/InnBGM");
         }
 
-        public void PlayNormalStageBGM()
+        if (normalStageTrack.Length < 1)
         {
-            Debug.Log("일반 BGM OnPlay");
-            audioByCAM.Stop();
-            audioByCAM.clip = normalStageBGMs[Random.Range(0, normalStageBGMs.Length)];
-            audioByCAM.Play();
+            normalStageTrack = Resources.LoadAll<AudioClip>("Sounds/BGM/NomarlBGM");
         }
 
-        public void PlayBossStageBGM()
+        if (bossStageTrack.Length < 1)
         {
-            Debug.Log("보스 BGM OnPlay");
-            audioByCAM.Stop();
-            audioByCAM.clip = bossStageBGMs[Random.Range(0, bossStageBGMs.Length)];
-            audioByCAM.Play();
+            bossStageTrack = Resources.LoadAll<AudioClip>("Sounds/BGM/BossBGM");
         }
+
+        if (bgmMixGroup == null)
+        {
+            AudioMixerGroup[] mixGroups = Resources.Load<AudioMixer>("AudioMixer").FindMatchingGroups("Master");
+            foreach (var mixGroup in mixGroups)
+            {
+                if (mixGroup.name == "BGM")
+                {
+                    bgmMixGroup = mixGroup;
+
+                }
+            }
+        }
+        
+        if(m_AudioSource.outputAudioMixerGroup == null)
+        {
+            m_AudioSource.outputAudioMixerGroup = bgmMixGroup;
+        }
+    }
+
+    private void OnValidate()
+    {
+        BGMOnOff = bgmOnOff ? true : false;
+    }
+    
+    /// <summary>
+    /// 연속재생
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ContinuousPlay()
+    {
+        m_AudioSource.Stop();
+        m_AudioSource.clip = playList[Random.Range(0, playList.Length)];
+        m_AudioSource.Play();
+
+        if (playList.Length < 1)
+        {
+            m_AudioSource.loop = true;
+        }
+        else
+        {
+            while (true)
+            {
+                yield return new WaitUntil(() => m_AudioSource.isPlaying == false);
+                m_AudioSource.clip = playList[Random.Range(0, playList.Length)];
+                m_AudioSource.Play();
+            }
+        }
+    }
+
+    public void StopSoundTrack()
+    {
+        StopCoroutine(ContinuousPlay());
+    }
+
+    /// <summary>
+    /// 사운드 트랙 변경
+    /// </summary>
+    /// <param name="track"></param>
+    public void ChangeSoundTrack(SoundTrack track)
+    {
+        StopSoundTrack();
+        switch (track)
+        {
+            case SoundTrack.Inn:
+                playList = InnTrack;
+                break;
+            case SoundTrack.NormalStage:
+                playList = normalStageTrack;
+                break;
+            case SoundTrack.BossStage:
+                playList = bossStageTrack;
+                break;
+        }
+        StartCoroutine(ContinuousPlay());
     }
 }
 

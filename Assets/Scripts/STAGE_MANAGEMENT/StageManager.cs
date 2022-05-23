@@ -34,6 +34,7 @@ namespace STAGE_MANAGEMENT
         RandPercent percentage = null;
 
         // BGM관리
+        [SerializeField]
         private BGMExeManager bgm = null;
 
         [SerializeField]
@@ -60,9 +61,9 @@ namespace STAGE_MANAGEMENT
         public void Initalize()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            bgm = GetComponent<BGMExeManager>();
+            bgm = BGMExeManager.Inst;
             PlayerSpawn();
-            bgm.AddAudioToCAM();
+            //bgm.InitAudioToCAM();
 
 
             // 랜덤 스테이지 확률 설정
@@ -77,15 +78,15 @@ namespace STAGE_MANAGEMENT
         {
             if (currentStageIndex < 1)
             {
-                bgm.PlayInnBGM();
+                bgm.ChangeSoundTrack(SoundTrack.Inn);
             }
-            else if (currentStageIndex > 0 && currentStageIndex < (stageList.Count - 1))
+            else if (currentStageIndex == 1) // && currentStageIndex < (stageList.Count - 1)
             {
-                bgm.PlayNormalStageBGM();
+                bgm.ChangeSoundTrack(SoundTrack.NormalStage);
             }
             else if (currentStageIndex == (stageList.Count - 1))
             {
-                bgm.PlayBossStageBGM();
+                bgm.ChangeSoundTrack(SoundTrack.BossStage);
             }
         }
 
