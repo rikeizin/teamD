@@ -13,7 +13,7 @@ public enum SoundTrack : byte
 [RequireComponent(typeof(AudioSource))]
 public class BGMExeManager : MonoBehaviour
 {
-    #region ¸É¹öº¯¼ö ÇÊµå
+    #region ë§´ë²„ë³€ìˆ˜ í•„ë“œ
     private static BGMExeManager instance = null;
     public static BGMExeManager Inst { get => instance; }
 
@@ -23,10 +23,10 @@ public class BGMExeManager : MonoBehaviour
     [SerializeField]
     private AudioMixerGroup bgmMixGroup = null;
 
-    [Header("¹è°æÀ½ ¿Â ¿ÀÇÁ")]
+    [Header("ë°°ê²½ìŒ ì˜¨ ì˜¤í”„")]
     public bool bgmOnOff = false;
     
-    [Header("»ç¿îµå Æ®·¢")]
+    [Header("ì‚¬ìš´ë“œ íŠ¸ë™")]
     private AudioClip[] playList;
     [SerializeField]
     private uint maxPlayListCount = 10;
@@ -119,7 +119,7 @@ public class BGMExeManager : MonoBehaviour
     }
     
     /// <summary>
-    /// ¿¬¼ÓÀç»ı
+    /// ì—°ì†ì¬ìƒ
     /// </summary>
     /// <returns></returns>
     IEnumerator ContinuousPlay()
@@ -149,7 +149,7 @@ public class BGMExeManager : MonoBehaviour
     }
 
     /// <summary>
-    /// »ç¿îµå Æ®·¢ º¯°æ
+    /// ì‚¬ìš´ë“œ íŠ¸ë™ ë³€ê²½
     /// </summary>
     /// <param name="track"></param>
     public void ChangeSoundTrack(SoundTrack track)
