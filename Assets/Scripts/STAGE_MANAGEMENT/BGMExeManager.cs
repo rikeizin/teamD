@@ -6,7 +6,7 @@ namespace STAGE_MANAGEMENT
 {
     public class BGMExeManager : MonoBehaviour
     {
-        AudioSource audioByCAM = null;
+        public AudioSource audioByCAM = null;
 
         AudioClip[] innBGMs = null;
         AudioClip[] normalStageBGMs = null;
