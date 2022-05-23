@@ -748,7 +748,7 @@ RectTransform:
   - {fileID: 1560009886}
   - {fileID: 658902840}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1178,9 +1178,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2275121613826105544, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+      propertyPath: bgmMixGroup
+      value: 
+      objectReference: {fileID: -2694171805289995914, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
+    - target: {fileID: 2275121613826105544, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+      propertyPath: effectMixGroup
+      value: 
+      objectReference: {fileID: 2763782583288775273, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
     - target: {fileID: 2275121613826105545, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2275121613826105545, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1224,7 +1232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2275121613826105551, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
       propertyPath: m_Name
-      value: BGM
+      value: BGM&AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 6554994317898844510, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
       propertyPath: m_AnchorMax.x
