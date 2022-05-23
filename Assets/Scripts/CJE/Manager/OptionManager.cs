@@ -9,20 +9,19 @@ public class OptionManager : MonoBehaviour
     public Slider m_bgmSlider;
     public Text m_bgmPercent;
     public Toggle m_bgmToggle;
-    public BGMExeManager m_bgmExeManager;
+    public AudioSource m_bgmAudio;
     public Slider m_sfxSlider;
     public Text m_sfxPercent;
     public Toggle m_sfxToggle;
     //public AudioSource m_sfxAudio;
     //public AudioClip[] m_sfxClip;
 
-    private AudioSource m_bgmAudio;
     private float m_bgmVolume;
     private float m_sfxVolume;
 
     private void Start()
     {
-        m_bgmAudio = m_bgmExeManager.audioByCAM;
+        
     }
 
     public void Update()
