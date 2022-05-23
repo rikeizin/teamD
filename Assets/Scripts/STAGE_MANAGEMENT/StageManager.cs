@@ -30,10 +30,11 @@ namespace STAGE_MANAGEMENT
         private List<Stage> stageList;
         public int currentStageIndex;
         public int TotalFloor = 4;
+        //public int currentFloor;
 
         RandPercent percentage = null;
 
-        // BGM°ü¸®
+        // BGMê´€ë¦¬
         [SerializeField]
         private BGMExeManager bgm = null;
 
@@ -42,18 +43,18 @@ namespace STAGE_MANAGEMENT
 
         private void Awake()
         {
-            if (instance == null) // Á¦ÀÏ Ã³À½ ¸¸µé¾îÁø ÀÎ½ºÅÏ½ºÀÌ´Ù.
+            if (instance == null) // ì œì¼ ì²˜ìŒ ë§Œë“¤ì–´ì§„ ì¸ìŠ¤í„´ìŠ¤ì´ë‹¤.
             {
                 instance = this;
                 instance.Initalize();
-                DontDestroyOnLoad(this.gameObject); // ´Ù¸¥ ¾ÀÀÌ ·ÎµåµÇ´õ¶óµµ »èÁ¦µÇÁö ¾Ê´Â´Ù.
+                DontDestroyOnLoad(this.gameObject); // ë‹¤ë¥¸ ì”¬ì´ ë¡œë“œë˜ë”ë¼ë„ ì‚­ì œë˜ì§€ ì•ŠëŠ”ë‹¤.
             }
             else
             {
-                // ÀÌ¹Ì ÀÎ½ºÅÏ½º°¡ ¸¸µé¾îÁø°Ô ÀÖ´Ù.
-                if (instance != this)    // ÀÌ¹Ì ¸¸µé¾îÁø °ÍÀÌ ³ª¿Í ´Ù¸£´Ù.
+                // ì´ë¯¸ ì¸ìŠ¤í„´ìŠ¤ê°€ ë§Œë“¤ì–´ì§„ê²Œ ìˆë‹¤.
+                if (instance != this)    // ì´ë¯¸ ë§Œë“¤ì–´ì§„ ê²ƒì´ ë‚˜ì™€ ë‹¤ë¥´ë‹¤.
                 {
-                    Destroy(this.gameObject);   //³ª´Â Á×´Â´Ù.
+                    Destroy(this.gameObject);   //ë‚˜ëŠ” ì£½ëŠ”ë‹¤.
                 }
             }
         }
@@ -66,7 +67,7 @@ namespace STAGE_MANAGEMENT
             //bgm.InitAudioToCAM();
 
 
-            // ·£´ı ½ºÅ×ÀÌÁö È®·ü ¼³Á¤
+            // ëœë¤ ìŠ¤í…Œì´ì§€ í™•ë¥  ì„¤ì •
             percentage  = new RandPercent();
             percentage.regist.Add("Stage_Dungeon", 70);
             percentage.regist.Add("Stage_EliteBossRoom", 30);
@@ -99,23 +100,23 @@ namespace STAGE_MANAGEMENT
             {
                 if (i == 0)
                 {
-                    // Ã¹ STAGE´Â ¿©°ü °íÁ¤
+                    // ì²« STAGEëŠ” ì—¬ê´€ ê³ ì •
                     stageList.Add(new Stage(i, "Stage_Inn"));
                     currentStageIndex = 0;
                 }
                 else if (i == TotalStageCount - 1)
                 {
-                    // ¸¶Áö¸· STAGE´Â ÃÖÁ¾º¸½º´øÀü °íÁ¤
+                    // ë§ˆì§€ë§‰ STAGEëŠ” ìµœì¢…ë³´ìŠ¤ë˜ì „ ê³ ì •
                     stageList.Add(new Stage(i, "Stage_LastBossRoom"));
                 }
                 else if (i % 2 == 1)
                 {
-                    // STAGE ¼ø¼­°¡ Â¦¼ö ÀÎ°æ¿ì Å¸¿ö ¿Ü°¢
+                    // STAGE ìˆœì„œê°€ ì§ìˆ˜ ì¸ê²½ìš° íƒ€ì›Œ ì™¸ê°
                     stageList.Add(new Stage(i, "Stage_OutOfTower"));
                 }
                 else
                 {
-                    // È£ÃâµÈ ·£´ı ½ºÅ×ÀÌÁö Á¤º¸ »ğÀÔ percentage.CallResult()
+                    // í˜¸ì¶œëœ ëœë¤ ìŠ¤í…Œì´ì§€ ì •ë³´ ì‚½ì… percentage.CallResult()
                     stageList.Add(new Stage(i, percentage.CallResult()));
                 }
                 //Debug.Log($"{stageList[i].index} : {stageList[i].sceneName}");
@@ -142,7 +143,7 @@ namespace STAGE_MANAGEMENT
         {
             currentStageIndex++;
 
-            // ¸¶Áö¸· ½ºÅ×ÀÌÁö clearÀÌÈÄ ÀÌµ¿½Ã ÃÊ±âÈ­
+            // ë§ˆì§€ë§‰ ìŠ¤í…Œì´ì§€ clearì´í›„ ì´ë™ì‹œ ì´ˆê¸°í™”
             if(currentStageIndex == stageList.Count)
             {
                 stageList.Clear();
