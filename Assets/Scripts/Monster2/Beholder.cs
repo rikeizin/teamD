@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Beholder : MonsterController
 {
@@ -9,10 +10,15 @@ public class Beholder : MonsterController
     {    
         base.OnAwake();
 
-        m_status = new Status(100, 10.0f, 5.0f, 80.0f,120.0f);//(int hp, float attack, float attackRange, float hitRange, float trackingRange
-        
-    }
-    
+        m_status = new Status(100.0f, 20.0f, 6.0f, 10.0f, 10.0f);
+        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
 
+    }
+
+    public override void Hit()
+    {
+        base.Hit();
+        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
+    }
 }
 
