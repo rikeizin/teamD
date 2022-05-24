@@ -4,69 +4,69 @@ using UnityEngine;
 
 public class Golem : MonsterController
 {
-    public Transform m_rockPoint;
-    public GameObject rock;
+    private GameObject m_rockPoint;    
+    public GameObject m_rock;
 
-    public float rockSpeed = 1.0f;
+    #region Animation Event Methods
+    protected void AnimEvent_AttackThrow()
+    {
+        Instantiate(m_rock, m_rockPoint.transform.position, m_rockPoint.transform.rotation);
+        m_rock.SetActive(true);
+    }
 
-
-    private Rigidbody rigid;
+    protected void AnimEvent_AttackThrowFinish()
+    {
+        if (!isDead)
+        {
+            m_anim.SetBool("Attack_Throw", false);
+        }
+    }
+    #endregion
     protected override void OnAwake()
     {
         base.OnAwake();
+        //m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
 
-        m_status = new Status(100, 10.0f, 50.0f, 1.0f, 100.0f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
+        m_status = new Status(100.0f, 10.0f, 10.0f, 15.0f, 15.0f); 
+        m_rockPoint = GameObject.Find("RockPoint").gameObject;       
 
     }
 
-    private void Start()
-    {
-        rigid = GetComponent<Rigidbody>();
-    }
-    
+    //public override void Hit()
+    //{
+    //    base.Hit();
+    //    m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
+    //}
 
     public override void Attack()
     {
-        if (Vector3.Distance(this.transform.position, m_player.transform.position) <= 3.0f)
+        ResetMove();
+        FollowTarget();
+        if (m_dir <= 8.0f)
+        {
+            m_anim.SetBool("Attack_Throw", false);
+            base.Attack(); //근거리 공격
+
+        }
+        else if (m_dir > 8.0f)
         {
             m_anim.SetBool("Attack", false);
-            Attack2(); //근거리 공격          
-           
+            Attack_Throw();
         }
-        else if (Vector3.Distance(this.transform.position, m_player.transform.position) > 3.0f)
+        if (m_dir > m_status.m_attackRange)
         {
-            m_anim.SetBool("Attack2", false);
-            base.Attack();  //던지는 공격   
-            
+            SetState(eMonsterState.Idle);
+            m_anim.SetBool("Attack", false);
+            m_anim.SetBool("Attack_Throw", false);
+
         }
     }
-    
-    public void Attack2()
+
+    public void Attack_Throw()
     {
-        m_anim.SetBool("Attack2", true);
+        m_anim.SetBool("Attack_Throw", true);
         ResetMove();
     }
-
-    protected private void ThrowRock()
-    {
-        Instantiate(rock, m_rockPoint.transform.position, m_rockPoint.transform.rotation); 
-
-        //if (rockSpeed != 0)  //날라가는 부분인데 안날라간다!
-        //{
-        //    if (!m_player)
-        //    {
-        //        rigid.velocity = transform.TransformDirection(Vector3.forward * rockSpeed);
-        //        //rigid.velocity = transform.forward * rockSpeed;
-
-        //        Vector3 targetPos = m_player.transform.position - this.transform.position;
-        //        transform.rotation = Quaternion.LookRotation(targetPos);
-        //    }
-
-
-        //}
-    }
-       
-
 }
 
 

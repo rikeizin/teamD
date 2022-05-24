@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rock : MonoBehaviour
+public class Mage : MonoBehaviour
 {
     private GameObject m_player;
     private Rigidbody m_rigid;
-   
-    public float speed = 20.0f;
+
+    public float speed = 5.0f;
 
     private void Awake()
     {
@@ -17,17 +17,14 @@ public class Rock : MonoBehaviour
 
     private void Start()
     {
-        
         transform.LookAt(m_player.transform);
         m_rigid.velocity = transform.forward * speed;
         StartCoroutine(DestroyCoroutine());
     }
-    
+
     IEnumerator DestroyCoroutine()
     {
         yield return new WaitForSeconds(3.0f);
         Destroy(gameObject);
     }
-
-
 }
