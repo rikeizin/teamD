@@ -1398,6 +1398,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff49e0d3c261bc64d83c7a1f81020bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_bgmMixGroup: {fileID: -2694171805289995914, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
+  m_EffectMixGruop: {fileID: 2763782583288775273, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
   m_bgmSlider: {fileID: 6554994317731059993}
   m_bgmPercent: {fileID: 6554994318681984488}
   m_bgmToggle: {fileID: 6554994319234761369}
@@ -1405,8 +1407,6 @@ MonoBehaviour:
   m_sfxSlider: {fileID: 6554994317858269924}
   m_sfxPercent: {fileID: 6554994318492193514}
   m_sfxToggle: {fileID: 6554994318225091723}
-  m_sfxAudio: {fileID: 0}
-  m_sfxClip: []
 --- !u!1 &6554994318664081449
 GameObject:
   m_ObjectHideFlags: 0

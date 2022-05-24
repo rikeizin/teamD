@@ -591,6 +591,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6554994318494017910, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+      propertyPath: m_BGMManager
+      value: 
+      objectReference: {fileID: 1675825151}
     - target: {fileID: 6554994318819331328, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -605,6 +609,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+--- !u!114 &1675825151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2275121613826105544, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+  m_PrefabInstance: {fileID: 1675825150}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea3f18eb2b38084b845d2bd6690fbea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2128465809
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentStageIndex: 0
   TotalFloor: 4
+  currentFloor: 0
   bgm: {fileID: 0}
   Player: {fileID: 8508893349416425440, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
 --- !u!1001 &803788187442252285
