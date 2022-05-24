@@ -41,17 +41,20 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //UpdateRotate();
+        UpdateRotate();
         UpdateMove();
         GroundCheck();
     }
 
     private void UpdateRotate() // 캐릭터 시야 회전
     {
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        if(playerCtrl.isMove2D == false)
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
 
-        rotateToMouse.UpdateRotate(mouseX, mouseY);
+            rotateToMouse.UpdateRotate(mouseX, mouseY);
+        }
     }
 
     private void UpdateMove() // 캐릭터 움직임
@@ -61,8 +64,8 @@ public class Player : MonoBehaviour
 
     public void GroundCheck() // 땅 밟고 있는지
     {
-        //if (characterController.isGrounded)
-        //    animator.SetBool("isJumping", false);
+        if (characterController.isGrounded)
+            animator.SetBool("isJumping", false);
         #region 캐릭터 컨트롤러 isGrounded 안쓸때
         Vector3 origin = characterController.bounds.center; // ray 생성위치
         Vector3 direction = Vector3.down;                   // ray 방향
