@@ -1398,8 +1398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff49e0d3c261bc64d83c7a1f81020bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bgmMixGroup: {fileID: -2694171805289995914, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
-  m_EffectMixGruop: {fileID: 2763782583288775273, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
+  m_AudioMixer: {fileID: 24100000, guid: 9ed10f171b6ae7c4fb92fce7f22011b9, type: 2}
   m_bgmSlider: {fileID: 6554994317731059993}
   m_bgmPercent: {fileID: 6554994318681984488}
   m_bgmToggle: {fileID: 6554994319234761369}

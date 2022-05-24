@@ -21,6 +21,8 @@ public class AudioManager : MonoBehaviour
 
     [Header("MIX GROUP SETTING")]
     [SerializeField]
+    private AudioMixer m_AudioMixer; // 이펙트 음향 믹스 그룹
+    [SerializeField]
     private AudioMixerGroup bgmMixGroup = null;
     [SerializeField]
     private AudioMixerGroup effectMixGroup = null;
@@ -121,6 +123,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         PlaySoundTrack(SoundTrack.Inn);
+        m_AudioMixer.SetFloat("Effect", Mathf.Lerp(-80.0f, 0.0f, 1));
     }
 
     private void OnValidate()

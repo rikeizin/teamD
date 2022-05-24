@@ -766,7 +766,7 @@ GameObject:
   - component: {fileID: 994366967}
   - component: {fileID: 994366966}
   m_Layer: 0
-  m_Name: TestEffect
+  m_Name: "\uC774\uD399\uD2B8 \uC624\uB514\uC624 \uBBF9\uC11C \uD14C\uC2A4\uD2B8\uC6A9"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -786,7 +786,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1357,9 +1357,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2275121613826105546, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+      propertyPath: Mute
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2275121613826105551, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
       propertyPath: m_Name
       value: BGM&AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6554994317791939769, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+      propertyPath: m_MaxValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6554994317791939769, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
+      propertyPath: m_MinValue
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6554994317898844510, guid: 1c4ab4449fa90a84896d2bc69eddf507, type: 3}
       propertyPath: m_AnchorMax.x
