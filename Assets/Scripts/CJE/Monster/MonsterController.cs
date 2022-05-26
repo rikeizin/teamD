@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 /* 
  * MonsterController 
- * 2022.05.20 ¼öÁ¤
+ * 2022.05.26 ìˆ˜ì •
  */
 public class MonsterController : MonoBehaviour
 {
@@ -54,6 +54,11 @@ public class MonsterController : MonoBehaviour
             SetState(eMonsterState.Idle);
             m_anim.ResetTrigger("Hit");
         }
+    }
+
+    protected virtual void AnimEvent_DeadFinish()
+    {
+        Destroy(gameObject);
     }
     #endregion
 
@@ -218,14 +223,20 @@ public class MonsterController : MonoBehaviour
     public virtual void Hit()
     {
         m_anim.SetTrigger("Hit");
+        if (m_status.m_hp <= 0)
+        {
+            m_status.m_hp = 0f;
+            SetState(eMonsterState.Dead);
+        }
+        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
 
     public virtual void Dead()
     {
         if (!isDead)
         {
-            m_anim.SetTrigger("Dead");
             isDead = true;
+            m_anim.SetTrigger("Dead");
         }
     }
 }
