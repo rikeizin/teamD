@@ -14,8 +14,8 @@ public class PlayerController : MonoBehaviour, IBattle
     public float zInput;
 
     // 환경 변수
-    [SerializeField]
-    private float PLAYER_GRAVITY = -20;
+    //[SerializeField]
+    public float PLAYER_GRAVITY = -20;
     [SerializeField]
     private float RUN_SPEED = 8;
     [SerializeField]
@@ -32,16 +32,16 @@ public class PlayerController : MonoBehaviour, IBattle
     private float _maxHP = 100;
 
     private Vector3 _moveForce;
-    
-    [SerializeField]
-    private GameObject _camera2D;
+    public bool isMove2D = false;
+
+    public GameObject camera2D;
+    public GameObject camera3D;
     private Animator _animator = null;                                // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
     [HideInInspector]
     public CharacterController characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
     [HideInInspector]
     public NavMeshAgent navMeshAgent = null;
     [HideInInspector]
-    public NavMeshCharacter navMeshCharacter = null;
     private MoveType2D _move2D = null;
 
 
@@ -77,8 +77,6 @@ public class PlayerController : MonoBehaviour, IBattle
         _animator = GetComponent<Animator>();
         _move2D = GetComponent<MoveType2D>();
         characterController = GetComponent<CharacterController>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshCharacter = GetComponent<NavMeshCharacter>();
     }
 
     private void Start()
@@ -86,16 +84,33 @@ public class PlayerController : MonoBehaviour, IBattle
         _playerSpeed = RUN_SPEED;
     }
 
+    void Update()
+    {
+        if (isMove2D == false)
+        {
+            Move(_moveForce);
+        }
+        else
+        {
+            Camera2DMove();
+        }
+    }
+
     void FixedUpdate()
     {
         ApplyGravity();
-        Move();
-        Camera2DMove();
+    }
+    private void OnEnable()
+    {
+        Invoke("SceneCheck", 0.3f);
     }
 
     public void Jump()
     {
-        _moveForce.y = JUMP_FORCE;
+        if (isMove2D == false)
+            _moveForce.y = JUMP_FORCE;
+        else
+            _move2D._moveForce.y = JUMP_FORCE;
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -112,15 +127,13 @@ public class PlayerController : MonoBehaviour, IBattle
         }
     }
 
-    private void Move()
+    public void Move(Vector3 direction)
     {
-        if(_move2D?.enabled == false)
-        {
-            _animator.SetFloat("dirX", xInput, 0.1f, Time.deltaTime);   // 애니메이션 블렌드 부드럽게
-            _animator.SetFloat("dirZ", zInput, 0.1f, Time.deltaTime);   // 애니메이션 블렌드 부드럽게2
-            characterController.Move(_moveForce * Time.deltaTime);
-        }
+        _animator.SetFloat("dirX", xInput, 0.1f, Time.deltaTime);   // 애니메이션 블렌드 부드럽게
+        _animator.SetFloat("dirZ", zInput, 0.1f, Time.deltaTime);   // 애니메이션 블렌드 부드럽게2
+        characterController.Move(direction * Time.deltaTime);
     }
+
     public void MoveTo(Vector3 direction)
     {
         direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
@@ -131,14 +144,16 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        // 입력값을 받아서 회전 정도랑 이동 정도를 받아옴
-        Vector2 input = context.ReadValue<Vector2>();
-        xInput = input.x;
-        zInput = input.y;
+        if (isMove2D == false)
+        {
+            // 입력값을 받아서 회전 정도랑 이동 정도를 받아옴
+            Vector2 input = context.ReadValue<Vector2>();
+            xInput = input.x;
+            zInput = input.y;
 
-        MoveTo(new Vector3(xInput, 0, zInput));
-
-        // 애니메이션 설정
+            MoveTo(new Vector3(xInput, 0, zInput));
+        }
+        // 애니메이션 설정 
         if (context.started)
         {
             _animator.SetBool(hashIsRunning, true);
@@ -242,14 +257,6 @@ public class PlayerController : MonoBehaviour, IBattle
         }
     }
 
-    public void Camera2DMove()
-    {
-        if(_move2D?.enabled == true)
-        {
-            _camera2D.transform.LookAt(this.transform.position);
-            _camera2D.transform.position = new Vector3(0, this.transform.position.y, 0);
-        }
-    }
 
     public void ApplyGravity()
     {
@@ -264,14 +271,45 @@ public class PlayerController : MonoBehaviour, IBattle
         if (IsRollAnimating() || IsAttackAnimating())
         {
             _playerSpeed = 0;
+            _move2D.moveSpeed2D = 0;
         }
         else if (IsWalkAnimating())
         {
             _playerSpeed = WALK_SPEED;
+            _move2D.moveSpeed2D = WALK_SPEED / 2;
         }
         else
         {
             _playerSpeed = RUN_SPEED;
+            _move2D.moveSpeed2D = RUN_SPEED / 2;
+        }
+    }
+
+    public void Camera2DMove()
+    {
+        if (camera2D != null)
+        {
+            camera2D?.transform.LookAt(this.transform.position);
+            camera2D.transform.position = new Vector3(0, this.transform.position.y, 0);
+        }
+        
+    }
+
+    private void SceneCheck()
+    {
+        if (SceneManager.GetActiveScene().name == "Stage_OutOfTower")
+        {
+            camera3D.GetComponent<Camera>().enabled = false;
+            camera2D = GameObject.Find("Camera");
+            isMove2D = true;
+            _move2D.enabled = true;
+        }
+        else
+        {
+            camera3D.GetComponent<Camera>().enabled = true;
+            camera2D = null;
+            isMove2D = false;
+            _move2D.enabled = false;
         }
     }
 

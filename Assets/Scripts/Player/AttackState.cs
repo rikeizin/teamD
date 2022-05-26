@@ -14,12 +14,10 @@ public class AttackState : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player.IsAttack = true;
-        Debug.Log("Enter");
     }
  
     public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
     {
         player.IsAttack = false;
-        Debug.Log("Exit");
     }
 }
