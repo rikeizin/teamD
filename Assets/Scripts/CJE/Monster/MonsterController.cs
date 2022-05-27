@@ -40,30 +40,33 @@ public class MonsterController : MonoBehaviour
     #region Animation Event Methods
     protected virtual void AnimEvent_AttackFinish()
     {
+        m_anim.SetBool("Attack", false);
         if (!isDead)
         {
             SetState(eMonsterState.Idle);
-            m_anim.SetBool("Attack", false);
         }
     }
 
     protected virtual void AnimEvent_HitFinish()
     {
+        m_anim.ResetTrigger("Hit");
         if (!isDead)
         {
             SetState(eMonsterState.Idle);
-            m_anim.ResetTrigger("Hit");
         }
     }
 
     protected virtual void AnimEvent_DeadFinish()
     {
         Destroy(gameObject);
+        DropItem();
     }
     #endregion
 
     public Status m_status;
     public Slider m_Hpbar;
+    public GameObject[] m_rune;
+
 
     [SerializeField] protected eMonsterState m_state;
     protected GameObject m_player;
@@ -88,6 +91,7 @@ public class MonsterController : MonoBehaviour
     {
         SetMonster();
         m_player = GameObject.FindGameObjectWithTag("Player");
+        m_rune = Resources.LoadAll<GameObject>("Prefab/Rune");
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
         gameObject.SetActive(true);
@@ -222,7 +226,10 @@ public class MonsterController : MonoBehaviour
 
     public virtual void Hit()
     {
-        m_anim.SetTrigger("Hit");
+        if(!isDead)
+        {
+            m_anim.SetTrigger("Hit");
+        }
         if (m_status.m_hp <= 0)
         {
             m_status.m_hp = 0f;
@@ -233,10 +240,15 @@ public class MonsterController : MonoBehaviour
 
     public virtual void Dead()
     {
-        if (!isDead)
+        if(!isDead)
         {
             isDead = true;
             m_anim.SetTrigger("Dead");
         }
+    }
+
+    public virtual void DropItem()
+    {
+        Instantiate(m_rune[Random.Range(0, 9)], transform.position, transform.rotation);
     }
 }

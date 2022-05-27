@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Monster_Polygonal : MonsterController
 {
-    // 2022.05.20 수정
+    // 2022.05.26 수정
     public GameObject m_spit;
     public Transform m_spitPoint;
     public Text m_monsterName;
@@ -40,7 +40,6 @@ public class Monster_Polygonal : MonsterController
     public override void Hit()
     {
         base.Hit();
-        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
         m_monsterHp.text = m_status.m_hp + "/" + m_status.m_hpMax;
     }
     
@@ -56,7 +55,6 @@ public class Monster_Polygonal : MonsterController
             m_anim.SetBool("Attack", false);
         }
     }
-
 
     IEnumerator SpitCouroutine()
     {
