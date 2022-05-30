@@ -10,7 +10,7 @@ public class Beholder : MonsterController
     {    
         base.OnAwake();
 
-        m_status = new Status(100.0f, 20.0f, 6.0f, 10.0f, 10.0f);
+        m_status = new Status(100.0f, 20.0f, 3.0f, 10.0f, 10.0f);
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
 
     }
