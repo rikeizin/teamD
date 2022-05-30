@@ -1124,6 +1124,10 @@ PrefabInstance:
       propertyPath: p_Arrow
       value: 
       objectReference: {fileID: 5241115233431377470, guid: 58eeb84c661fca14688e12d5216d0f4b, type: 3}
+    - target: {fileID: 8101564786185555933, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
+      propertyPath: p_Meteor
+      value: 
+      objectReference: {fileID: 998308444641365946, guid: 0a5e19404105e66439e2d89b58b6d4e4, type: 3}
     - target: {fileID: 8508893349416126976, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
       propertyPath: m_RootOrder
       value: 4

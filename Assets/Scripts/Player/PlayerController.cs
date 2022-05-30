@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (context.started)
         {
-            StartCoroutine(FireArrow());
+            StartCoroutine(FireWand());
             if (!IsAttackLeftAnimating())
             {
                 _animator.SetTrigger(hashDoAttack);
@@ -326,10 +326,10 @@ public class PlayerController : MonoBehaviour, IBattle
         yield return new WaitForSeconds(0.45f);
 
         Rigidbody Meteor = Instantiate(p_Meteor, p_MeteorTransform.position, p_MeteorTransform.rotation) as Rigidbody;
-        Meteor.velocity = LunchForce * p_MeteorTransform.forward;
-        Meteor.velocity = LunchForce * p_MeteorTransform.up * -1;
+        Meteor.velocity = 25 * p_MeteorTransform.forward;
+        //Meteor.velocity = 2 * p_MeteorTransform.up * -1;
 
-        Destroy(Meteor.gameObject, 5.0f);
+        Destroy(Meteor.gameObject, 3.0f);
     }
 
     IEnumerator FireArrow()
@@ -351,9 +351,11 @@ public class PlayerController : MonoBehaviour, IBattle
         Rigidbody Wand2 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
         Rigidbody Wand3 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
     
-        Wand1.velocity = LunchForce * p_AttackTransform.forward;
-        Wand2.velocity = LunchForce * p_AttackTransform.forward;
-        Wand3.velocity = LunchForce * p_AttackTransform.forward;
+        Wand1.velocity = 14 * p_AttackTransform.forward;
+        yield return new WaitForSeconds(0.1f);
+        Wand2.velocity = 12 * p_AttackTransform.forward;
+        yield return new WaitForSeconds(0.1f);
+        Wand3.velocity = 10 * p_AttackTransform.forward;
     
         Destroy(Wand1.gameObject, 3.0f);
         Destroy(Wand2.gameObject, 3.0f);
