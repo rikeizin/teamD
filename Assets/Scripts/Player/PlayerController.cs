@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour, IBattle
     public Rigidbody p_Arrow;
     public Rigidbody p_Wand;
     public Rigidbody p_Meteor;
-    private float LunchForce;
+    private float LunchForce = 5.0f;
 
 
     #region hashes
@@ -176,6 +176,7 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (context.started)
         {
+            StartCoroutine(FireArrow());
             if (!IsAttackLeftAnimating())
             {
                 _animator.SetTrigger(hashDoAttack);
@@ -300,7 +301,7 @@ public class PlayerController : MonoBehaviour, IBattle
             camera2D?.transform.LookAt(this.transform.position);
             camera2D.transform.position = new Vector3(0, this.transform.position.y, 0);
         }
-        
+
     }
 
     private void SceneCheck()
@@ -320,17 +321,17 @@ public class PlayerController : MonoBehaviour, IBattle
             _move2D.enabled = false;
         }
     }
-    IEnumerator FireMetoer()
+    IEnumerator FireMeteor()
     {
         yield return new WaitForSeconds(0.45f);
 
         Rigidbody Meteor = Instantiate(p_Meteor, p_MeteorTransform.position, p_MeteorTransform.rotation) as Rigidbody;
-
         Meteor.velocity = LunchForce * p_MeteorTransform.forward;
         Meteor.velocity = LunchForce * p_MeteorTransform.up * -1;
 
         Destroy(Meteor.gameObject, 5.0f);
     }
+
     IEnumerator FireArrow()
     {
         yield return new WaitForSeconds(0.45f);
@@ -338,19 +339,22 @@ public class PlayerController : MonoBehaviour, IBattle
         Rigidbody Arrow = Instantiate(p_Arrow, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
         Arrow.velocity = LunchForce * p_AttackTransform.forward;
 
-        Destroy(Arrow.gameObject, 3.0f);
+        yield return new WaitForSeconds(0.5f);
+
+        Destroy(Arrow.gameObject, 4.0f);
     }
+
     IEnumerator FireWand()
     {
         yield return new WaitForSeconds(0.45f);
         Rigidbody Wand1 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
         Rigidbody Wand2 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
         Rigidbody Wand3 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
-
+    
         Wand1.velocity = LunchForce * p_AttackTransform.forward;
         Wand2.velocity = LunchForce * p_AttackTransform.forward;
         Wand3.velocity = LunchForce * p_AttackTransform.forward;
-
+    
         Destroy(Wand1.gameObject, 3.0f);
         Destroy(Wand2.gameObject, 3.0f);
         Destroy(Wand3.gameObject, 3.0f);
