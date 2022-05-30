@@ -7,13 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IBattle
 {
-    // Move ÀÔ·Â ¹Ş¾Æ¿À´Â º¯¼ö(RotateToMouse¿¡¼­ Á¢±Ù)
+    // Move ì…ë ¥ ë°›ì•„ì˜¤ëŠ” ë³€ìˆ˜(RotateToMouseì—ì„œ ì ‘ê·¼)
     [HideInInspector]
     public float xInput;
     [HideInInspector]
     public float zInput;
 
-    // È¯°æ º¯¼ö
+    // í™˜ê²½ ë³€ìˆ˜
     //[SerializeField]
     public float PLAYER_GRAVITY = -20;
     [SerializeField]
@@ -36,13 +36,21 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public GameObject camera2D;
     public GameObject camera3D;
-    private Animator _animator = null;                                // ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¹ÌÅÍ ¼³Á¤À» À§ÇØ Animator¸¦ ¹Ş¾Æ¿Â´Ù.
+    private Animator _animator = null;                                // ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„° ì„¤ì •ì„ ìœ„í•´ Animatorë¥¼ ë°›ì•„ì˜¨ë‹¤.
     [HideInInspector]
-    public CharacterController characterController = null;          // Ä³¸¯ÅÍ ÄÁÆ®·Ñ·¯¿¡ Äİ¶óÀÌ´õ¿Í ¸®Áöµå¹Ùµğ Á¤º¸°¡ ´ã°ÜÀÖÀ¸¹Ç·Î ºÒ·¯¿Â´Ù.
+    public CharacterController characterController = null;          // ìºë¦­í„° ì»¨íŠ¸ë¡¤ëŸ¬ì— ì½œë¼ì´ë”ì™€ ë¦¬ì§€ë“œë°”ë”” ì •ë³´ê°€ ë‹´ê²¨ìˆìœ¼ë¯€ë¡œ ë¶ˆëŸ¬ì˜¨ë‹¤.
     [HideInInspector]
     public NavMeshAgent navMeshAgent = null;
     [HideInInspector]
     private MoveType2D _move2D = null;
+
+
+    public Transform p_AttackTransform;
+    public Transform p_MeteorTransform;
+    public Rigidbody p_Arrow;
+    public Rigidbody p_Wand;
+    public Rigidbody p_Meteor;
+    private float LunchForce;
 
 
     #region hashes
@@ -129,8 +137,8 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void Move(Vector3 direction)
     {
-        _animator.SetFloat("dirX", xInput, 0.1f, Time.deltaTime);   // ¾Ö´Ï¸ŞÀÌ¼Ç ºí·»µå ºÎµå·´°Ô
-        _animator.SetFloat("dirZ", zInput, 0.1f, Time.deltaTime);   // ¾Ö´Ï¸ŞÀÌ¼Ç ºí·»µå ºÎµå·´°Ô2
+        _animator.SetFloat("dirX", xInput, 0.1f, Time.deltaTime);   // ì• ë‹ˆë©”ì´ì…˜ ë¸”ë Œë“œ ë¶€ë“œëŸ½ê²Œ
+        _animator.SetFloat("dirZ", zInput, 0.1f, Time.deltaTime);   // ì• ë‹ˆë©”ì´ì…˜ ë¸”ë Œë“œ ë¶€ë“œëŸ½ê²Œ2
         characterController.Move(direction * Time.deltaTime);
     }
 
@@ -146,14 +154,14 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (isMove2D == false)
         {
-            // ÀÔ·Â°ªÀ» ¹Ş¾Æ¼­ È¸Àü Á¤µµ¶û ÀÌµ¿ Á¤µµ¸¦ ¹Ş¾Æ¿È
+            // ì…ë ¥ê°’ì„ ë°›ì•„ì„œ íšŒì „ ì •ë„ë‘ ì´ë™ ì •ë„ë¥¼ ë°›ì•„ì˜´
             Vector2 input = context.ReadValue<Vector2>();
             xInput = input.x;
             zInput = input.y;
 
             MoveTo(new Vector3(xInput, 0, zInput));
         }
-        // ¾Ö´Ï¸ŞÀÌ¼Ç ¼³Á¤ 
+        // ì• ë‹ˆë©”ì´ì…˜ ì„¤ì • 
         if (context.started)
         {
             _animator.SetBool(hashIsRunning, true);
@@ -220,7 +228,7 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void TakeDamage(float damage)
     {
-        //Debug.Log($"{gameObject.name} : {damage} µ¥¹ÌÁö ÀÔÀ½");
+        //Debug.Log($"{gameObject.name} : {damage} ë°ë¯¸ì§€ ì…ìŒ");
         float finalDamage = damage - _defencePower;
         if (finalDamage < 1.0f)
         {
@@ -311,6 +319,41 @@ public class PlayerController : MonoBehaviour, IBattle
             isMove2D = false;
             _move2D.enabled = false;
         }
+    }
+    IEnumerator FireMetoer()
+    {
+        yield return new WaitForSeconds(0.45f);
+
+        Rigidbody Meteor = Instantiate(p_Meteor, p_MeteorTransform.position, p_MeteorTransform.rotation) as Rigidbody;
+
+        Meteor.velocity = LunchForce * p_MeteorTransform.forward;
+        Meteor.velocity = LunchForce * p_MeteorTransform.up * -1;
+
+        Destroy(Meteor.gameObject, 5.0f);
+    }
+    IEnumerator FireArrow()
+    {
+        yield return new WaitForSeconds(0.45f);
+
+        Rigidbody Arrow = Instantiate(p_Arrow, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+        Arrow.velocity = LunchForce * p_AttackTransform.forward;
+
+        Destroy(Arrow.gameObject, 3.0f);
+    }
+    IEnumerator FireWand()
+    {
+        yield return new WaitForSeconds(0.45f);
+        Rigidbody Wand1 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+        Rigidbody Wand2 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+        Rigidbody Wand3 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+
+        Wand1.velocity = LunchForce * p_AttackTransform.forward;
+        Wand2.velocity = LunchForce * p_AttackTransform.forward;
+        Wand3.velocity = LunchForce * p_AttackTransform.forward;
+
+        Destroy(Wand1.gameObject, 3.0f);
+        Destroy(Wand2.gameObject, 3.0f);
+        Destroy(Wand3.gameObject, 3.0f);
     }
 
     private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;
