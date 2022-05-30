@@ -27,4 +27,12 @@ public class Mage : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         Destroy(gameObject);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

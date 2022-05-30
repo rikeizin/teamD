@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Golem : MonsterController
 {
     private GameObject m_rockPoint;    
     public GameObject m_rock;
+
+    public Text m_monsterName;
+    public Text m_monsterHp;
 
     #region Animation Event Methods
     protected void AnimEvent_AttackThrow()
@@ -25,18 +29,22 @@ public class Golem : MonsterController
     protected override void OnAwake()
     {
         base.OnAwake();
-        //m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
-
         m_status = new Status(100.0f, 10.0f, 10.0f, 15.0f, 15.0f); 
+        
         m_rockPoint = GameObject.Find("RockPoint").gameObject;       
-
+        
+        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
+        m_monsterName.text = "GOLEM";
+        m_monsterHp.text = m_status.m_hp + "/" + m_status.m_hpMax;
     }
 
-    //public override void Hit()
-    //{
-    //    base.Hit();
-    //    m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
-    //}
+    public override void Hit()
+    {
+        base.Hit();
+        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
+        m_monsterHp.text = m_status.m_hp + "/" + m_status.m_hpMax;
+
+    }
 
     public override void Attack()
     {
