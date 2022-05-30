@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
     Queue<IBattle> hitTarget = new Queue<IBattle>(16);
     Player player = null;
     MonsterController mons = null;
+
     public struct P_WeaponsDamage
     {
         public float d_sword;
@@ -15,13 +16,15 @@ public class Weapon : MonoBehaviour
         public float d_wand;
         public float d_mace;
         public float d_arrow;
-        public P_WeaponsDamage(float bsword, float sword, float wand, float mace, float arrow)
+        public float d_meteor;
+        public P_WeaponsDamage(float bsword, float sword, float wand, float mace, float arrow,float meteor)
         {
             d_bsword = bsword = 5.0f ;
             d_sword = sword = 15.0f;
             d_wand = wand = 4.0f;
             d_mace = mace = 30.0f;
             d_arrow = arrow = 8.0f;
+            d_meteor = meteor = 45.0f;
         }
     }
     public enum P_WaeponName
@@ -29,6 +32,9 @@ public class Weapon : MonoBehaviour
         BasicSword = 0 ,
         Sword_Sample = 1,
         Mace_Sample = 2,
+        Arrow = 3,
+        WandAttack = 4,
+        Meteor2 = 5 
     }
 
     public P_WeaponsDamage PDamage;
@@ -36,29 +42,45 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         mons = other.GetComponent<MonsterController>();
         //Debug.Log($"target2 : {other.gameObject.name}");
+        Debug.Log("ÏôúÏïàÎèº?2");
         if (player.IsAttack && other.CompareTag("Enemy")
             && other.gameObject != player.gameObject)
         {
+            Debug.Log("ÏôúÏïàÎèº?");
             switch (PName)
             {
                 case P_WaeponName.BasicSword:
                     mons.m_status.m_hp -= player.attackPower + PDamage.d_bsword;
-                    Debug.Log("±‚∫ª∞À¿∏∑Œ..!");
+                    Debug.Log("Í∏∞Î≥∏Í≤ÄÏúºÎ°ú..!");
                     break;
                 case P_WaeponName.Sword_Sample:
                     mons.m_status.m_hp -= player.attackPower + PDamage.d_sword;
-                    Debug.Log("∞À¿∏∑Œ..!");
+                    Debug.Log("Í≤ÄÏúºÎ°ú..!");
                     break;
                 case P_WaeponName.Mace_Sample:
                     mons.m_status.m_hp -= player.attackPower + PDamage.d_mace;
-                    Debug.Log("∏¡ƒ°∑Œ..!");
+                    Debug.Log("ÎßùÏπòÎ°ú..!");
                     break;
+                case P_WaeponName.Arrow:
+                    mons.m_status.m_hp -= player.attackPower + PDamage.d_arrow;
+                    Debug.Log("Arrow..!");
+                    break;
+                case P_WaeponName.WandAttack:
+                    mons.m_status.m_hp -= player.attackPower + PDamage.d_wand;
+                    Debug.Log("WandAttack..!");
+                    break;
+                case P_WaeponName.Meteor2:
+                    mons.m_status.m_hp -= player.attackPower + PDamage.d_meteor;
+                    Debug.Log("Meteor2..!");
+                    break;
+
             }
             Debug.Log($"target : {other.gameObject.transform.name}");
             mons.Hit();
@@ -69,6 +91,8 @@ public class Weapon : MonoBehaviour
                 hitTarget.Enqueue(battle);
             }
         }
+
+
     }
 
     public IBattle GetHitTarget()

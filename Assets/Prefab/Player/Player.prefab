@@ -6702,9 +6702,9 @@ MonoBehaviour:
   navMeshAgent: {fileID: 0}
   p_AttackTransform: {fileID: 7252606079890620540}
   p_MeteorTransform: {fileID: 1125831970934986841}
-  p_Arrow: {fileID: 7312345585286433006, guid: 58eeb84c661fca14688e12d5216d0f4b, type: 3}
+  p_Arrow: {fileID: 5241115233431377470, guid: 58eeb84c661fca14688e12d5216d0f4b, type: 3}
   p_Wand: {fileID: 7554101083897790368, guid: aa841e7b31da146448fafcea63da73f2, type: 3}
-  p_Meteor: {fileID: 4415529799296777418, guid: 3c9ef05ebe4ede34b8c5392eb3296570, type: 3}
+  p_Meteor: {fileID: 998308444641365946, guid: 0a5e19404105e66439e2d89b58b6d4e4, type: 3}
 --- !u!114 &1350218518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6735,6 +6735,7 @@ MonoBehaviour:
   - {fileID: 5964365392672703359}
   - {fileID: 2564266170955872885}
   hasWeapons: 0101010101
+  CurrentGold: 0
   runeIndex: 0
 --- !u!114 &178784668213130018
 MonoBehaviour:

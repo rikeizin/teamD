@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (context.started)
         {
-            StartCoroutine(FireWand());
+            StartCoroutine(FireArrow());
             if (!IsAttackLeftAnimating())
             {
                 _animator.SetTrigger(hashDoAttack);

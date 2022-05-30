@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5911815483921045490}
   - component: {fileID: 7482294850827060085}
   - component: {fileID: 998308444641365946}
+  - component: {fileID: 4981318700347004355}
   m_Layer: 0
   m_Name: Meteor2
   m_TagString: Untagged
@@ -114,6 +115,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4981318700347004355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5934781225126043556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf9ce80584146644aaeeedf8642966e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PName: 5
 --- !u!1001 &3475001289466924783
 PrefabInstance:
   m_ObjectHideFlags: 0
