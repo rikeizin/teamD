@@ -7,6 +7,8 @@ TagManager:
   - Object
   - Rune
   - Enemy
+  - Weapons
+  - Gold
   layers:
   - Default
   - TransparentFX

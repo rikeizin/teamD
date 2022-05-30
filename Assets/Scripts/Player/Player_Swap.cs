@@ -10,6 +10,7 @@ public class Player_Swap : PlayerStatus
     public GameObject[] Weapons;
     public bool[] hasWeapons;
     Rune rune1 = null;
+    public int CurrentGold = 0;
 
     Animator animator = null;
     GameObject nearobject;
@@ -18,6 +19,9 @@ public class Player_Swap : PlayerStatus
     int equipWeaponIndex = -1;
     [HideInInspector]
     public int runeIndex = 0;
+    
+    private int Gold;
+
 
     private void Awake()
     {
@@ -96,7 +100,16 @@ public class Player_Swap : PlayerStatus
             }
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Gold")
+        {
+            Gold = Random.Range(1, 5);
+            CurrentGold = CurrentGold + Gold;
 
+            Destroy(other.gameObject);
+        }
+    }
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Rune" || other.tag == "Weapons")

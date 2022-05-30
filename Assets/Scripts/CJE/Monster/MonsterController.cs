@@ -66,6 +66,7 @@ public class MonsterController : MonoBehaviour
     public Status m_status;
     public Slider m_Hpbar;
     public GameObject[] m_rune;
+    public GameObject m_gold;
 
 
     [SerializeField] protected eMonsterState m_state;
@@ -250,5 +251,6 @@ public class MonsterController : MonoBehaviour
     public virtual void DropItem()
     {
         Instantiate(m_rune[Random.Range(0, 9)], transform.position, transform.rotation);
+        Instantiate(m_gold, transform.position, transform.rotation);
     }
 }
