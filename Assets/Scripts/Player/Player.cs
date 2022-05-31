@@ -26,17 +26,17 @@ public class Player : MonoBehaviour
     public float gold;
     public bool IsAttack { get; set; }
 
-    private PlayerController playerCtrl = null;                   // MovementCharacterController ½ºÅ©¸³Æ®ÀÇ moveTo ÇÔ¼ö¸¦ »ç¿ëÇÏ±â À§ÇØ movement¶ó´Â ÀÌ¸§À¸·Î ¹Ş¾Æ¿Â´Ù.
-    private RotateToMouse rotateToMouse = null;                   // Ä³¸¯ÅÍ ½Ã¾ß È¸Àü ½ºÅ©¸³Æ®¸¦ ¹Ş¾Æ¿Â´Ù. 
-    private CharacterController characterController = null;       // Ä³¸¯ÅÍ ÄÁÆ®·Ñ·¯¿¡ Äİ¶óÀÌ´õ¿Í ¸®Áöµå¹Ùµğ Á¤º¸°¡ ´ã°ÜÀÖÀ¸¹Ç·Î ºÒ·¯¿Â´Ù.
-    public Animator animator = null;                             // ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¹ÌÅÍ ¼³Á¤À» À§ÇØ Animator¸¦ ¹Ş¾Æ¿Â´Ù.
+    private PlayerController playerCtrl = null;                   // MovementCharacterController ìŠ¤í¬ë¦½íŠ¸ì˜ moveTo í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ê¸° ìœ„í•´ movementë¼ëŠ” ì´ë¦„ìœ¼ë¡œ ë°›ì•„ì˜¨ë‹¤.
+    private RotateToMouse rotateToMouse = null;                   // ìºë¦­í„° ì‹œì•¼ íšŒì „ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë°›ì•„ì˜¨ë‹¤. 
+    private CharacterController characterController = null;       // ìºë¦­í„° ì»¨íŠ¸ë¡¤ëŸ¬ì— ì½œë¼ì´ë”ì™€ ë¦¬ì§€ë“œë°”ë”” ì •ë³´ê°€ ë‹´ê²¨ìˆìœ¼ë¯€ë¡œ ë¶ˆëŸ¬ì˜¨ë‹¤.
+    public Animator animator = null;                             // ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„° ì„¤ì •ì„ ìœ„í•´ Animatorë¥¼ ë°›ì•„ì˜¨ë‹¤.
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        rotateToMouse = GetComponent<RotateToMouse>();               //½ºÅ©¸³Æ®¸¦ ¹Ş¾Æ¿Â´Ù.
-        playerCtrl = GetComponent<PlayerController>();      //½ºÅ©¸³Æ®¸¦ ¹Ş¾Æ¿Â´Ù.
+        rotateToMouse = GetComponent<RotateToMouse>();               //ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë°›ì•„ì˜¨ë‹¤.
+        playerCtrl = GetComponent<PlayerController>();      //ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë°›ì•„ì˜¨ë‹¤.
     }
 
     private void Update()
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         GroundCheck();
     }
 
-    private void UpdateRotate() // Ä³¸¯ÅÍ ½Ã¾ß È¸Àü
+    private void UpdateRotate() // ìºë¦­í„° ì‹œì•¼ íšŒì „
     {
         if(playerCtrl.isMove2D == false)
         {
@@ -57,29 +57,29 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void UpdateMove() // Ä³¸¯ÅÍ ¿òÁ÷ÀÓ
+    private void UpdateMove() // ìºë¦­í„° ì›€ì§ì„
     {
         playerCtrl.MoveTo(new Vector3(playerCtrl.xInput, 0, playerCtrl.zInput));
     }
 
-    public void GroundCheck() // ¶¥ ¹â°í ÀÖ´ÂÁö
+    public void GroundCheck() // ë•… ë°Ÿê³  ìˆëŠ”ì§€
     {
         if (characterController.isGrounded)
             animator.SetBool("isJumping", false);
-        #region Ä³¸¯ÅÍ ÄÁÆ®·Ñ·¯ isGrounded ¾È¾µ¶§
-        Vector3 origin = characterController.bounds.center; // ray »ı¼ºÀ§Ä¡
-        Vector3 direction = Vector3.down;                   // ray ¹æÇâ
-        Ray ray = new Ray(origin, direction);               // »õ·Î¿î ray ¸¸µé±â
+        #region ìºë¦­í„° ì»¨íŠ¸ë¡¤ëŸ¬ isGrounded ì•ˆì“¸ë•Œ
+        Vector3 origin = characterController.bounds.center; // ray ìƒì„±ìœ„ì¹˜
+        Vector3 direction = Vector3.down;                   // ray ë°©í–¥
+        Ray ray = new Ray(origin, direction);               // ìƒˆë¡œìš´ ray ë§Œë“¤ê¸°
 
-        RaycastHit rayHit;                                  // hitinfo. Ãæµ¹Ã¼ Á¤º¸¸¦ ¹Ş¾Æ¿Ã º¯¼ö ¸¸µé±â
-        float radius = 0.2f;                                // ray¸¦ µû¶ó¼­ ¹ß»çÇÒ Sphere(±¸)ÀÇ ¹İÁö¸§. Ä³¸¯ÅÍ Äİ¶óÀÌ´õº¸´Ù Á¶±İ ´õ ÀÛ°Ô Çß´Ù.(Ä³¸¯ÅÍ : 0.2)
-        Physics.SphereCast(ray, radius, out rayHit);        // ray¸¦ µû¶ó¼­, radius Å©±âÀÇ Sphere¸¦ ¹ß»çÇÏ°í, rayHit¿¡ Ãæµ¹Ã¼ Á¤º¸¸¦ Àü´ŞÇÑ´Ù.
+        RaycastHit rayHit;                                  // hitinfo. ì¶©ëŒì²´ ì •ë³´ë¥¼ ë°›ì•„ì˜¬ ë³€ìˆ˜ ë§Œë“¤ê¸°
+        float radius = 0.2f;                                // rayë¥¼ ë”°ë¼ì„œ ë°œì‚¬í•  Sphere(êµ¬)ì˜ ë°˜ì§€ë¦„. ìºë¦­í„° ì½œë¼ì´ë”ë³´ë‹¤ ì¡°ê¸ˆ ë” ì‘ê²Œ í–ˆë‹¤.(ìºë¦­í„° : 0.2)
+        Physics.SphereCast(ray, radius, out rayHit);        // rayë¥¼ ë”°ë¼ì„œ, radius í¬ê¸°ì˜ Sphereë¥¼ ë°œì‚¬í•˜ê³ , rayHitì— ì¶©ëŒì²´ ì •ë³´ë¥¼ ì „ë‹¬í•œë‹¤.
 
-        if (characterController.velocity.y < 0)             // Ä³¸¯ÅÍ°¡ ¾Æ·¡·Î ¶³¾îÁö°í ÀÖÀ» ¶§
+        if (characterController.velocity.y < 0)             // ìºë¦­í„°ê°€ ì•„ë˜ë¡œ ë–¨ì–´ì§€ê³  ìˆì„ ë•Œ
         {
-            if (rayHit.collider != null)                    // ray¿¡ ¹º°¡ ´ê¾ÒÀ» °æ¿ì 
+            if (rayHit.collider != null)                    // rayì— ë­”ê°€ ë‹¿ì•˜ì„ ê²½ìš° 
             {
-                if (rayHit.distance < 0.85f)                // ray¿Í Ãæµ¹Ã¼ »çÀÌÀÇ °Å¸®°¡ 0.8º¸´Ù ÂªÀ» °æ¿ì isJumping = false
+                if (rayHit.distance < 0.85f)                // rayì™€ ì¶©ëŒì²´ ì‚¬ì´ì˜ ê±°ë¦¬ê°€ 0.8ë³´ë‹¤ ì§§ì„ ê²½ìš° isJumping = false
                 {                 
                     animator.SetBool("isJumping", false);
                     animator.applyRootMotion = true;

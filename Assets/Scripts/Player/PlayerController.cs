@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour, IBattle
     public float zInput;
 
     // 환경 변수
-    //[SerializeField]
     public float PLAYER_GRAVITY = -20;
     [SerializeField]
     private float RUN_SPEED = 8;
@@ -23,6 +22,7 @@ public class PlayerController : MonoBehaviour, IBattle
     [SerializeField]
     private float JUMP_FORCE = 10;
 
+    // 플레이어 스탯
     [SerializeField]
     private float _playerSpeed = 0;
     private float _attackPower = 10;
@@ -40,19 +40,17 @@ public class PlayerController : MonoBehaviour, IBattle
     [HideInInspector]
     public CharacterController characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
     [HideInInspector]
-    public NavMeshAgent navMeshAgent = null;
-    [HideInInspector]
     private MoveType2D _move2D = null;
 
-
+    // 특수공격
     public Transform p_AttackTransform;
     public Transform p_MeteorTransform;
     public Rigidbody p_Arrow;
     public Rigidbody p_Wand;
     public Rigidbody p_Meteor;
-    private float LunchForce = 5.0f;
+    private float _lunchForce = 5.0f;
 
-
+    private Player_Swap _swap = null;
     #region hashes
     // State
     private readonly int hashIsRunning = Animator.StringToHash("isRunning");
@@ -73,6 +71,9 @@ public class PlayerController : MonoBehaviour, IBattle
     private readonly int hashAttackLeft00 = Animator.StringToHash("Attack_Left_00");
     private readonly int hashAttackLeft01 = Animator.StringToHash("Attack_Left_01");
     private readonly int hashAttackLeft02 = Animator.StringToHash("Attack_Left_02");
+    private readonly int hashAttackLeftWand = Animator.StringToHash("Attack_Left_Wand");
+    private readonly int hashAttackRightWand = Animator.StringToHash("Attack_Right_Wand");
+
 
     // Values
     private readonly int hashAttackComboInteger = Animator.StringToHash("AttackCombo");
@@ -84,6 +85,7 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         _animator = GetComponent<Animator>();
         _move2D = GetComponent<MoveType2D>();
+        _swap = GetComponent<Player_Swap>();
         characterController = GetComponent<CharacterController>();
     }
 
@@ -176,7 +178,11 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (context.started)
         {
-            StartCoroutine(FireArrow());
+            if ((_swap.equipWeaponIndex == 3) && !IsMagicAttackAnimating())
+            {
+                StartCoroutine(FireWand());
+            }
+
             if (!IsAttackLeftAnimating())
             {
                 _animator.SetTrigger(hashDoAttack);
@@ -190,6 +196,8 @@ public class PlayerController : MonoBehaviour, IBattle
             {
                 _animator.SetInteger(hashAttackComboInteger, 2);
             }
+
+
         }
 
         if (context.canceled)
@@ -202,6 +210,11 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (!context.started)
         {
+            if ((_swap.equipWeaponIndex == 3) && !IsMagicAttackAnimating())
+            {
+                StartCoroutine(FireMeteor());
+            }
+
             if (!IsAttackRightAnimating())
             {
                 _animator.SetTrigger(hashDoAttack2);
@@ -321,15 +334,21 @@ public class PlayerController : MonoBehaviour, IBattle
             _move2D.enabled = false;
         }
     }
+
     IEnumerator FireMeteor()
     {
-        yield return new WaitForSeconds(0.45f);
-
-        Rigidbody Meteor = Instantiate(p_Meteor, p_MeteorTransform.position, p_MeteorTransform.rotation) as Rigidbody;
-        Meteor.velocity = 25 * p_MeteorTransform.forward;
-        //Meteor.velocity = 2 * p_MeteorTransform.up * -1;
-
-        Destroy(Meteor.gameObject, 3.0f);
+        while (true)
+        {
+            if (IsAttackRightWandAnimating() && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.6)
+            {
+                Rigidbody Meteor = Instantiate(p_Meteor, p_MeteorTransform.position, p_MeteorTransform.rotation) as Rigidbody;
+                Meteor.velocity = 15 * p_MeteorTransform.forward;
+                //Meteor.velocity = 2 * p_MeteorTransform.up * -1;
+                Destroy(Meteor.gameObject, 3.0f);
+                break;
+            }
+            yield return null;
+        }
     }
 
     IEnumerator FireArrow()
@@ -337,7 +356,7 @@ public class PlayerController : MonoBehaviour, IBattle
         yield return new WaitForSeconds(0.45f);
 
         Rigidbody Arrow = Instantiate(p_Arrow, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
-        Arrow.velocity = LunchForce * p_AttackTransform.forward;
+        Arrow.velocity = _lunchForce * p_AttackTransform.forward;
 
         yield return new WaitForSeconds(0.5f);
 
@@ -346,20 +365,27 @@ public class PlayerController : MonoBehaviour, IBattle
 
     IEnumerator FireWand()
     {
-        yield return new WaitForSeconds(0.45f);
-        Rigidbody Wand1 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
-        Rigidbody Wand2 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
-        Rigidbody Wand3 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
-    
-        Wand1.velocity = 14 * p_AttackTransform.forward;
-        yield return new WaitForSeconds(0.1f);
-        Wand2.velocity = 12 * p_AttackTransform.forward;
-        yield return new WaitForSeconds(0.1f);
-        Wand3.velocity = 10 * p_AttackTransform.forward;
-    
-        Destroy(Wand1.gameObject, 3.0f);
-        Destroy(Wand2.gameObject, 3.0f);
-        Destroy(Wand3.gameObject, 3.0f);
+        while (true)
+        {
+            if (IsAttackLeftWandAnimating() && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45)
+            {
+                Rigidbody Wand1 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+                //Rigidbody Wand2 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+                //Rigidbody Wand3 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+
+                Wand1.velocity = 14 * p_AttackTransform.forward;
+                //yield return new WaitForSeconds(0.1f);
+                //Wand2.velocity = 12 * p_AttackTransform.forward;
+                //yield return new WaitForSeconds(0.1f);
+                //Wand3.velocity = 10 * p_AttackTransform.forward;
+
+                Destroy(Wand1.gameObject, 3.0f);
+                //Destroy(Wand2.gameObject, 3.0f);
+                //Destroy(Wand3.gameObject, 3.0f);
+                break;
+            }
+            yield return null;
+        }
     }
 
     private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;
@@ -367,10 +393,14 @@ public class PlayerController : MonoBehaviour, IBattle
     private bool IsRollAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashRolling;
 
     public bool IsAttackAnimating() => IsAttackLeftAnimating() || IsAttackRightAnimating();
-    private bool IsAttackRightAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRight00;
-    private bool IsAttackLeftAnimating() => IsAttackLeft0Animating() || IsAttackLeft1Animating() || IsAttackLeft2Animating();
+    private bool IsAttackRightAnimating() => IsAttackRight0Animating() || IsAttackRightWandAnimating();
+    private bool IsAttackLeftAnimating() => IsAttackLeft0Animating() || IsAttackLeft1Animating() || IsAttackLeft2Animating() || IsAttackLeftWandAnimating();
+    private bool IsMagicAttackAnimating() => IsAttackLeftWandAnimating() || IsAttackRightWandAnimating();
+    private bool IsAttackRight0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRight00;
     private bool IsAttackLeft0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft00;
     private bool IsAttackLeft1Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft01;
     private bool IsAttackLeft2Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft02;
+    private bool IsAttackLeftWandAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeftWand;
+    private bool IsAttackRightWandAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRightWand;
 }
 

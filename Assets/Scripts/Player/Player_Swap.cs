@@ -16,7 +16,7 @@ public class Player_Swap : PlayerStatus
     GameObject nearobject;
     GameObject equipWeapons;
     int weaponIndex = -1;
-    int equipWeaponIndex = -1;
+    public int equipWeaponIndex = -1;
     [HideInInspector]
     public int runeIndex = 0;
     

@@ -14889,7 +14889,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 2.5
   m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!135 &3485851274103940324
 SphereCollider:
@@ -14916,5 +14916,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e55fc910d97ea34494a38fac9a22ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Runes: []
+  hasRunes: 
+  Weapons: []
+  hasWeapons: 
+  CurrentGold: 0
+  equipWeaponIndex: -1
+  runeIndex: 0
   type: 5
   value: 5

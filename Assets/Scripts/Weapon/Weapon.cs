@@ -47,9 +47,8 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        mons = other.GetComponent<MonsterController>();
+        mons = other.gameObject.GetComponent<MonsterController>();
         //Debug.Log($"target2 : {other.gameObject.name}");
-        Debug.Log("왜안돼?2");
         if (player.IsAttack && other.CompareTag("Enemy")
             && other.gameObject != player.gameObject)
         {
