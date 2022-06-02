@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RandomMap {
     
@@ -81,6 +82,20 @@ namespace RandomMap {
         [SerializeField]
         private GameObject[] liftObjs;
 
+        [Header("몬스터 랜덤 스폰 설정")]
+        private int spawnCount = 0;
+        public int minSpawnCount = 10;
+        public int maxSpawnCount = 15;
+        public GameObject[] EncounterPrefabs;
+        private static List<Area> enableSpawnAreas;
+        public static List<Area> EnableSpawnAreas
+        {
+            get
+            {
+                return enableSpawnAreas;
+            }
+        }
+
         enum PurposeOfGate
         {
             startPoint,
@@ -93,6 +108,7 @@ namespace RandomMap {
             MapBoundSet();
             LocalNavMeshBuildBoundSet();
             GenerateMap();
+            PreCalculateReadEnableSpawnZone();
         }
 
         #region 맵 공간 및 네브메쉬 베이크 공간 할당
@@ -216,30 +232,20 @@ namespace RandomMap {
                     thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);   // 첫구역 입구방향 벽추가
                     CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint); // 던전입구 생성
                 }
-                else if (index == areaArray.Length-1)
+                else if (index == areaArray.Length - 1)
                 {
                     // 마지막 구역 생성
-                    if (thisArea.floorCount > 0)
+                    if (thisArea.floorCount > 0 && thisArea.passedDir == Direction.Down)
                     {
-                        if(thisArea.passedDir == Direction.Down)
-                        {
-                            // 마지막섹션이 연속되는 층의 최상층의 섹션인경우 출구오브젝트를 1층섹션에서 생성
-                            CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
-                            thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir));     // 마지막구역 출구방향 벽추가
-                        } 
-                        else if (thisArea.passedDir == Direction.Up)
-                        {
-                            CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.upStairsNextDir), PurposeOfGate.endPoint); // 던전출구 생성
-                            thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, DirectionExt.GetOpposite(thisArea.upStairsNextDir));     // 마지막구역 출구방향 벽추가
-                        }
+                        // 마지막섹션이 연속되는 층의 최상층의 섹션인경우 출구오브젝트를 1층섹션에서 생성
+                        CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
                     }
                     else
                     {
                         // 일반적인경우
+                        thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
                         CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
                     }
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, DirectionExt.GetOpposite(thisArea.passedDir));     // 마지막구역 출구방향 벽추가
                 }
 
                 //Debug.Log($"{i}번째 인덱스 최종 생성");
@@ -611,6 +617,45 @@ namespace RandomMap {
                     Debug.Log($"승강 오브젝트 방향셋팅 오류!!");
                     //isGenerate = false;
                     break;
+            }
+        }
+        
+        private void PreCalculateReadEnableSpawnZone()
+        {
+            if (EncounterPrefabs != null && EncounterPrefabs.Length > 0)
+            {
+                enableSpawnAreas = new List<Area>();
+                for (int index = 0; index < areaArray.Length; index++)
+                {
+                    if (areaArray[index].blockedDir.Contains(Direction.Down))
+                    {
+                        enableSpawnAreas.Add(areaArray[index]);
+                    }
+                }
+            }
+            SpawnEncounters();
+        }
+
+        public void SpawnEncounters()
+        {
+            GameObject.Find("LocalNavMeshBuilder").GetComponent<LocalNavMeshBuilder>().UpdateNavMesh(false);
+            if (enableSpawnAreas != null && enableSpawnAreas.Count > 0)
+            {
+                GameObject encounterGroup = new GameObject("Encounters");
+                spawnCount = Random.Range(minSpawnCount, maxSpawnCount + 1);
+                for (int i = 0; i < spawnCount; i++)
+                {
+                    int randSpawnIndex = Random.Range(0, enableSpawnAreas.Count);
+                    Vector3 spawnPos = enableSpawnAreas[randSpawnIndex].gameObject.transform.position
+                                        + new Vector3(Random.Range(0, sectionWidth), 0, Random.Range(0, sectionWidth));
+                    NavMeshHit hit;
+                    bool FindNavMeshHit = NavMesh.SamplePosition(spawnPos, out hit, 2.5f, NavMesh.AllAreas);
+                    if (FindNavMeshHit)
+                    {
+                        spawnPos = hit.position;
+                    }
+                    Instantiate(EncounterPrefabs[Random.Range(0, EncounterPrefabs.Length)], spawnPos, Quaternion.identity, encounterGroup.transform);
+                }
             }
         }
 
