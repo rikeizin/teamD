@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RandomMap {
     
     public class MapManager : MonoBehaviour
     {
-        #region ¸É¹ö º¯¼ö
+        #region ë§´ë²„ ë³€ìˆ˜
         private MapManager instance = null;
         public MapManager Inst
         {
@@ -20,14 +21,14 @@ namespace RandomMap {
                 return instance;
             }
         }
-        private Area[,,] coordinate; // ÁÂÇ¥
+        private Area[,,] coordinate; // ì¢Œí‘œ
         private Area[] areaArray;
         private const int TOTAL_DIR_CNT = 6;
         private const int HORIZONTAL_DIR_CNT = 4;
         private Area thisArea;
 
 
-        [Header("¸Ê ÀüÃ¼ Çã¿ë »çÀÌÁî ÇÒ´ç")]
+        [Header("ë§µ ì „ì²´ í—ˆìš© ì‚¬ì´ì¦ˆ í• ë‹¹")]
         [SerializeField]
         private int MaxWidth = 5;
         [SerializeField]
@@ -35,13 +36,13 @@ namespace RandomMap {
         [SerializeField]
         private int MaxHeight = 5;
 
-        [Header("¼½¼Ç Á¤º¸")]
+        [Header("ì„¹ì…˜ ì •ë³´")]
         [SerializeField]
         private GameObject section;
         [Range(1, 3)]
         public int setSectionSzie = 1;
 
-        [Header("¼½¼Ç »ı¼º °¹¼ö")]
+        [Header("ì„¹ì…˜ ìƒì„± ê°¯ìˆ˜")]
         [SerializeField]
         private int creatCnt = 5;
         
@@ -66,7 +67,7 @@ namespace RandomMap {
             }
         }
 
-        [Header("¸Ê »ı¼º ½ÃÀÛ À§Ä¡")]
+        [Header("ë§µ ìƒì„± ì‹œì‘ ìœ„ì¹˜")]
         [SerializeField]
         private int startX = 0;
         [SerializeField]
@@ -74,12 +75,26 @@ namespace RandomMap {
         [SerializeField]
         private int startZ = 0;
 
-        [Header("´øÀü ÃâÀÔ±¸ ¿ÀºêÁ§Æ®")]
+        [Header("ë˜ì „ ì¶œì…êµ¬ ì˜¤ë¸Œì íŠ¸")]
         [SerializeField]
         private GameObject entranceObj;
-        [Header("Ãş°£ ÀÌµ¿ ¿ÀºêÁ§Æ®")]
+        [Header("ì¸µê°„ ì´ë™ ì˜¤ë¸Œì íŠ¸")]
         [SerializeField]
         private GameObject[] liftObjs;
+
+        [Header("ëª¬ìŠ¤í„° ëœë¤ ìŠ¤í° ì„¤ì •")]
+        private int spawnCount = 0;
+        public int minSpawnCount = 10;
+        public int maxSpawnCount = 15;
+        public GameObject[] EncounterPrefabs;
+        private static List<Area> enableSpawnAreas;
+        public static List<Area> EnableSpawnAreas
+        {
+            get
+            {
+                return enableSpawnAreas;
+            }
+        }
 
         enum PurposeOfGate
         {
@@ -93,19 +108,20 @@ namespace RandomMap {
             MapBoundSet();
             LocalNavMeshBuildBoundSet();
             GenerateMap();
+            PreCalculateReadEnableSpawnZone();
         }
 
-        #region ¸Ê °ø°£ ¹× ³×ºê¸Ş½¬ º£ÀÌÅ© °ø°£ ÇÒ´ç
+        #region ë§µ ê³µê°„ ë° ë„¤ë¸Œë©”ì‰¬ ë² ì´í¬ ê³µê°„ í• ë‹¹
         private void MapBoundSet()
         {
-            // ¼½¼Ç»çÀÌÁî ¼³Á¤
+            // ì„¹ì…˜ì‚¬ì´ì¦ˆ ì„¤ì •
             sectionSize = setSectionSzie;
             sectionWidth = sectionDefaultWidth * sectionSize;
             sectionHeight = sectionDefaultHeight * sectionSize;
 
-            // ¸Ê ÃÊ±âÈ­
+            // ë§µ ì´ˆê¸°í™”
             coordinate = new Area[MaxWidth, MaxHeight, MaxDepth];
-            // »ı¼ºSectionÀÇ ¼ö°¡ ÇÒ´çµÈ Section¼ö¸¦ ÃÊ°úÇÒ ¶§
+            // ìƒì„±Sectionì˜ ìˆ˜ê°€ í• ë‹¹ëœ Sectionìˆ˜ë¥¼ ì´ˆê³¼í•  ë•Œ
             if (creatCnt > MaxWidth * MaxHeight * MaxDepth)
             {
                 creatCnt = MaxWidth * MaxHeight * MaxDepth;
@@ -139,7 +155,7 @@ namespace RandomMap {
         }
         #endregion
 
-        // ¼±Çü ±æ±¸Á¶ÀÇ ¸Ê»ı¼º
+        // ì„ í˜• ê¸¸êµ¬ì¡°ì˜ ë§µìƒì„±
         public void GenerateMap()
         {
             for (int index = 0; index < areaArray.Length; index++)
@@ -152,7 +168,7 @@ namespace RandomMap {
                     thisArea.y = areaArray[index - 1].y;
                     thisArea.z = areaArray[index - 1].z;
                     thisArea.passedDir = areaArray[index - 1].nextDir;
-                    thisArea = TransCoordinate(thisArea); // ´ÙÀ½ ¹æÇâÀ§Ä¡·Î »ı¼º
+                    thisArea = TransCoordinate(thisArea); // ë‹¤ìŒ ë°©í–¥ìœ„ì¹˜ë¡œ ìƒì„±
                 }
                 else if (index == 0)
                 {
@@ -168,24 +184,24 @@ namespace RandomMap {
                                                                        , thisArea.y * sectionHeight
                                                                        , thisArea.z * sectionWidth);
 
-                // 1. ÃÖ´ëÇã¿ë ¹üÀ§ ¹× ÀÎÁ¢ÇÑ ¿µ¿ª¿¡ ´ëÇÑ º®»ı¼º
+                // 1. ìµœëŒ€í—ˆìš© ë²”ìœ„ ë° ì¸ì ‘í•œ ì˜ì—­ì— ëŒ€í•œ ë²½ìƒì„±
                 thisArea.blockedDir = createBlockedDir(thisArea);
-                // 2. ´ÙÀ½ ÁøÃâ ¹æÇâµé¿¡ ÀÌÀü ¹æÇâ Ãß°¡ÇÏ¿© Â÷´Ü
+                // 2. ë‹¤ìŒ ì§„ì¶œ ë°©í–¥ë“¤ì— ì´ì „ ë°©í–¥ ì¶”ê°€í•˜ì—¬ ì°¨ë‹¨
                 thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);
 
-                // 3. ¸·Èù Áö¿ª¿Ü ´ÙÀ½ ÁøÃâ ¹æÇâ °áÁ¤
+                // 3. ë§‰íŒ ì§€ì—­ì™¸ ë‹¤ìŒ ì§„ì¶œ ë°©í–¥ ê²°ì •
                 if (thisArea.blockedDir.Count < TOTAL_DIR_CNT)
                 {
                     if (index < 1)
                     {
-                        thisArea.nextDir = randomNextDir(thisArea.blockedDir, true); // ¼öÆò ¹æÇâ ±âÁØÀ¸·Î 4¹æÇâ Á¦ÇÑ
+                        thisArea.nextDir = randomNextDir(thisArea.blockedDir, true); // ìˆ˜í‰ ë°©í–¥ ê¸°ì¤€ìœ¼ë¡œ 4ë°©í–¥ ì œí•œ
                     }
                     else
                     {
                         thisArea.nextDir = randomNextDir(thisArea.blockedDir);
                     }
                 }
-                // 4. Áö³ª¿Â ¹æÇâ, ´ÙÀ½ ÁøÃâ ¹æÇâ Á¦¿Ü º® Àç»ı¼º
+                // 4. ì§€ë‚˜ì˜¨ ë°©í–¥, ë‹¤ìŒ ì§„ì¶œ ë°©í–¥ ì œì™¸ ë²½ ì¬ìƒì„±
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.passedDir);
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.nextDir);
                 thisArea.blockedDir = ReBlockDir(thisArea.openDir);
@@ -199,9 +215,9 @@ namespace RandomMap {
 
                 
 
-                thisArea.script.area = thisArea;    // »ı¼ºµÈ ±¸¿ª¿ÀºêÁ§Æ®¿¡ ÇöÀç »ı¼ºÀ¸·Î Á¤ÀÇµÈ ±¸¿ªclass ÂüÁ¶
-                coordinate[thisArea.x, thisArea.y, thisArea.z] = thisArea;// ´øÀü¿¡ ÇÒ´çµÈ ÁÂÇ¥¿¡ ½Å±Ô»ı¼ºµÈ classÁ¤º¸ ÂüÁ¶
-                areaArray[index] = thisArea;  // ÇØ´ç »ı¼º¼ø¼­ÀÇ index¿¡ ÇöÀç »ı¼º Á¤º¸ ÀúÀå
+                thisArea.script.area = thisArea;    // ìƒì„±ëœ êµ¬ì—­ì˜¤ë¸Œì íŠ¸ì— í˜„ì¬ ìƒì„±ìœ¼ë¡œ ì •ì˜ëœ êµ¬ì—­class ì°¸ì¡°
+                coordinate[thisArea.x, thisArea.y, thisArea.z] = thisArea;// ë˜ì „ì— í• ë‹¹ëœ ì¢Œí‘œì— ì‹ ê·œìƒì„±ëœ classì •ë³´ ì°¸ì¡°
+                areaArray[index] = thisArea;  // í•´ë‹¹ ìƒì„±ìˆœì„œì˜ indexì— í˜„ì¬ ìƒì„± ì •ë³´ ì €ì¥
             }
 
             for (int index = 0; index < areaArray.Length; index++)
@@ -209,30 +225,30 @@ namespace RandomMap {
 
                 thisArea = areaArray[index];
 
-                // 5. ´øÀü ÀÔ/Ãâ±¸ ¹æÇâ ¿ÀºêÁ§Æ® ÀÛ¾÷
+                // 5. ë˜ì „ ì…/ì¶œêµ¬ ë°©í–¥ ì˜¤ë¸Œì íŠ¸ ì‘ì—…
                 if (index == 0)
                 {
-                    // 0¹øÂ° ±¸¿ªÀÎ°æ¿ì ´øÀü ½ÃÀÛ ½ºÆùÁöÁ¡ »ı¼º
-                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);   // Ã¹±¸¿ª ÀÔ±¸¹æÇâ º®Ãß°¡
-                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint); // ´øÀüÀÔ±¸ »ı¼º
+                    // 0ë²ˆì§¸ êµ¬ì—­ì¸ê²½ìš° ë˜ì „ ì‹œì‘ ìŠ¤í°ì§€ì  ìƒì„±
+                    thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.passedDir);   // ì²«êµ¬ì—­ ì…êµ¬ë°©í–¥ ë²½ì¶”ê°€
+                    CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.nextDir), PurposeOfGate.startPoint); // ë˜ì „ì…êµ¬ ìƒì„±
                 }
                 else if (index == areaArray.Length - 1)
                 {
-                    // ¸¶Áö¸· ±¸¿ª »ı¼º
+                    // ë§ˆì§€ë§‰ êµ¬ì—­ ìƒì„±
                     if (thisArea.floorCount > 0 && thisArea.passedDir == Direction.Down)
                     {
-                        // ¸¶Áö¸·¼½¼ÇÀÌ ¿¬¼ÓµÇ´Â ÃşÀÇ ÃÖ»óÃşÀÇ ¼½¼ÇÀÎ°æ¿ì Ãâ±¸¿ÀºêÁ§Æ®¸¦ 1Ãş¼½¼Ç¿¡¼­ »ı¼º
-                        CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // ´øÀüÃâ±¸ »ı¼º
+                        // ë§ˆì§€ë§‰ì„¹ì…˜ì´ ì—°ì†ë˜ëŠ” ì¸µì˜ ìµœìƒì¸µì˜ ì„¹ì…˜ì¸ê²½ìš° ì¶œêµ¬ì˜¤ë¸Œì íŠ¸ë¥¼ 1ì¸µì„¹ì…˜ì—ì„œ ìƒì„±
+                        CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // ë˜ì „ì¶œêµ¬ ìƒì„±
                     }
                     else
                     {
-                        // ÀÏ¹İÀûÀÎ°æ¿ì
-                        thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // ¸¶Áö¸·±¸¿ª Ãâ±¸¹æÇâ º®Ãß°¡
-                        CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // ´øÀüÃâ±¸ »ı¼º
+                        // ì¼ë°˜ì ì¸ê²½ìš°
+                        thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // ë§ˆì§€ë§‰êµ¬ì—­ ì¶œêµ¬ë°©í–¥ ë²½ì¶”ê°€
+                        CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.passedDir), PurposeOfGate.endPoint); // ë˜ì „ì¶œêµ¬ ìƒì„±
                     }
                 }
 
-                //Debug.Log($"{i}¹øÂ° ÀÎµ¦½º ÃÖÁ¾ »ı¼º");
+                //Debug.Log($"{i}ë²ˆì§¸ ì¸ë±ìŠ¤ ìµœì¢… ìƒì„±");
                 thisArea.script.OnInit();
             }
         }
@@ -269,13 +285,13 @@ namespace RandomMap {
                         {
                             upStairsNextDir = beforeArea.upStairsNextDir;
                             maxHeight = beforeArea.floorCount * SectionHeight;
-                            Debug.Log($"À§¿¡¼­ ¾Æ·¡·Î) ´©Àû Ãş ¼ö : {beforeArea.floorCount + 1}Ãş, ´ÙÀ½ ¿·¸é ÀÌµ¿¹æÇâ : {upStairsNextDir} / by {index - 1}index");
+                            Debug.Log($"ìœ„ì—ì„œ ì•„ë˜ë¡œ) ëˆ„ì  ì¸µ ìˆ˜ : {beforeArea.floorCount + 1}ì¸µ, ë‹¤ìŒ ì˜†ë©´ ì´ë™ë°©í–¥ : {upStairsNextDir} / by {index - 1}index");
                         }
                         else if (beforeArea.passedDir == Direction.Down)
                         {
                             upStairsNextDir = beforeArea.nextDir;
                             minHeight = -(beforeArea.floorCount * SectionHeight);
-                            Debug.Log($"¾Æ·¡¿¡¼­ À§·Î) ´©Àû Ãş ¼ö : {beforeArea.floorCount + 1}Ãş, ´ÙÀ½ ¿·¸é ÀÌµ¿¹æÇâ : {upStairsNextDir} / by {index - 1}index");
+                            Debug.Log($"ì•„ë˜ì—ì„œ ìœ„ë¡œ) ëˆ„ì  ì¸µ ìˆ˜ : {beforeArea.floorCount + 1}ì¸µ, ë‹¤ìŒ ì˜†ë©´ ì´ë™ë°©í–¥ : {upStairsNextDir} / by {index - 1}index");
                         } 
                         else
                         {
@@ -303,7 +319,7 @@ namespace RandomMap {
                                 liftVector.z += sectionWidth / 2;
                                 break;
                             default:
-                                Debug.Log($"½Â°­ ¿ÀºêÁ§Æ® ¹æÇâ¼ÂÆÃ ¿À·ù!!! by {index}");
+                                Debug.Log($"ìŠ¹ê°• ì˜¤ë¸Œì íŠ¸ ë°©í–¥ì…‹íŒ… ì˜¤ë¥˜!!! by {index}");
                                 //isGenerate = false;
                                 break;
                         }
@@ -316,7 +332,7 @@ namespace RandomMap {
             }
         }
 
-        #region Section¼øÂ÷Àû »ı¼º¿ëµµÀÇ ÇÔ¼ö
+        #region Sectionìˆœì°¨ì  ìƒì„±ìš©ë„ì˜ í•¨ìˆ˜
         List<Direction> createBlockedDir(Area area)
         {
             area.blockedDir = new List<Direction>();
@@ -411,7 +427,7 @@ namespace RandomMap {
 
         Direction randomNextDir(List<Direction> blockedDir, bool isOnlyHorizonDirection = false)
         {
-            //Debug.Log($"Áßº¹ È¸¼ö : {blockedDir.Count}");
+            //Debug.Log($"ì¤‘ë³µ íšŒìˆ˜ : {blockedDir.Count}");
             Direction nextDir;
             bool isClash;
             int loopNum = 0;
@@ -470,7 +486,7 @@ namespace RandomMap {
                     area.y -= 1;
                     break;
                 default:
-                    Debug.Log("´ÙÀ½ ÀÌµ¿ÇÒ ¹æÇâÀÌ ¾øÀ½");
+                    Debug.Log("ë‹¤ìŒ ì´ë™í•  ë°©í–¥ì´ ì—†ìŒ");
                     break;
             }
             area.passedDir = DirectionExt.GetOpposite(area.passedDir);
@@ -479,10 +495,10 @@ namespace RandomMap {
         }
         #endregion
 
-        #region Àç»ı¼º
+        #region ì¬ìƒì„±
         private int GetReIndex(int index)
         {
-            Debug.Log($"-------------¸·Èù ±¸°£ : {index}--------------");
+            Debug.Log($"-------------ë§‰íŒ êµ¬ê°„ : {index}--------------");
             List<int> reindexList = new List<int>();
             Area tempArea = new Area();
 
@@ -501,23 +517,23 @@ namespace RandomMap {
             }
             
             StringBuilder temp = new StringBuilder();
-            temp.Append("Àç»ı¼º ÈÄº¸ : ");
+            temp.Append("ì¬ìƒì„± í›„ë³´ : ");
             foreach (int idx in reindexList)
             {
                 temp.Append(idx+", ");
             }
 
             int reindex = reindexList[Random.Range(0, reindexList.Count)];
-            Debug.Log($"{temp} / °áÁ¤ ¹øÈ£ : {reindex}");
+            Debug.Log($"{temp} / ê²°ì • ë²ˆí˜¸ : {reindex}");
             Debug.Log($"------------------------------------------");
             return reindex;
         }
 
         private void ReGenerateSection(int index)
         {
-            // Àç»ı¼º ¼½¼Ç ÃÊ±âÈ­
+            // ì¬ìƒì„± ì„¹ì…˜ ì´ˆê¸°í™”
             int reindex = GetReIndex(index);
-            //Debug.Log($"¸·Èù ±¸°£ : {i} /  Àç»ı¼º ÀÎµ¦½º : {reindex}");
+            //Debug.Log($"ë§‰íŒ êµ¬ê°„ : {i} /  ì¬ìƒì„± ì¸ë±ìŠ¤ : {reindex}");
             thisArea.openDir = new List<Direction>();
             thisArea.x = areaArray[reindex].x;
             thisArea.y = areaArray[reindex].y;
@@ -527,9 +543,9 @@ namespace RandomMap {
 
 
             thisArea = TransCoordinate(thisArea);
-            // ÇöÀç¼½¼ÇÀÇ À§Ä¡¸¦ Àç»ı¼º ¼½¼ÇÀ§Ä¡¿¡¼­ ´ÙÀ½ ¹æÇâ ÁÂÇ¥ ÀÌµ¿
+            // í˜„ì¬ì„¹ì…˜ì˜ ìœ„ì¹˜ë¥¼ ì¬ìƒì„± ì„¹ì…˜ìœ„ì¹˜ì—ì„œ ë‹¤ìŒ ë°©í–¥ ì¢Œí‘œ ì´ë™
 
-            // Àç»ı¼º À§Ä¡¿¡¼­ ÀÌµ¿ÈÄ ÇØ´ç ÁÂÇ¥¿¡¼­ º® Àç±¸¼º
+            // ì¬ìƒì„± ìœ„ì¹˜ì—ì„œ ì´ë™í›„ í•´ë‹¹ ì¢Œí‘œì—ì„œ ë²½ ì¬êµ¬ì„±
             thisArea.gameObject.transform.position =  new Vector3(thisArea.x * sectionWidth
                                                                  ,thisArea.y * sectionHeight
                                                                  ,thisArea.z * sectionWidth);
@@ -540,7 +556,7 @@ namespace RandomMap {
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.nextDir);
             }
 
-            // Àç»ı¼º ¼½¼Ç¿¡¼­ Ãß°¡ »ı¼ºµÈ ¼½¼Ç ¹æÇâ°úÀÇ Åë·Î¸¦ Àç±¸¼º
+            // ì¬ìƒì„± ì„¹ì…˜ì—ì„œ ì¶”ê°€ ìƒì„±ëœ ì„¹ì…˜ ë°©í–¥ê³¼ì˜ í†µë¡œë¥¼ ì¬êµ¬ì„±
             areaArray[reindex].openDir = DirectionExt.AddDirection(areaArray[reindex].openDir, DirectionExt.GetOpposite(thisArea.passedDir));
             areaArray[reindex].blockedDir = ReBlockDir(areaArray[reindex].openDir);
             areaArray[reindex].script.area = areaArray[reindex];
@@ -550,7 +566,7 @@ namespace RandomMap {
         }
         #endregion
 
-        // ÀÔ/Ãâ±¸ ¿ÀºêÁ§Æ® »ı¼º
+        // ì…/ì¶œêµ¬ ì˜¤ë¸Œì íŠ¸ ìƒì„±
         private void CreateGate(Area area, Direction direction, PurposeOfGate purpose)
         {
             Vector3 postion = Vector3.zero;
@@ -598,19 +614,58 @@ namespace RandomMap {
                     position.z += sectionWidth / 2;
                     break;
                 default:
-                    Debug.Log($"½Â°­ ¿ÀºêÁ§Æ® ¹æÇâ¼ÂÆÃ ¿À·ù!!");
+                    Debug.Log($"ìŠ¹ê°• ì˜¤ë¸Œì íŠ¸ ë°©í–¥ì…‹íŒ… ì˜¤ë¥˜!!");
                     //isGenerate = false;
                     break;
             }
         }
 
-        #region ¿À·ù È®ÀÎ¿ëµµ
+        private void PreCalculateReadEnableSpawnZone()
+        {
+            if (EncounterPrefabs != null && EncounterPrefabs.Length > 0)
+            {
+                enableSpawnAreas = new List<Area>();
+                for (int index = 0; index < areaArray.Length; index++)
+                {
+                    if (areaArray[index].blockedDir.Contains(Direction.Down))
+                    {
+                        enableSpawnAreas.Add(areaArray[index]);
+                    }
+                }
+            }
+            SpawnEncounters();
+        }
+
+        public void SpawnEncounters()
+        {
+            GameObject.Find("LocalNavMeshBuilder").GetComponent<LocalNavMeshBuilder>().UpdateNavMesh(false);
+            if (enableSpawnAreas != null && enableSpawnAreas.Count > 0)
+            {
+                GameObject encounterGroup = new GameObject("Encounters");
+                spawnCount = Random.Range(minSpawnCount, maxSpawnCount + 1);
+                for (int i = 0; i < spawnCount; i++)
+                {
+                    int randSpawnIndex = Random.Range(0, enableSpawnAreas.Count);
+                    Vector3 spawnPos = enableSpawnAreas[randSpawnIndex].gameObject.transform.position
+                                        + new Vector3(Random.Range(0, sectionWidth), 0, Random.Range(0, sectionWidth));
+                    NavMeshHit hit;
+                    bool FindNavMeshHit = NavMesh.SamplePosition(spawnPos, out hit, 2.5f, NavMesh.AllAreas);
+                    if (FindNavMeshHit)
+                    {
+                        spawnPos = hit.position;
+                    }
+                    Instantiate(EncounterPrefabs[Random.Range(0, EncounterPrefabs.Length)], spawnPos, Quaternion.identity, encounterGroup.transform);
+                }
+            }
+        }
+
+        #region ì˜¤ë¥˜ í™•ì¸ìš©ë„
         private void ExistMap()
         {
             StringBuilder temp = new StringBuilder();
             for (int y = 0; y < MaxHeight; y++)
             {
-                temp.Append(y + "Ãş : \n");
+                temp.Append(y + "ì¸µ : \n");
                 for (int z = MaxDepth - 1; z > -1; z--)
                 {
                     for (int x = 0; x < MaxWidth; x++)

@@ -17,13 +17,13 @@ public class OptionUI : MonoBehaviour {
             if(settings.activeSelf == false)
             {
                 settings.SetActive(true);
-                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.lockState = CursorLockMode.None;
                 Time.timeScale = 0;
             }
             else
             {
                 settings.SetActive(false);
-                Cursor.lockState = CursorLockMode.None;
+                Cursor.lockState = CursorLockMode.Locked;
                 Time.timeScale = 1;
             }
         }       
