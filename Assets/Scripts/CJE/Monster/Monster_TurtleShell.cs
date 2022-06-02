@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Monster_TurtleShell : MonsterController
 {
-    // 2022.05.18 ¼öÁ¤
+    // 2022.05.18 ìˆ˜ì •
     protected override void OnAwake()
     {
         base.OnAwake();

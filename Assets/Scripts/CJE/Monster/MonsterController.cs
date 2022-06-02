@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 /* 
  * MonsterController 
- * 2022.05.26 수정
+ * 2022.06.02 수정
  */
 public class MonsterController : MonoBehaviour
 {
@@ -97,6 +97,7 @@ public class MonsterController : MonoBehaviour
         m_anim = GetComponent<Animator>();
         gameObject.SetActive(true);
         isDead = false;
+        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
 
     public void SetState(eMonsterState state)
@@ -145,9 +146,6 @@ public class MonsterController : MonoBehaviour
                 break;
             case eMonsterState.Hit:
                 Hit();
-                break;
-            case eMonsterState.Dead:
-                Dead();
                 break;
         }
     }
@@ -235,22 +233,19 @@ public class MonsterController : MonoBehaviour
         {
             m_status.m_hp = 0f;
             SetState(eMonsterState.Dead);
+            isDead = true;
+            m_anim.SetTrigger("Dead");
         }
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
 
-    public virtual void Dead()
-    {
-        if(!isDead)
-        {
-            isDead = true;
-            m_anim.SetTrigger("Dead");
-        }
-    }
-
     public virtual void DropItem()
     {
-        Instantiate(m_rune[Random.Range(0, 9)], transform.position, transform.rotation);
-        Instantiate(m_gold, transform.position, transform.rotation);
+        int runePer = Random.Range(0, 4);
+        if(runePer == 1)
+        {
+            Instantiate(m_rune[Random.Range(0, 9)], transform.position, transform.rotation);
+        }
+        Instantiate(m_gold, transform.position + Vector3.forward * 1.5f , transform.rotation);
     }
 }
