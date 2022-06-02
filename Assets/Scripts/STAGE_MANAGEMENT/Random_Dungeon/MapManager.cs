@@ -550,7 +550,7 @@ namespace RandomMap {
                                                                  ,thisArea.y * sectionHeight
                                                                  ,thisArea.z * sectionWidth);
             thisArea.blockedDir = createBlockedDir(thisArea);
-            if (thisArea.blockedDir.Count < TOTAL_DIR_CNT)
+            if (thisArea.blockedDir.Count < TOTAL_DIR_CNT && index < areaArray.Length-1)
             {
                 thisArea.nextDir = randomNextDir(thisArea.blockedDir);
                 thisArea.openDir = DirectionExt.AddDirection(thisArea.openDir, thisArea.nextDir);
@@ -619,7 +619,7 @@ namespace RandomMap {
                     break;
             }
         }
-
+        
         private void PreCalculateReadEnableSpawnZone()
         {
             if (EncounterPrefabs != null && EncounterPrefabs.Length > 0)
