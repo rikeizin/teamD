@@ -5,30 +5,76 @@ using UnityEngine.UI;
 
 public class Monster_Dragon : MonsterController
 {
-    // 2022.05.18 ¼öÁ¤
+    // 2022.06.02 ìˆ˜ì •
     public Text m_monsterName;
     public Text m_monsterHp;
-    private GameObject m_EffectFlame;
+    public GameObject m_effectFlame;
+    public GameObject m_effectScream;
 
-    protected override void OnAwake()
-    {
-        base.OnAwake();
-        m_status = new Status(300f, 50f, 50f, 20f, 300f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
-        m_EffectFlame = GameObject.Find("FlamePoint").gameObject;
-        m_EffectFlame.SetActive(false);
-
-        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
-        m_monsterName.text = "DRAGON";
-        m_monsterHp.text = m_status.m_hp + "/" + m_status.m_hpMax;   
-    }
+    protected Collider m_collider;
+    protected bool m_intro = true;
+    protected bool m_flame = false;
+    protected bool m_scream = false;
 
     #region Animation Event Methods
+
+    protected void AnimEvent_IntroFlyUpFinish()
+    {
+        if (!isDead)
+        {
+            m_anim.SetBool("Intro_FlyUp", false);
+            m_anim.SetBool("Intro_FlyMove", true);
+        }
+    }
+
+    protected void AnimEvent_IntroMove()
+    {
+        if (!isDead)
+        {
+            transform.Translate(Vector3.forward * 1.0f);
+        }
+    }
+
+    protected void AnimEvent_IntroMoveFinish()
+    {
+        if (!isDead)
+        {
+            m_anim.SetBool("Intro_FlyMove", false);
+            m_anim.SetBool("Intro_FlyDown", true);
+        }
+    }
+
+    protected void AnimEvent_IntroFlyDownFinish()
+    {
+        if (!isDead)
+        {
+            m_anim.SetBool("Intro_FlyDown", false);
+            m_anim.SetBool("Intro_Scream", true);
+        }
+    }
+
+    protected void AnimEvent_IntroScreamFinish()
+    {
+        if (!isDead)
+        {
+            m_anim.SetBool("Intro_Scream", false);
+            m_collider.isTrigger = false;
+            m_intro = false;
+        }
+    }
     protected void AnimEvent_AttackHandFinish()
     {
         if (!isDead)
         {
             SetState(eMonsterState.Idle);
             m_anim.SetBool("Attack_Hand", false);
+        }
+    }
+    protected void AnimEvent_AttackFlame()
+    {
+        if (!isDead)
+        {
+            m_effectFlame.SetActive(true);
         }
     }
 
@@ -38,71 +84,52 @@ public class Monster_Dragon : MonsterController
         {
             SetState(eMonsterState.Idle);
             m_anim.SetBool("Attack_Flame", false);
-            m_EffectFlame.SetActive(false);
+            m_effectFlame.SetActive(false);
         }
     }
 
-    protected void AnimEvent_FlyAttackFlameFinish()
+    protected void AnimEvent_AttackScream()
+    {
+        if (!isDead)
+        {
+            m_effectScream.SetActive(true);
+        }
+    }
+
+    protected void AnimEvent_AttackScreamFinish()
     {
         if (!isDead)
         {
             SetState(eMonsterState.Idle);
-            m_anim.SetBool("Attack_FlyFlame", false);
-            m_EffectFlame.SetActive(false);
+            m_anim.SetBool("Attack_Scream", false);
+            m_effectScream.SetActive(false);
         }
     }
 
-    protected void AnimEvent_FlyAttackDownFinish()
-    {
-        if (!isDead)
-        {
-            SetState(eMonsterState.Idle);
-            m_anim.SetBool("Attack_FlyDown", false);
-            m_anim.SetBool("OnFly", false);
-            m_FlySwitch = false;
-        }
-    }
-
-    protected void AnimEvent_AttackFlame()
-    {
-        if (!isDead)
-        {
-            m_EffectFlame.SetActive(true);
-        }
-    }
     #endregion
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+        m_status = new Status(300f, 50f, 50f, 20f, 300f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
+        m_collider = GetComponent<Collider>();
+        m_effectFlame.SetActive(false);
+        m_effectScream.SetActive(false);
 
-    protected float m_FlyCurrentTime = 0.0f;
-    protected float m_FlyTime = 10.0f;
-    protected float m_FlyFlameTime = 5.0f;
+        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
+        m_monsterName.text = "DRAGON";
+        m_monsterHp.text = m_status.m_hp + "/" + m_status.m_hpMax;   
+    }
 
-    protected bool m_Flame = false;
-    protected bool m_Fly = false;
-    protected bool m_FlySwitch = false;
-    protected bool m_FlyFlame = false;
 
     public override void Idle()
     {
-        if (m_FlySwitch == true)
+        if(m_intro == true)
         {
-            FlyIdle();
+            m_intro = false;
+            m_collider.isTrigger = true;
+            m_anim.SetBool("Intro_FlyUp", true);
         }
-        else
-        {
-            base.Idle();
-        }
-    }
-
-    public override void Move()
-    {
-        if (m_FlySwitch == true)
-        {
-            FlyMove();
-        }
-        else
-        {
-            base.Move();
-        }
+        base.Idle();
     }
 
     public override void Hit()
@@ -114,82 +141,26 @@ public class Monster_Dragon : MonsterController
 
     public override void Attack()
     {
-        if (m_status.m_hp < 100 && m_Fly == false)
+        if(m_status.m_hp <= 200 && m_flame == false)
         {
-            m_Fly = true;
-            m_FlySwitch = true;
-        }
-        else if ( m_status.m_hp < 50)
-        {
-            m_Flame = false;
+            m_flame = true;
+            Attack_Flame();
         }
 
-        if ( m_FlySwitch == true )
+        if(m_status.m_hp <= 100 && m_scream == false)
         {
-            m_anim.SetBool("OnFly",true);
-            FlyAttack();
+            m_scream = true;
+            Attack_Scream();
         }
-        else if (m_status.m_hp < 200 && m_Flame == false)
-        {
-            Attack_Flame();
-            if( m_status.m_hp > 50)
-            {
-                m_Flame = true;
-            }
-        }
-        else
-        {
-            base.Attack();
-            StartCoroutine(HandCoroutine());
-        }
+
+        base.Attack();
+        StartCoroutine(HandCoroutine());
     }
 
     IEnumerator HandCoroutine()
     {
         yield return new WaitForSeconds(5.0f);
         Attack_Hand();
-    }
-    public void FlyIdle()
-    {
-
-        if (m_dir < m_status.m_attackRange)
-        {
-            SetState(eMonsterState.Attack);
-        }
-        else if (m_dir < m_status.m_trackingRange)
-        {
-            SetState(eMonsterState.Move);
-        }
-    }
-
-    public void FlyMove()
-    {
-        m_navAgent.SetDestination(m_player.transform.position);
-        m_anim.SetBool("Move_Fly", true);
-
-        if (m_dir < m_status.m_attackRange)
-        {
-            ResetMove();
-            SetState(eMonsterState.Attack);
-            m_anim.SetBool("Move_Fly", false);
-        }
-    }
-
-    public void FlyAttack()
-    {
-        m_FlyCurrentTime += Time.deltaTime;
-
-        if( m_FlyCurrentTime > m_FlyTime)
-        {
-            Attack_FlyDown();
-            ResetMove();
-        }
-        else if( m_FlyCurrentTime > m_FlyFlameTime && m_FlyFlame == false)
-        {
-            m_FlyFlame = true;
-            Attack_FlyFlame();
-            ResetMove();
-        }
     }
 
     public void Attack_Hand()
@@ -204,15 +175,10 @@ public class Monster_Dragon : MonsterController
         ResetMove();
     }
 
-    public void Attack_FlyFlame()
+    public void Attack_Scream()
     {
-        m_anim.SetBool("Attack_FlyFlame", true);
+        m_anim.SetBool("Attack_Scream", true);
         ResetMove();
     }
 
-    public void Attack_FlyDown()
-    {
-        m_anim.SetBool("Attack_FlyDown",true);
-        ResetMove();
-    }
 }
