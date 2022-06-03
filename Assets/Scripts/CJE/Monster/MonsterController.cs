@@ -97,7 +97,6 @@ public class MonsterController : MonoBehaviour
         m_anim = GetComponent<Animator>();
         gameObject.SetActive(true);
         isDead = false;
-        m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
 
     public void SetState(eMonsterState state)
