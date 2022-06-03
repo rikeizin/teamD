@@ -6,17 +6,17 @@ using UnityEngine.UI;
 public class ActionController : MonoBehaviour
 {
     [SerializeField]
-    private float range; //¾ÆÀÌÅÛ ½ÀµæÀÌ°¡´ÉÇÑ ÃÖ´ë°Å¸®
+    private float range; //ì•„ì´í…œ ìŠµë“ì´ê°€ëŠ¥í•œ ìµœëŒ€ê±°ë¦¬
 
-    private bool pickupActivated = false; //  ¾ÆÀÌÅÛ½Àµæ °¡´ÉÇÒ½Ã true
+    private bool pickupActivated = false; //  ì•„ì´í…œìŠµë“ ê°€ëŠ¥í• ì‹œ true
 
-    private RaycastHit hitInfo; // Ãæµ¹Ã¼ Á¤º¸ ÀúÀå
-
-    [SerializeField]
-    private LayerMask layerMask; // Æ¯Á¤ ·¹ÀÌ¾î¸¦°¡Áø ¿ÀºêÁ§Æ®¿¡ ´ëÇØ¼­¸¸ ½Àµæ°¡´É
+    private RaycastHit hitInfo; // ì¶©ëŒì²´ ì •ë³´ ì €ì¥
 
     [SerializeField]
-    private Text actionText; // Çàµ¿À» º¸¿©ÁÙ ÅØ½ºÆ®
+    private LayerMask layerMask; // íŠ¹ì • ë ˆì´ì–´ë¥¼ê°€ì§„ ì˜¤ë¸Œì íŠ¸ì— ëŒ€í•´ì„œë§Œ ìŠµë“ê°€ëŠ¥
+
+    [SerializeField]
+    private Text actionText; // í–‰ë™ì„ ë³´ì—¬ì¤„ í…ìŠ¤íŠ¸
 
     [SerializeField]
     private Inventory theInventory;
@@ -42,7 +42,7 @@ public class ActionController : MonoBehaviour
 
     private void CheckItem()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hitInfo, range, layerMask))
+        if (Physics.Raycast(new Vector3(transform.position.x ,transform.position.y+1 ,transform.position.z), transform.forward, out hitInfo, range, layerMask))
         {
             Debug.Log(hitInfo.transform.gameObject.name);
             if (hitInfo.transform.tag == "Item")
@@ -58,7 +58,7 @@ public class ActionController : MonoBehaviour
     {
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + " È¹µæ " + "<color=yellow>" + "(E)" + "</color>";
+        actionText.text = hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + " íšë“ " + "<color=yellow>" + "(E)" + "</color>";
     }
 
     private void ItemInfoDisappear()
@@ -73,7 +73,7 @@ public class ActionController : MonoBehaviour
         {
             if(hitInfo.transform != null)
             {
-                Debug.Log(hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + " È¹µæ Çß½À´Ï´Ù.");
+                Debug.Log(hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + " íšë“ í–ˆìŠµë‹ˆë‹¤.");
                 theInventory.AcquireItem(hitInfo.transform.GetComponent<ItemPickUp>().item);
                 Destroy(hitInfo.transform.gameObject);
                 ItemInfoDisappear();
