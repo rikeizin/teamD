@@ -110,7 +110,7 @@ public class Monster_Dragon : MonsterController
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(300f, 50f, 50f, 20f, 300f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
+        m_status = new Status(300f, 50f, 10f, 20f, 300f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
         m_collider = GetComponent<Collider>();
         m_effectFlame.SetActive(false);
         m_effectScream.SetActive(false);
