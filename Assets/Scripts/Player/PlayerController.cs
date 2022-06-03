@@ -43,12 +43,12 @@ public class PlayerController : MonoBehaviour, IBattle
     private MoveType2D _move2D = null;
 
     // 특수공격
-    public Transform p_AttackTransform;
+    public Transform p_MagicTransform;
     public Transform p_MeteorTransform;
     public Rigidbody p_Arrow;
     public Rigidbody p_Wand;
     public Rigidbody p_Meteor;
-    private float _lunchForce = 5.0f;
+    private float _lunchForce = 30f;
 
     private Player_Swap _swap = null;
     #region hashes
@@ -73,6 +73,11 @@ public class PlayerController : MonoBehaviour, IBattle
     private readonly int hashAttackLeft02 = Animator.StringToHash("Attack_Left_02");
     private readonly int hashAttackLeftWand = Animator.StringToHash("Attack_Left_Wand");
     private readonly int hashAttackRightWand = Animator.StringToHash("Attack_Right_Wand");
+    private readonly int hashAttackBow01 = Animator.StringToHash("Attack_Bow_Draw");
+    private readonly int hashAttackBow02 = Animator.StringToHash("Attack_Bow_OverDraw");
+    private readonly int hashAttackBow03 = Animator.StringToHash("Attack_Bow_Recoil");
+
+
 
 
     // Values
@@ -183,10 +188,19 @@ public class PlayerController : MonoBehaviour, IBattle
                 StartCoroutine(FireWand());
             }
 
-            if (!IsAttackAnimating())
+            if (!(IsAttackLeftAnimating() || IsAttackRightAnimating() || IsMagicAttackAnimating()))
             {
-                _animator.SetTrigger(hashDoAttack);
-                _animator.SetInteger(hashAttackComboInteger, 0);
+                if (IsAttackBow02Animating())
+                {
+                    _animator.SetTrigger(hashDoAttack);
+                    StartCoroutine(FireArrow());
+                }
+                else
+                {
+                    _animator.SetTrigger(hashDoAttack);
+                    _animator.SetInteger(hashAttackComboInteger, 0);
+                }
+
             }
             else if (IsAttackLeft0Animating())
             {
@@ -353,14 +367,11 @@ public class PlayerController : MonoBehaviour, IBattle
 
     IEnumerator FireArrow()
     {
-        yield return new WaitForSeconds(0.45f);
-
-        Rigidbody Arrow = Instantiate(p_Arrow, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
-        Arrow.velocity = _lunchForce * p_AttackTransform.forward;
-
-        yield return new WaitForSeconds(0.5f);
+        Rigidbody Arrow = Instantiate(p_Arrow, p_MagicTransform.position, p_MagicTransform.rotation) as Rigidbody;
+        Arrow.velocity = _lunchForce * p_MagicTransform.forward;
 
         Destroy(Arrow.gameObject, 4.0f);
+        yield return new WaitForSeconds(0.5f);
     }
 
     IEnumerator FireWand()
@@ -369,11 +380,11 @@ public class PlayerController : MonoBehaviour, IBattle
         {
             if (IsAttackLeftWandAnimating() && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.45)
             {
-                Rigidbody Wand1 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
+                Rigidbody Wand1 = Instantiate(p_Wand, p_MagicTransform.position, p_MagicTransform.rotation) as Rigidbody;
                 //Rigidbody Wand2 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
                 //Rigidbody Wand3 = Instantiate(p_Wand, p_AttackTransform.position, p_AttackTransform.rotation) as Rigidbody;
 
-                Wand1.velocity = 14 * p_AttackTransform.forward;
+                Wand1.velocity = 14 * p_MagicTransform.forward;
                 //yield return new WaitForSeconds(0.1f);
                 //Wand2.velocity = 12 * p_AttackTransform.forward;
                 //yield return new WaitForSeconds(0.1f);
@@ -392,11 +403,16 @@ public class PlayerController : MonoBehaviour, IBattle
     private bool IsWalkAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashWalking;
     private bool IsRollAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashRolling;
 
-    public bool IsAttackAnimating() => IsAttackLeftAnimating() || IsAttackRightAnimating() || IsMagicAttackAnimating();
-    private bool IsAttackRightAnimating() => IsAttackRight0Animating() || IsAttackRightWandAnimating();
+    public bool IsAttackAnimating() => IsAttackLeftAnimating() || IsAttackRightAnimating() || IsMagicAttackAnimating() || IsAttackBowAnimating();
     private bool IsAttackLeftAnimating() => IsAttackLeft0Animating() || IsAttackLeft1Animating() || IsAttackLeft2Animating() || IsAttackLeftWandAnimating();
+    private bool IsAttackRightAnimating() => IsAttackRight0Animating() || IsAttackRightWandAnimating();
+    private bool IsAttackBowAnimating() => IsAttackBow01Animating() || IsAttackBow02Animating() || IsAttackBow03Animating();
     private bool IsMagicAttackAnimating() => IsAttackLeftWandAnimating() || IsAttackRightWandAnimating();
 
+
+    private bool IsAttackBow01Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackBow01;
+    private bool IsAttackBow02Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackBow02;
+    private bool IsAttackBow03Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackBow03;
     private bool IsAttackRight0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRight00;
     private bool IsAttackLeft0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft00;
     private bool IsAttackLeft1Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft01;
