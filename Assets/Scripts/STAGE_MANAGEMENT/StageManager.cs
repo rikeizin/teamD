@@ -70,17 +70,22 @@ namespace STAGE_MANAGEMENT
             PlayerSpawn();
             //bgm.InitAudioToCAM();
 
-
             // 랜덤 스테이지 확률 설정
             percentage  = new RandPercent();
-            percentage.regist.Add("Stage_Dungeon", 70);
-            percentage.regist.Add("Stage_EliteBossRoom", 30);
+            percentage.regist.Add("Stage_Dungeon", 80);
+            percentage.regist.Add("Stage_EliteBossRoom", 20);
             
             StageInit();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            //if (GameObject.FindGameObjectWithTag("Player") != null)
+            //{
+            //    Transform player = GameObject.FindObjectOfType<Player>().transform;
+            //    player.GetComponentInChildren<Camera>().enabled = true;
+            //}
+
             if (currentStageIndex < 1)
             {
                 bgm.PlaySoundTrack(SoundTrack.Inn);
