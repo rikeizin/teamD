@@ -52,7 +52,6 @@ public class Weapon : MonoBehaviour
         if (player.IsAttack && other.CompareTag("Enemy")
             && other.gameObject != player.gameObject)
         {
-            Debug.Log("왜안돼?");
             switch (PName)
             {
                 case P_WaeponName.BasicSword:

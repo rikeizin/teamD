@@ -26,6 +26,12 @@ public class OptionManager : MonoBehaviour
     private float m_bgmVolume;
     private float m_sfxVolume;
 
+    public Player player = null;
+
+    private void Awake()
+    {
+        player = StageManager.Inst.Player.GetComponent<Player>();
+    }
     private void Start()
     {
 
@@ -77,6 +83,7 @@ public class OptionManager : MonoBehaviour
 
     public void OnClickBack()
     {
+        player.OnStop(); 
         gameObject.SetActive(false);
     }
 }

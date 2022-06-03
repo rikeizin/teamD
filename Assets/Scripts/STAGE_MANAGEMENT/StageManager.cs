@@ -42,8 +42,7 @@ namespace STAGE_MANAGEMENT
         [SerializeField]
         private AudioManager bgm = null;
 
-        [SerializeField]
-        private GameObject Player;
+        public GameObject Player;
 
         private void Awake()
         {

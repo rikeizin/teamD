@@ -26,9 +26,11 @@ public class Player : MonoBehaviour
     public float gold;
     public bool IsAttack { get; set; }
 
+    public static bool IsGamePaused = false;
     private PlayerController playerCtrl = null;                   // MovementCharacterController 스크립트의 moveTo 함수를 사용하기 위해 movement라는 이름으로 받아온다.
     private RotateToMouse rotateToMouse = null;                   // 캐릭터 시야 회전 스크립트를 받아온다. 
     private CharacterController characterController = null;       // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
+    [HideInInspector]
     public Animator animator = null;                             // 애니메이션 파라미터 설정을 위해 Animator를 받아온다.
 
     private void Awake()
@@ -90,4 +92,25 @@ public class Player : MonoBehaviour
         #endregion
     }
 
+    public void Stop(InputAction.CallbackContext context)
+    {
+        OnStop();
+    }
+
+    public void OnStop()
+    {
+        if (IsGamePaused == false)
+        {
+            rotateToMouse.CursorLock();
+            IsGamePaused = true;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            rotateToMouse.CursorLock();
+            IsGamePaused = false;
+            Time.timeScale = 1;
+        }
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
 }

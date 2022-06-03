@@ -9,23 +9,24 @@ public class Player_Swap : PlayerStatus
     public int[] hasRunes;
     public GameObject[] Weapons;
     public bool[] hasWeapons;
-    Rune rune1 = null;
     public int CurrentGold = 0;
 
     Animator animator = null;
+    PlayerController playerController = null;
     GameObject nearobject;
-    GameObject equipWeapons;
-    int weaponIndex = -1;
+    public GameObject equipWeapons;
     public int equipWeaponIndex = -1;
+    //int equipWeaponIndex = -1;
     [HideInInspector]
     public int runeIndex = 0;
-    
+
     private int Gold;
 
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        playerController = GetComponent<PlayerController>();
     }
 
     public void Swap(InputAction.CallbackContext context)
@@ -34,43 +35,47 @@ public class Player_Swap : PlayerStatus
         float input = context.ReadValue<float>();
         if (context.started)
         {
-            if (equipWeapons != null)
-                equipWeapons.SetActive(false);
-            switch (input)
+            if (!playerController.IsAttackAnimating())
             {
-                case 1:
-                    weaponIndex = 0;
-                    equipWeapons = Weapons[weaponIndex];
-                    animator.SetInteger("EquipState", 1);
-                    if (hasWeapons[weaponIndex + 1])
-                        equipWeapons = Weapons[weaponIndex + 1];
-                    equipWeapons.SetActive(true);
-                    break;
-                case 2:
-                    weaponIndex = 1;
-                    equipWeapons = Weapons[weaponIndex + 1];
-                    animator.SetInteger("EquipState", 11);
-                    if (!hasWeapons[weaponIndex+1])
-                        return;
-                    equipWeapons.SetActive(true);
-                    break;
-                case 3:
-                    weaponIndex = 2;
-                    equipWeapons = Weapons[weaponIndex + 1];
-                    animator.SetInteger("EquipState", 21);
-                    if (!hasWeapons[weaponIndex+1])
-                        return;
-                    equipWeapons.SetActive(true);
-                    break;
-                case 4:
-                    weaponIndex = 3;
-                    equipWeapons = Weapons[weaponIndex + 1];
-                    animator.SetInteger("EquipState", 31);
-                    if (!hasWeapons[weaponIndex+1])
-                        return;
-                    equipWeapons.SetActive(true);
-                    break;
+                if (equipWeapons != null)
+                    equipWeapons.SetActive(false);
+                switch (input)
+                {
+                    case 1:
+                        equipWeaponIndex = 0;
+                        equipWeapons = Weapons[equipWeaponIndex];
+                        animator.SetInteger("EquipState", 1);
+                        if (hasWeapons[equipWeaponIndex + 1])
+                            equipWeapons = Weapons[equipWeaponIndex + 1];
+                        equipWeapons.SetActive(true);
+                        break;
+                    case 2:
+                        equipWeaponIndex = 1;
+                        equipWeapons = Weapons[equipWeaponIndex + 1];
+                        animator.SetInteger("EquipState", 11);
+                        if (!hasWeapons[equipWeaponIndex + 1])
+                            return;
+                        equipWeapons.SetActive(true);
+                        break;
+                    case 3:
+                        equipWeaponIndex = 2;
+                        equipWeapons = Weapons[equipWeaponIndex + 1];
+                        animator.SetInteger("EquipState", 21);
+                        if (!hasWeapons[equipWeaponIndex + 1])
+                            return;
+                        equipWeapons.SetActive(true);
+                        break;
+                    case 4:
+                        equipWeaponIndex = 3;
+                        equipWeapons = Weapons[equipWeaponIndex + 1];
+                        animator.SetInteger("EquipState", 31);
+                        if (!hasWeapons[equipWeaponIndex + 1])
+                            return;
+                        equipWeapons.SetActive(true);
+                        break;
+                }
             }
+            
         }
     }
 
@@ -80,7 +85,7 @@ public class Player_Swap : PlayerStatus
         {
             if (nearobject != null)
             {
-                if(nearobject.tag == "Rune")
+                if (nearobject.tag == "Rune")
                 {
                     Rune rune = nearobject.GetComponent<Rune>();
                     runeIndex = rune.value;

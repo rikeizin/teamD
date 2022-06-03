@@ -178,12 +178,12 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (context.started)
         {
-            if ((_swap.equipWeaponIndex == 3) && !IsMagicAttackAnimating())
+            if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating() && !IsRollAnimating())
             {
                 StartCoroutine(FireWand());
             }
 
-            if (!IsAttackLeftAnimating())
+            if (!IsAttackAnimating())
             {
                 _animator.SetTrigger(hashDoAttack);
                 _animator.SetInteger(hashAttackComboInteger, 0);
@@ -210,12 +210,12 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (!context.started)
         {
-            if ((_swap.equipWeaponIndex == 3) && !IsMagicAttackAnimating())
+            if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating())
             {
                 StartCoroutine(FireMeteor());
             }
 
-            if (!IsAttackRightAnimating())
+            if (!IsAttackAnimating())
             {
                 _animator.SetTrigger(hashDoAttack2);
             }
@@ -392,10 +392,11 @@ public class PlayerController : MonoBehaviour, IBattle
     private bool IsWalkAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashWalking;
     private bool IsRollAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashRolling;
 
-    public bool IsAttackAnimating() => IsAttackLeftAnimating() || IsAttackRightAnimating();
+    public bool IsAttackAnimating() => IsAttackLeftAnimating() || IsAttackRightAnimating() || IsMagicAttackAnimating();
     private bool IsAttackRightAnimating() => IsAttackRight0Animating() || IsAttackRightWandAnimating();
     private bool IsAttackLeftAnimating() => IsAttackLeft0Animating() || IsAttackLeft1Animating() || IsAttackLeft2Animating() || IsAttackLeftWandAnimating();
     private bool IsMagicAttackAnimating() => IsAttackLeftWandAnimating() || IsAttackRightWandAnimating();
+
     private bool IsAttackRight0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRight00;
     private bool IsAttackLeft0Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft00;
     private bool IsAttackLeft1Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft01;
