@@ -6633,6 +6633,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 818084af-9aa0-4ea7-b4a1-b7060b0cf91f
     m_ActionName: UI/Escape[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8508893349416522522}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Stop
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ce964da6-c6ab-4492-8f38-a50ea1f78ba3
+    m_ActionName: Player/Stop[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -6672,10 +6688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4467a9e8c4429d44fb1dcef29addcea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotCamXAxisSpeed: 3
-  rotCamYAxisSpeed: 3
-  limitMinX: -45
-  limitMaxX: 45
+  _rotCamXAxisSpeed: 3
+  _rotCamYAxisSpeed: 3
+  _limitMinX: -45
+  _limitMaxX: 45
 --- !u!114 &8101564786185555933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6699,7 +6715,6 @@ MonoBehaviour:
   camera2D: {fileID: 0}
   camera3D: {fileID: 8508893348879596653}
   characterController: {fileID: 0}
-  navMeshAgent: {fileID: 0}
   p_AttackTransform: {fileID: 7252606079890620540}
   p_MeteorTransform: {fileID: 1125831970934986841}
   p_Arrow: {fileID: 5241115233431377470, guid: 58eeb84c661fca14688e12d5216d0f4b, type: 3}
@@ -6736,6 +6751,8 @@ MonoBehaviour:
   - {fileID: 2564266170955872885}
   hasWeapons: 0101010101
   CurrentGold: 0
+  equipWeapons: {fileID: 0}
+  equipWeaponIndex: -1
   runeIndex: 0
 --- !u!114 &178784668213130018
 MonoBehaviour:

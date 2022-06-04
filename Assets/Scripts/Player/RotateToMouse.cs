@@ -2,49 +2,123 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Runtime.InteropServices;
 
 public class RotateToMouse : MonoBehaviour
 {
-    [SerializeField]
-    private float rotCamXAxisSpeed = 3;         // Ä«¸Ş¶ó xÃà È¸Àü¼Óµµ
-    [SerializeField]
-    private float rotCamYAxisSpeed = 3;         // Ä«¸Ş¶ó yÃà È¸Àü¼Óµµ
+    private Transform _cameraPivot;
+    private Transform _mainCamera;
+
+    [DllImport("user32.dll")]
+    public static extern bool SetCursorPos(int X, int Y);
+    [DllImport("user32.dll")]
+    public static extern bool GetCursorPos(out Vector2 pos);
 
     [SerializeField]
-    private float limitMinX = -20;              // Ä«¸Ş¶ó xÃà È¸Àü ¹üÀ§(ÃÖ¼Ò)
+    private float _rotCamXAxisSpeed = 3;         // ì¹´ë©”ë¼ xì¶• íšŒì „ì†ë„
     [SerializeField]
-    private float limitMaxX = 20;               // Ä«¸Ş¶ó xÃà È¸Àü ¹üÀ§(ÃÖ´ë)
-    private float eulerAngleX;
-    private float eulerAngleY;
+    private float _rotCamYAxisSpeed = 3;         // ì¹´ë©”ë¼ yì¶• íšŒì „ì†ë„
+
+    [SerializeField]
+    private float _limitMinX = -45;              // ì¹´ë©”ë¼ xì¶• íšŒì „ ë²”ìœ„(ìµœì†Œ)
+    [SerializeField]
+    private float _limitMaxX = 45;               // ì¹´ë©”ë¼ xì¶• íšŒì „ ë²”ìœ„(ìµœëŒ€)
+    private float _eulerAngleX;
+    private float _eulerAngleY;
+    private float _camera_dist = 0f; //ë¦¬ê·¸ë¡œë¶€í„° ì¹´ë©”ë¼ê¹Œì§€ì˜ ê±°ë¦¬
+    private float _camera_width = -3.5f; //ê°€ë¡œê±°ë¦¬
+    private float _camera_height = 1.5f; //ì„¸ë¡œê±°ë¦¬
+    private float _camera_fix = 1f; //ë ˆì´ì¼€ìŠ¤íŠ¸ í›„ ë¦¬ê·¸ìª½ìœ¼ë¡œ ì˜¬ ê±°ë¦¬
+    private int _layerMask = 0;
+
+    private bool isCursorLock = false;
+    private Vector3 _dir = Vector3.zero;
 
     private void Awake()
     {
-        //Cursor.visible = true;                                    // ¸¶¿ì½º Ä¿¼­¸¦ º¸ÀÌÁö ¾Ê°Ô ÇÑ´Ù.
-        Cursor.lockState = CursorLockMode.Locked;                   // ¸¶¿ì½º Ä¿¼­¸¦ ÇöÀç À§Ä¡¿¡ °íÁ¤ ½ÃÅ²´Ù.
+        CursorLock();
+    }
+
+    private void Start()
+    {
+        //ì¹´ë©”ë¼ë¦¬ê·¸ì—ì„œ ì¹´ë©”ë¼ê¹Œì§€ì˜ ê¸¸ì´
+        _camera_dist = Mathf.Sqrt(_camera_width * _camera_width + _camera_height * _camera_height);
+
+        //ì¹´ë©”ë¼ë¦¬ê·¸ì—ì„œ ì¹´ë©”ë¼ìœ„ì¹˜ê¹Œì§€ì˜ ë°©í–¥ë²¡í„°
+        _dir = new Vector3(0, _camera_height, _camera_width).normalized;
+
+        _cameraPivot = gameObject.transform.Find("CameraZeroPivot");
+        _mainCamera = _cameraPivot.GetChild(0);
+
+        _layerMask = 1 << LayerMask.NameToLayer("Map");
     }
 
     public void UpdateRotate(float mouseX, float mouseY)
     {
-        eulerAngleY += mouseX * rotCamYAxisSpeed;                   // ¸¶¿ì½º ÁÂ¿ìÀÌµ¿À¸·Î Ä«¸Ş¶ó yÃà È¸Àü
-        eulerAngleX -= mouseY * rotCamXAxisSpeed;                   // ¸¶¿ì½º »óÇÏÀÌµ¿À¸·Î Ä«¸Ş¶ó xÃà È¸Àü
+        _eulerAngleY += mouseX * _rotCamYAxisSpeed;                   // ë§ˆìš°ìŠ¤ ì¢Œìš°ì´ë™ìœ¼ë¡œ ì¹´ë©”ë¼ yì¶• íšŒì „
+        _eulerAngleX -= mouseY * _rotCamXAxisSpeed;                   // ë§ˆìš°ìŠ¤ ìƒí•˜ì´ë™ìœ¼ë¡œ ì¹´ë©”ë¼ xì¶• íšŒì „
 
-        //Ä«¸Ş¶ó xÃà È¸ÀüÀÇ °æ¿ì È¸Àü ¹üÀ§¸¦ ¼³Á¤
-        eulerAngleX = ClampAngle(eulerAngleX, limitMinX, limitMaxX);
+        //ì¹´ë©”ë¼ xì¶• íšŒì „ì˜ ê²½ìš° íšŒì „ ë²”ìœ„ë¥¼ ì„¤ì •
+        _eulerAngleX = ClampAngle(_eulerAngleX, _limitMinX, _limitMaxX);
 
-        //Ä³¸¯ÅÍ¸¦ ¸¶¿ì½º°¡ ¹Ù¶óº¸´Â °÷À¸·Î È¸Àü½ÃÅ´. 
-        transform.rotation = Quaternion.Euler(0, eulerAngleY, 0);   // XÃàµµ È¸Àü½ÃÅ°¸é Ä³¸¯ÅÍ°¡ ¾ÕµÚ·Î ½Ã¼ÒÃ³·³ ¿òÁ÷ÀÌ¹Ç·Î YÃà¸¸ È¸Àü
+        if (Player.IsGamePaused == false)
+        {
+            //ìºë¦­í„°ë¥¼ ë§ˆìš°ìŠ¤ê°€ ë°”ë¼ë³´ëŠ” ê³³ìœ¼ë¡œ íšŒì „ì‹œí‚´. 
+            transform.rotation = Quaternion.Euler(0, _eulerAngleY, 0);   // Xì¶•ë„ íšŒì „ì‹œí‚¤ë©´ ìºë¦­í„°ê°€ ì•ë’¤ë¡œ ì‹œì†Œì²˜ëŸ¼ ì›€ì§ì´ë¯€ë¡œ Yì¶•ë§Œ íšŒì „
+                                                                        //ì¹´ë©”ë¼ XYì¶• íšŒì „
+            _cameraPivot.rotation = Quaternion.Euler(_eulerAngleX, _eulerAngleY, 0); //ì¹´ë©”ë¼ì˜ í”¼ë²—ì´ ìºë¦­í„° í”¼ë²—ê³¼ ë‹¤ë¥´ë¯€ë¡œ, ìºë¦­í„°ì™€ ê°™ì€ í”¼ë²—ìœ¼ë¡œ CameraZeroPivot(ë¹ˆ ì˜¤ë¸Œì íŠ¸)ì„ ë§Œë“¤ì–´ ì£¼ê³  ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì— ë”°ë¼ XYì¶•ì´ íšŒì „í•˜ê²Œ í•œë‹¤.)
+        }
 
-        //Ä«¸Ş¶ó XYÃà È¸Àü
-        transform.Find("CameraZeroPivot").rotation = Quaternion.Euler(eulerAngleX, eulerAngleY, 0); //Ä«¸Ş¶óÀÇ ÇÇ¹şÀÌ Ä³¸¯ÅÍ ÇÇ¹ş°ú ´Ù¸£¹Ç·Î, Ä³¸¯ÅÍ¿Í °°Àº ÇÇ¹şÀ¸·Î CameraZeroPivot(ºó ¿ÀºêÁ§Æ®)À» ¸¸µé¾î ÁÖ°í ¸¶¿ì½º À§Ä¡¿¡ µû¶ó XYÃàÀÌ È¸ÀüÇÏ°Ô ÇÑ´Ù.)
+        //ë ˆì´ìºìŠ¤íŠ¸í•  ë²¡í„°ê°’
+        Vector3 ray_target = transform.up * _camera_height + transform.forward * _camera_width;
+
+        RaycastHit hitinfo;
+        Physics.Raycast(_cameraPivot.transform.position, ray_target, out hitinfo, _camera_dist, _layerMask);
+
+        if (hitinfo.point != Vector3.zero)//ë ˆì´ì¼€ìŠ¤íŠ¸ ì„±ê³µì‹œ
+        {
+            //pointë¡œ ì˜®ê¸´ë‹¤.
+            _mainCamera.transform.position = new Vector3(hitinfo.point.x, hitinfo.point.y+_camera_height, hitinfo.point.z);
+            //ì¹´ë©”ë¼ ë³´ì •
+            _mainCamera.transform.Translate(_dir * -1 * _camera_fix);
+            
+        }
+        else
+        {
+            //ë¡œì»¬ì¢Œí‘œë¥¼ 0ìœ¼ë¡œ ë§ì¶˜ë‹¤. (ì¹´ë©”ë¼ë¦¬ê·¸ë¡œ ì˜®ê¸´ë‹¤.)
+            _mainCamera.transform.localPosition = Vector3.zero;
+            //ì¹´ë©”ë¼ìœ„ì¹˜ê¹Œì§€ì˜ ë°©í–¥ë²¡í„° * ì¹´ë©”ë¼ ìµœëŒ€ê±°ë¦¬ ë¡œ ì˜®ê¸´ë‹¤.
+            _mainCamera.transform.Translate(new Vector3(0, _camera_height, _camera_width));
+
+            //ì¹´ë©”ë¼ ë³´ì •
+            //_mainCamera.transform.Translate(dir * -1 * camera_fix);
+        }
     }
 
     private float ClampAngle(float angle, float min, float max)
     {
-        if (angle < -360) 
+        if (angle < -360)
             angle += 360;
-        if (angle > 360) 
+        if (angle > 360)
             angle -= 360;
 
         return Mathf.Clamp(angle, min, max);
+    }
+
+    public void CursorLock()
+    {
+        if(isCursorLock == false)
+        {
+            Cursor.visible = false;                                     // ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ ë³´ì´ì§€ ì•Šê²Œ í•œë‹¤.
+            Cursor.lockState = CursorLockMode.Locked;                   // ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ í˜„ì¬ ìœ„ì¹˜ì— ê³ ì • ì‹œí‚¨ë‹¤.
+            isCursorLock = true;
+        }
+        else
+        {
+            Cursor.visible = true;                                     // ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ ë³´ì´ì§€ ì•Šê²Œ í•œë‹¤.
+            Cursor.lockState = CursorLockMode.None;                   // ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ í˜„ì¬ ìœ„ì¹˜ì— ê³ ì • ì‹œí‚¨ë‹¤.
+            isCursorLock = false;
+        }
+        
     }
 }

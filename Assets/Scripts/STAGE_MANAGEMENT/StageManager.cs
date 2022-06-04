@@ -42,8 +42,7 @@ namespace STAGE_MANAGEMENT
         [SerializeField]
         private AudioManager bgm = null;
 
-        [SerializeField]
-        private GameObject Player;
+        public GameObject Player;
 
         private void Awake()
         {
@@ -72,8 +71,8 @@ namespace STAGE_MANAGEMENT
 
             // 랜덤 스테이지 확률 설정
             percentage  = new RandPercent();
-            percentage.regist.Add("Stage_Dungeon", 80);
-            percentage.regist.Add("Stage_EliteBossRoom", 20);
+            percentage.regist.Add("Stage_Dungeon", 70);
+            percentage.regist.Add("Stage_EliteBossRoom", 30);
             
             StageInit();
         }

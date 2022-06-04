@@ -105,6 +105,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Stop"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce964da6-c6ab-4492-8f38-a50ea1f78ba3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -470,6 +478,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""2DMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8355a5e-cf48-4f59-9675-62b6a116ddb7"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Stop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1075,6 +1094,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_Swap = m_Player.FindAction("Swap", throwIfNotFound: true);
         m_Player_GainItem = m_Player.FindAction("GainItem", throwIfNotFound: true);
         m_Player__2DMove = m_Player.FindAction("2DMove", throwIfNotFound: true);
+        m_Player_Stop = m_Player.FindAction("Stop", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1148,6 +1168,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Swap;
     private readonly InputAction m_Player_GainItem;
     private readonly InputAction m_Player__2DMove;
+    private readonly InputAction m_Player_Stop;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1163,6 +1184,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Swap => m_Wrapper.m_Player_Swap;
         public InputAction @GainItem => m_Wrapper.m_Player_GainItem;
         public InputAction @_2DMove => m_Wrapper.m_Player__2DMove;
+        public InputAction @Stop => m_Wrapper.m_Player_Stop;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1205,6 +1227,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @_2DMove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.On_2DMove;
                 @_2DMove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.On_2DMove;
                 @_2DMove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.On_2DMove;
+                @Stop.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStop;
+                @Stop.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStop;
+                @Stop.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStop;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1242,6 +1267,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @_2DMove.started += instance.On_2DMove;
                 @_2DMove.performed += instance.On_2DMove;
                 @_2DMove.canceled += instance.On_2DMove;
+                @Stop.started += instance.OnStop;
+                @Stop.performed += instance.OnStop;
+                @Stop.canceled += instance.OnStop;
             }
         }
     }
@@ -1417,6 +1445,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnSwap(InputAction.CallbackContext context);
         void OnGainItem(InputAction.CallbackContext context);
         void On_2DMove(InputAction.CallbackContext context);
+        void OnStop(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

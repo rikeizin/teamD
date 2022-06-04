@@ -48,7 +48,7 @@ public class ShopController: MonoBehaviour
 
     private bool CheckShop()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hitInfo, range, layerMask))
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hitInfo, range, layerMask))
         {
             if (hitInfo.transform.tag == "Shop")
                 return true;
@@ -71,7 +71,7 @@ public class ShopController: MonoBehaviour
     {
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform  + " ¿­±â " + "<color=yellow>" + "(E)" + "</color>";
+        actionText.text = hitInfo.transform  + " ì—´ê¸° " + "<color=yellow>" + "(E)" + "</color>";
     }
 
     private void ShopInfoDisappear()
