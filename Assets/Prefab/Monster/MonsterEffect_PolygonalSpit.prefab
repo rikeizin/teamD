@@ -19286,6 +19286,7 @@ GameObject:
   - component: {fileID: 642531441213285678}
   - component: {fileID: 638316843405056572}
   - component: {fileID: 146296600888213264}
+  - component: {fileID: 3108898010320462490}
   m_Layer: 0
   m_Name: MonsterEffect_PolygonalSpit
   m_TagString: Untagged
@@ -19336,3 +19337,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &3108898010320462490
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6513142133622431371}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4
+  m_Center: {x: 0, y: 0, z: 0}
