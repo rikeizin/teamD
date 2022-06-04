@@ -5,24 +5,29 @@ using UnityEngine.SceneManagement;
 
 public class Billboard : MonoBehaviour
 {
-    public Transform m_cam3D;
-    public Transform m_cam2D;
+    public Transform m_cam;
 
     private void Start()
     {
-        m_cam3D = Camera.main.transform;
-        m_cam2D = GameObject.Find("Camera").transform;
+        if (SceneManager.GetActiveScene().name == "Stage_OutOfTower")
+        {
+            m_cam = GameObject.Find("Camera").transform;
+        }
+        else
+        {
+            m_cam = GameObject.Find("Main Camera").transform;
+        }
     }
 
     private void Update()
     {
         if(SceneManager.GetActiveScene().name == "Stage_OutOfTower")
         {
-            transform.LookAt(transform.position + m_cam2D.rotation * Vector3.forward, m_cam2D.rotation * Vector3.up);
+            transform.LookAt(transform.position + m_cam.rotation * Vector3.forward, m_cam.rotation * Vector3.up);
         }
         else
         {
-            transform.LookAt(transform.position + m_cam3D.rotation * Vector3.forward, m_cam3D.rotation * Vector3.up);
+            transform.LookAt(transform.position + m_cam.rotation * Vector3.forward, m_cam.rotation * Vector3.up);
         }
     }
 }
