@@ -8,7 +8,7 @@ public class Weapons : MonoBehaviour
     public Type type;
     public int value;
     public int turnSpeed;
-
+        
     GameObject weapon;
 
     private void Awake()

@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Weapons
   - Gold
+  - Shop
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -17,9 +19,9 @@ TagManager:
   - Water
   - UI
   - Map
-  - 
-  - 
-  - 
+  - Weapons
+  - Item
+  - Shop
   - 
   - 
   - 

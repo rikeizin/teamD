@@ -45,7 +45,7 @@ public class ActionController : MonoBehaviour
         if (Physics.Raycast(new Vector3(transform.position.x ,transform.position.y+1 ,transform.position.z), transform.forward, out hitInfo, range, layerMask))
         {
             Debug.Log(hitInfo.transform.gameObject.name);
-            if (hitInfo.transform.tag == "Item")
+            if (hitInfo.transform.tag == "Rune")
             {
                 ItemInfoAppear();
             }
