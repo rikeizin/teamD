@@ -11,6 +11,7 @@ TagManager:
   - Gold
   - Shop
   - Item
+  - Arrow
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Weapons
   - Item
   - Shop
-  - 
+  - Monster
   - 
   - 
   - 

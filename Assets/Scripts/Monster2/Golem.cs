@@ -7,9 +7,12 @@ public class Golem : MonsterController
 {
     private GameObject m_rockPoint;    
     public GameObject m_rock;
+    public GameObject[] m_weapons;
+    
 
     public Text m_monsterName;
     public Text m_monsterHp;
+    
 
     #region Animation Event Methods
     protected void AnimEvent_AttackThrow()
@@ -26,11 +29,18 @@ public class Golem : MonsterController
         }
     }
     #endregion
+
+    protected override void AnimEvent_DeadFinish()
+    {
+        base.AnimEvent_DeadFinish();
+        Instantiate(m_weapons[Random.Range(0, 3)], transform.position + Vector3.forward * 1.5f, transform.rotation);
+
+    }
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(100.0f, 10.0f, 10.0f, 15.0f, 15.0f); 
-        
+        m_status = new Status(100.0f, 10.0f, 10.0f, 15.0f, 15.0f);
+        m_weapons = Resources.LoadAll<GameObject>("Prefab/Weapons");
         m_rockPoint = GameObject.Find("RockPoint").gameObject;       
         
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
@@ -48,26 +58,28 @@ public class Golem : MonsterController
 
     public override void Attack()
     {
-        ResetMove();
-        FollowTarget();
-        if (m_dir <= 8.0f)
-        {
-            m_anim.SetBool("Attack_Throw", false);
-            base.Attack(); //근거리 공격
+        
+            ResetMove();
+            FollowTarget();
+            if (m_dir <= 3.0f)
+            {
+                m_anim.SetBool("Attack_Throw", false);
+                base.Attack(); //근거리 공격
 
-        }
-        else if (m_dir > 8.0f)
-        {
-            m_anim.SetBool("Attack", false);
-            Attack_Throw();
-        }
-        if (m_dir > m_status.m_attackRange)
-        {
-            SetState(eMonsterState.Idle);
-            m_anim.SetBool("Attack", false);
-            m_anim.SetBool("Attack_Throw", false);
+            }
+            else if (m_dir > 3.0f)
+            {
+                m_anim.SetBool("Attack", false);
+                Attack_Throw();  //장거리 공격
+            }
+            if (m_dir > m_status.m_attackRange)
+            {
+                SetState(eMonsterState.Idle);
+                m_anim.SetBool("Attack", false);
+                m_anim.SetBool("Attack_Throw", false);
 
-        }
+            }
+        
     }
 
     public void Attack_Throw()
@@ -75,6 +87,8 @@ public class Golem : MonsterController
         m_anim.SetBool("Attack_Throw", true);
         ResetMove();
     }
+
+    
 }
 
 
