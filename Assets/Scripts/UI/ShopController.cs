@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopController: MonoBehaviour
+public class ShopController : MonoBehaviour
 {
     [SerializeField]
     private GameObject go_ShopBase;
@@ -14,6 +14,7 @@ public class ShopController: MonoBehaviour
     [SerializeField]
     private Text actionText;
 
+
     private RaycastHit hitInfo;
 
     [SerializeField]
@@ -23,6 +24,7 @@ public class ShopController: MonoBehaviour
 
 
     public static bool ShopActivated = false;
+
 
     void Update()
     {
@@ -56,22 +58,26 @@ public class ShopController: MonoBehaviour
         return false;
     }
 
+
+
     private void OpenShop()
-        {
-            go_ShopBase.SetActive(true);
-        }
+    {
+        go_ShopBase.SetActive(true);
+    }
+
+
 
     private void CloseShop()
-        {
-            go_ShopBase.SetActive(false);
-        }
+    {
+        go_ShopBase.SetActive(false);
+    }
 
 
     private void ShopInfoAppear()
     {
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform  + " 열기 " + "<color=yellow>" + "(E)" + "</color>";
+        actionText.text = hitInfo.transform + (" 열기 " + "<color=yellow>" + "(E)" + "</color>");
     }
 
     private void ShopInfoDisappear()

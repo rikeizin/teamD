@@ -7,31 +7,31 @@ public class Shop : MonoBehaviour
 {
 
 
-    public GameObject[] itemobj;
-    public int[] itemPrice;
-    public Transform[] itempos;
     public string[] talkData;
     public Text talkText;
+    public GameObject[] rune;
+    public GameObject[] weapons;
+
 
     Player enterPlayer;
 
-
+    public void Awake()
+    {
+        enterPlayer = GameObject.Find("Player").GetComponent<Player>();
+    }
 
     public void ShopLoading()
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/Weapons Prepabs");
-
-        for (int i = 0; i < 3; i++)
-        {
-            var go = Instantiate(prefab);
-            var Weapons = Random.Range(0, 5);
-            var Rune = Random.Range(0, 9);
-        }
+        weapons = Resources.LoadAll<GameObject>("Prefab/Weapons");
+        rune = Resources.LoadAll<GameObject>("Prefab/Rune");
     }
 
-    public void Buy(int index)
+    public void Buy()
     {
-        int price = itemPrice[3];
+        ShopLoading();
+
+        int price = 100;
+        enterPlayer.gold = 200;
         if (price > enterPlayer.gold)
         {
             StopCoroutine(Talk());
@@ -40,9 +40,18 @@ public class Shop : MonoBehaviour
         }
 
         enterPlayer.gold -= price;
-        Vector3 ranVec = Vector3.right * Random.Range(-3, 3)
-                        + Vector3.forward * Random.Range(-3, 3);
-        Instantiate(itemobj[index], itempos[index].position + ranVec, itempos[index].rotation);
+
+        int per = Random.Range(0, 13);
+        if (per < 9)
+        {
+            int itemPer = Random.Range(0, 9);
+            Instantiate(rune[itemPer], transform.position + Vector3.forward * 1.5f, transform.rotation);
+        }
+        else
+        {
+            int itemPer = Random.Range(0, 4);
+            Instantiate(weapons[itemPer], transform.position + Vector3.forward * 1.5f, transform.rotation);
+        }
 
     }
 
@@ -51,6 +60,5 @@ public class Shop : MonoBehaviour
         talkText.text = talkData[1];
         yield return new WaitForSeconds(2f);
         talkText.text = talkData[0];
-
     }
 }
