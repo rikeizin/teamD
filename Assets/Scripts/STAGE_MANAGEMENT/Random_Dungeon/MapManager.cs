@@ -235,10 +235,18 @@ namespace RandomMap {
                 else if (index == areaArray.Length - 1)
                 {
                     // 마지막 구역 생성
-                    if (thisArea.floorCount > 0 && thisArea.passedDir == Direction.Down)
+                    if (thisArea.floorCount > 0)
                     {
-                        // 마지막섹션이 연속되는 층의 최상층의 섹션인경우 출구오브젝트를 1층섹션에서 생성
-                        CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
+                        if(thisArea.passedDir == Direction.Down)
+                        {
+                            // 마지막섹션이 연속되는 층의 최상층의 섹션인경우 출구오브젝트를 1층섹션에서 생성
+                            CreateGate(thisArea.firstFloorArea, DirectionExt.GetOpposite(thisArea.firstFloorArea.passedDir), PurposeOfGate.endPoint); // 던전출구 생성
+                        } 
+                        else if (thisArea.passedDir == Direction.Up)
+                        {
+                            thisArea.blockedDir = DirectionExt.AddDirection(thisArea.blockedDir, thisArea.nextDir);     // 마지막구역 출구방향 벽추가
+                            CreateGate(thisArea, DirectionExt.GetOpposite(thisArea.upStairsNextDir), PurposeOfGate.endPoint); // 던전출구 생성
+                        }
                     }
                     else
                     {
