@@ -458,7 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eliteBossPrefabs:
   - {fileID: 1128758269040250, guid: c7bbe37dd6cace2449e84e7ef8ac3730, type: 3}
-  - {fileID: 1777289859392296295, guid: cffed0639feb21e40920951223d7f713, type: 3}
+  - {fileID: 1807739311599445627, guid: cffed0639feb21e40920951223d7f713, type: 3}
 --- !u!1001 &1487682681
 PrefabInstance:
   m_ObjectHideFlags: 0
