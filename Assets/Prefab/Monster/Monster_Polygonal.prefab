@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 535070969}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SpitPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4315525469342356}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg02Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030532879877860}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5000001, y: -0.5, z: -0.5, w: 0.49999994}
   m_LocalPosition: {x: -1.7133375, y: 0.00000006905087, z: 0.47719592}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4403820970570362}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1070946537761306}
-  m_LocalRotation: {x: 0.008575733, y: 0.042768124, z: -0.023336459, w: 0.99877566}
+  m_LocalRotation: {x: 0.008575734, y: 0.042768132, z: -0.02333646, w: 0.99877566}
   m_LocalPosition: {x: -0.19468734, y: 0, z: 0}
   m_LocalScale: {x: 0.99999964, y: 0.99999964, z: 1}
   m_Children: []
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4785662478029756}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg032
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116091646472180}
-  m_LocalRotation: {x: -0.43477124, y: 0.78159046, z: 0.082633264, w: 0.43961594}
+  m_LocalRotation: {x: -0.43477127, y: 0.7815904, z: 0.0826333, w: 0.43961596}
   m_LocalPosition: {x: -0.8860627, y: -0.000000038146972, z: 0.000000038146972}
   m_LocalScale: {x: 0.9999988, y: 1.0000043, z: 0.99999666}
   m_Children:
@@ -136,13 +136,13 @@ GameObject:
   - component: {fileID: 1175912889}
   - component: {fileID: 1175912890}
   - component: {fileID: 4402210399970584631}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Monster_Polygonal
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4444695180855720
 Transform:
   m_ObjectHideFlags: 0
@@ -376,7 +376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4803628188374764}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +390,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1130806907750044}
-  m_LocalRotation: {x: 0.0408127, y: -0.47807854, z: 0.72263855, w: 0.49756294}
+  m_LocalRotation: {x: 0.040812764, y: -0.47807857, z: 0.72263855, w: 0.4975629}
   m_LocalPosition: {x: -0.5498778, y: 0.000000076293944, z: -0.000000076293944}
   m_LocalScale: {x: 0.9999997, y: 1.0000007, z: 0.9999998}
   m_Children: []
@@ -406,7 +406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4140290212659504}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigSpine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,7 +420,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167207653128304}
-  m_LocalRotation: {x: -0.0053959396, y: -0.01718712, z: -0.19478357, w: 0.9806808}
+  m_LocalRotation: {x: -0.0053959414, y: -0.01718712, z: -0.19478355, w: 0.9806808}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -437,7 +437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4119669933948550}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigHeadGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +451,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211613045811320}
-  m_LocalRotation: {x: 0.712152, y: 0.0856098, z: -0.688526, w: -0.1069701}
+  m_LocalRotation: {x: -0.712152, y: -0.08560982, z: 0.6885259, w: 0.1069701}
   m_LocalPosition: {x: 0.14190936, y: 0.9206162, z: 0.7768825}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -467,7 +467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4573788471222622}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +481,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232293048030188}
-  m_LocalRotation: {x: 0.36088666, y: 0.33615735, z: 0.82242143, w: -0.28351745}
+  m_LocalRotation: {x: -0.36088666, y: -0.33615738, z: -0.8224214, w: 0.2835175}
   m_LocalPosition: {x: 0.06065763, y: 0.56919813, z: -0.43555304}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -498,7 +498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4103193232510060}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail3Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1236971796621534}
-  m_LocalRotation: {x: -0.11040668, y: -0.5258339, z: 0.17330375, w: 0.82539386}
+  m_LocalRotation: {x: -0.11040668, y: -0.52583396, z: 0.17330374, w: 0.8253938}
   m_LocalPosition: {x: -0.1933281, y: 0.4358183, z: -1.1666112}
   m_LocalScale: {x: 0.9999998, y: 0.9999998, z: 1}
   m_Children: []
@@ -528,7 +528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4685451024947768}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail5Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +542,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272420548603170}
-  m_LocalRotation: {x: -0.04024411, y: -0.45999146, z: 0.07730807, w: 0.8836356}
+  m_LocalRotation: {x: -0.040244114, y: -0.45999146, z: 0.07730807, w: 0.8836355}
   m_LocalPosition: {x: -0.37530944, y: 0.30264908, z: -1.5177002}
   m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
   m_Children: []
@@ -558,7 +558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4900698609492018}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +572,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1315065249192540}
-  m_LocalRotation: {x: -0.16457169, y: -0.379501, z: -0.42202148, w: 0.80671746}
+  m_LocalRotation: {x: -0.1645717, y: -0.37950096, z: -0.4220215, w: 0.80671746}
   m_LocalPosition: {x: -0.8471852, y: 0, z: 0.000000038146972}
   m_LocalScale: {x: 1.0000005, y: 1.0000004, z: 1.0000004}
   m_Children:
@@ -589,7 +589,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4414295290367788}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg033
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -603,7 +603,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319950876509774}
-  m_LocalRotation: {x: 0.23535521, y: -0.07931664, z: 0.89409673, w: -0.3727034}
+  m_LocalRotation: {x: -0.23535523, y: 0.07931664, z: -0.8940968, w: 0.37270337}
   m_LocalPosition: {x: -0.49348763, y: 0.000000076293944, z: 0}
   m_LocalScale: {x: 0.99999255, y: 1.0000006, z: 1.0000074}
   m_Children: []
@@ -619,7 +619,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4375254234783096}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail2Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +633,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321613727626540}
-  m_LocalRotation: {x: -0.22050998, y: -0.52949524, z: 0.31492087, w: 0.7561978}
+  m_LocalRotation: {x: -0.22051002, y: -0.52949524, z: 0.3149209, w: 0.75619763}
   m_LocalPosition: {x: -0.13377695, y: 0.61126935, z: -1.0029961}
   m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
   m_Children: []
@@ -649,7 +649,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4899417539313038}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -663,7 +663,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378658291631000}
-  m_LocalRotation: {x: -0.03737858, y: 0.02248336, z: 0.9806035, w: -0.1910867}
+  m_LocalRotation: {x: 0.03737858, y: -0.022483358, z: -0.9806035, w: 0.19108665}
   m_LocalPosition: {x: 0.26830503, y: 0.06334343, z: -0.000000028610229}
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
   m_Children:
@@ -680,7 +680,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4899931363360970}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,7 +694,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1397863880402892}
-  m_LocalRotation: {x: 0.008520694, y: -0.026289282, z: 0.0351478, w: 0.99899995}
+  m_LocalRotation: {x: 0.008520697, y: -0.026289284, z: 0.035147812, w: 0.99899995}
   m_LocalPosition: {x: -0.39508873, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -711,7 +711,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4049026081563826}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigJawGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -725,7 +725,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422550469401532}
-  m_LocalRotation: {x: 0.6116872, y: 0.39998087, z: -0.5459473, w: -0.40962878}
+  m_LocalRotation: {x: -0.6116872, y: -0.39998087, z: 0.5459473, w: 0.40962878}
   m_LocalPosition: {x: 0.13485295, y: 0.5699957, z: 0.6030961}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -741,7 +741,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4117629182576632}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigNeck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -755,7 +755,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1425171481656678}
-  m_LocalRotation: {x: 0.0058726077, y: 0.05192499, z: -0.11386161, w: 0.9921214}
+  m_LocalRotation: {x: 0.005872607, y: 0.051924992, z: -0.11386161, w: 0.9921214}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000001, y: 1, z: 1}
   m_Children:
@@ -772,7 +772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4813669988022616}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +786,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447473931865246}
-  m_LocalRotation: {x: 0.28716448, y: 0.20302813, z: 0.84838307, w: 0.3956796}
+  m_LocalRotation: {x: 0.2871645, y: 0.20302811, z: 0.84838307, w: 0.3956795}
   m_LocalPosition: {x: -0.4852066, y: 0, z: 0.000000038146972}
   m_LocalScale: {x: 1.0000046, y: 0.99999964, z: 0.9999965}
   m_Children: []
@@ -802,7 +802,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4796741790252284}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg03Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -816,7 +816,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1501617137209270}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5000001, y: -0.5, z: -0.5, w: 0.49999994}
   m_LocalPosition: {x: 1.404893, y: -0.00000006942512, z: -1.4135854}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -832,7 +832,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4835502567530228}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRibcageGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -846,7 +846,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518060694503664}
-  m_LocalRotation: {x: -0.70088416, y: -0.040396705, z: 0.7109836, w: 0.0403968}
+  m_LocalRotation: {x: -0.70088416, y: -0.040396597, z: 0.7109835, w: 0.04039669}
   m_LocalPosition: {x: 0.17775573, y: 1.0527459, z: 0.40627235}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -862,7 +862,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4600761528984928}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigJaw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -876,7 +876,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528938253645806}
-  m_LocalRotation: {x: -0.0023731561, y: 0.024647359, z: -0.45612082, w: 0.88957334}
+  m_LocalRotation: {x: -0.0023731561, y: 0.024647359, z: -0.45612088, w: 0.88957334}
   m_LocalPosition: {x: 0.0725814, y: 0.38460135, z: -0.000000057220458}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -893,7 +893,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4442939881410186}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg03Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -907,7 +907,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1556666644408788}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5000001, y: -0.5, z: -0.5, w: 0.49999994}
   m_LocalPosition: {x: -1.6916162, y: -0.000000069425035, z: -0.85655683}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -923,7 +923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4338430299291746}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -937,7 +937,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1569924757396684}
-  m_LocalRotation: {x: -0.5900379, y: -0.31502238, z: 0.62344146, w: -0.40489128}
+  m_LocalRotation: {x: 0.59003794, y: 0.31502244, z: -0.62344146, w: 0.40489128}
   m_LocalPosition: {x: -0.81782156, y: -0.000000028610229, z: 0}
   m_LocalScale: {x: 1.0000042, y: 0.99999654, z: 0.9999996}
   m_Children:
@@ -954,7 +954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4958880585165120}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -968,7 +968,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1638432435042412}
-  m_LocalRotation: {x: 0.030100705, y: 0.031569004, z: 0.027591811, w: 0.9986671}
+  m_LocalRotation: {x: 0.030100705, y: 0.031569004, z: 0.027591811, w: 0.9986672}
   m_LocalPosition: {x: -0.48787117, y: 0, z: -0.000000019073486}
   m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
   m_Children:
@@ -985,7 +985,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4503046169023880}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigPelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -999,7 +999,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639718499868046}
-  m_LocalRotation: {x: -0.63302225, y: 0.11161896, z: 0.7544066, w: -0.13302216}
+  m_LocalRotation: {x: 0.63302225, y: -0.111618966, z: -0.7544066, w: 0.13302219}
   m_LocalPosition: {x: -0.000000018626597, y: 1.0893475, z: -0.42612815}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1019,7 +1019,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4604717255139794}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg02Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1033,7 +1033,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654413139868126}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5000001, y: -0.5, z: -0.5, w: 0.49999994}
   m_LocalPosition: {x: 1.8707821, y: 0.00000006905077, z: -0.56787544}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1049,7 +1049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4576593751153924}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail4Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1063,7 +1063,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655454846188690}
-  m_LocalRotation: {x: -0.05520089, y: -0.49694353, z: 0.09561075, w: 0.8607315}
+  m_LocalRotation: {x: -0.055200897, y: -0.4969436, z: 0.09561075, w: 0.8607314}
   m_LocalPosition: {x: -0.28033867, y: 0.345374, z: -1.353206}
   m_LocalScale: {x: 0.9999998, y: 0.9999998, z: 1}
   m_Children: []
@@ -1079,7 +1079,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4891744612546170}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1093,7 +1093,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1665750193094286}
-  m_LocalRotation: {x: 0.15345965, y: 0.47965395, z: -0.5100076, w: 0.6973338}
+  m_LocalRotation: {x: 0.1534597, y: 0.47965398, z: -0.5100077, w: 0.6973338}
   m_LocalPosition: {x: -0.8471852, y: 0.000000076293944, z: -0.000000076293944}
   m_LocalScale: {x: 0.9999999, y: 0.99999976, z: 1.0000002}
   m_Children:
@@ -1110,7 +1110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4054574642770526}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1124,7 +1124,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675505690905546}
-  m_LocalRotation: {x: -0.44674855, y: 0.6974293, z: -0.4504388, w: -0.33333614}
+  m_LocalRotation: {x: 0.44674852, y: -0.6974294, z: 0.45043886, w: 0.33333603}
   m_LocalPosition: {x: 0.2961422, y: 0.48595864, z: -0.44488674}
   m_LocalScale: {x: 1.0000001, y: 1, z: 1}
   m_Children:
@@ -1141,7 +1141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4631733832973064}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRibcage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1155,7 +1155,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676087884920562}
-  m_LocalRotation: {x: -0.0053959657, y: 0.09766749, z: -0.03518794, w: 0.99458224}
+  m_LocalRotation: {x: -0.0053959657, y: 0.097667485, z: -0.035187937, w: 0.99458224}
   m_LocalPosition: {x: -0.8519551, y: 0, z: 0.000000019073486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1176,7 +1176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4196651886654518}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1190,7 +1190,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1689788025200956}
-  m_LocalRotation: {x: 0.63629866, y: 0.27799606, z: 0.5656391, w: -0.4448535}
+  m_LocalRotation: {x: -0.63629866, y: -0.2779961, z: -0.5656391, w: 0.44485345}
   m_LocalPosition: {x: -0.8178218, y: -0.000000019073486, z: 0}
   m_LocalScale: {x: 1.000003, y: 0.9999971, z: 1.0000005}
   m_Children:
@@ -1207,7 +1207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4482801368966868}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1221,7 +1221,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1691432314996410}
-  m_LocalRotation: {x: -0.23343103, y: -0.21552609, z: 0.8896599, w: 0.32796922}
+  m_LocalRotation: {x: -0.23343107, y: -0.21552607, z: 0.8896599, w: 0.32796916}
   m_LocalPosition: {x: -0.48520675, y: -0.00000015258789, z: 0}
   m_LocalScale: {x: 1.0000036, y: 1.0000004, z: 0.9999963}
   m_Children: []
@@ -1237,7 +1237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4932550731915200}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1251,7 +1251,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708474015160650}
-  m_LocalRotation: {x: 0.7803979, y: -0.35959727, z: 0.22447152, w: 0.45965362}
+  m_LocalRotation: {x: -0.780398, y: 0.35959712, z: -0.22447133, w: -0.45965365}
   m_LocalPosition: {x: -0.10979496, y: 0.4980911, z: -0.34511814}
   m_LocalScale: {x: 0.99999994, y: 1, z: 1}
   m_Children:
@@ -1268,7 +1268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4933216803954238}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg032
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1282,7 +1282,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1715527257751734}
-  m_LocalRotation: {x: -0.4187311, y: 0.795404, z: -0.08743039, w: -0.4293631}
+  m_LocalRotation: {x: 0.41873112, y: -0.79540396, z: 0.0874304, w: 0.42936313}
   m_LocalPosition: {x: -0.8860629, y: 0.000000019073486, z: 0}
   m_LocalScale: {x: 0.99999976, y: 1.0000032, z: 0.9999971}
   m_Children:
@@ -1300,7 +1300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4054819628335862}
   - component: {fileID: 137111010946803922}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Polygonal Metalon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1410,7 +1410,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4352870845108928}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail1Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1424,7 +1424,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748964576641720}
-  m_LocalRotation: {x: -0.21842664, y: -0.56822544, z: 0.2846594, w: 0.740526}
+  m_LocalRotation: {x: -0.21842664, y: -0.5682254, z: 0.2846594, w: 0.740526}
   m_LocalPosition: {x: -0.040018924, y: 0.9380584, z: -0.65308654}
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
   m_Children: []
@@ -1440,7 +1440,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4662922861750382}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg033
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1454,7 +1454,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763693513203894}
-  m_LocalRotation: {x: -0.22357595, y: 0.0800307, z: 0.9029809, w: -0.35809833}
+  m_LocalRotation: {x: 0.22357596, y: -0.08003067, z: -0.9029809, w: 0.35809818}
   m_LocalPosition: {x: -0.4934875, y: 0, z: -0.000000076293944}
   m_LocalScale: {x: 0.9999936, y: 1.0000032, z: 1.000004}
   m_Children: []
@@ -1470,7 +1470,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4231299022180116}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1484,7 +1484,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1766980005104480}
-  m_LocalRotation: {x: 0.024685742, y: 0.03596176, z: -0.18637362, w: 0.98151016}
+  m_LocalRotation: {x: 0.024685742, y: 0.035961762, z: -0.1863736, w: 0.9815102}
   m_LocalPosition: {x: -0.24718265, y: 0, z: 0.000000019073486}
   m_LocalScale: {x: 0.9999997, y: 0.9999997, z: 1}
   m_Children:
@@ -1501,7 +1501,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4591620879234358}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigPelvisGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1515,7 +1515,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807310382640446}
-  m_LocalRotation: {x: -0.63302225, y: 0.11161896, z: 0.7544066, w: -0.13302216}
+  m_LocalRotation: {x: 0.63302225, y: -0.111618966, z: -0.7544066, w: 0.13302219}
   m_LocalPosition: {x: -0.000000018626597, y: 1.0893475, z: -0.42612815}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1531,7 +1531,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4629610768171582}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg01Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1545,7 +1545,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823779791173050}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5000001, y: -0.5, z: -0.5, w: 0.49999994}
   m_LocalPosition: {x: -1.3250853, y: 0.00000006905086, z: 1.6314427}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1561,7 +1561,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4445618330094918}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigTail4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1575,7 +1575,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1854530670138728}
-  m_LocalRotation: {x: 0.013621182, y: 0.0414381, z: -0.09609082, w: 0.99441636}
+  m_LocalRotation: {x: 0.013621184, y: 0.0414381, z: -0.09609082, w: 0.99441636}
   m_LocalPosition: {x: -0.2248748, y: 0.000000076293944, z: -0.000000019073486}
   m_LocalScale: {x: 0.9999997, y: 0.9999997, z: 1}
   m_Children:
@@ -1592,7 +1592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4960443990332442}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1606,7 +1606,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1865475983786716}
-  m_LocalRotation: {x: 0.6210325, y: -0.4835487, z: -0.37575653, w: -0.48918945}
+  m_LocalRotation: {x: -0.62103254, y: 0.48354882, z: 0.3757565, w: 0.48918936}
   m_LocalPosition: {x: 0.2961421, y: 0.48595867, z: 0.44488674}
   m_LocalScale: {x: 1, y: 1.0000001, z: 0.99999994}
   m_Children:
@@ -1623,7 +1623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4257765354184968}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1653,7 +1653,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259107049340980}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigRLeg01Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1667,7 +1667,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1888273248922674}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5000001, y: -0.5, z: -0.5, w: 0.49999994}
   m_LocalPosition: {x: 1.5211198, y: 0.00000006905078, z: 1.4722922}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1683,7 +1683,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4070781948999046}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1697,7 +1697,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902705309870586}
-  m_LocalRotation: {x: -0.36898497, y: -0.3342995, z: 0.8182435, w: -0.2873526}
+  m_LocalRotation: {x: 0.36898497, y: 0.3342995, z: -0.81824356, w: 0.28735253}
   m_LocalPosition: {x: 0.060657557, y: 0.5691982, z: 0.43555304}
   m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
   m_Children:
@@ -1714,7 +1714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4914739186770340}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1728,7 +1728,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1911344872161094}
-  m_LocalRotation: {x: -0.03750762, y: 0.4100875, z: 0.6277583, w: 0.66056114}
+  m_LocalRotation: {x: -0.03750767, y: 0.4100875, z: 0.6277583, w: 0.6605611}
   m_LocalPosition: {x: -0.54987794, y: -0.000000038146972, z: 0}
   m_LocalScale: {x: 0.9999998, y: 1.0000002, z: 1.0000002}
   m_Children: []
@@ -1744,7 +1744,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4672576428163864}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RigLLeg011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1758,7 +1758,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1993909755093392}
-  m_LocalRotation: {x: 0.7718893, y: -0.34854338, z: -0.24947678, w: -0.46953788}
+  m_LocalRotation: {x: 0.7718893, y: -0.3485433, z: -0.24947676, w: -0.46953788}
   m_LocalPosition: {x: -0.109795034, y: 0.4980911, z: 0.34511814}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_Children:
@@ -1778,7 +1778,7 @@ GameObject:
   - component: {fileID: 5276310250722003239}
   - component: {fileID: 8397745226819349408}
   - component: {fileID: 7364757370304668318}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1965,13 +1965,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster_EliteHpBar
       objectReference: {fileID: 0}
+    - target: {fileID: 6354856894613328572, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354856894780214546, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354856894844395855, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354856895161487221, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354856895842233336, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6354856895939008484, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6354856895939008484, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354856895939008485, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354856896099536502, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79d512cd3c40d7546bafd49f9be4dd54, type: 3}

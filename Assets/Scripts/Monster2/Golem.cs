@@ -8,7 +8,8 @@ public class Golem : MonsterController
     private GameObject m_rockPoint;    
     public GameObject m_rock;
     public GameObject[] m_weapons;
-    
+    public AudioClip m_audioThrow;
+
 
     public Text m_monsterName;
     public Text m_monsterHp;
@@ -19,6 +20,8 @@ public class Golem : MonsterController
     {
         Instantiate(m_rock, m_rockPoint.transform.position, m_rockPoint.transform.rotation);
         m_rock.SetActive(true);
+        m_audio.clip = m_audioThrow;
+        m_audio.Play();
     }
 
     protected void AnimEvent_AttackThrowFinish()
