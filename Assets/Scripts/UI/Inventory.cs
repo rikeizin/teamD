@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public static bool invectoryActivated = false;  // ÀÎº¥Åä¸® È°¼ºÈ­ ¿©ºÎ. true°¡ µÇ¸é Ä«¸Ş¶ó ¿òÁ÷ÀÓ°ú ´Ù¸¥ ÀÔ·ÂÀ» ¸·À» °ÍÀÌ´Ù.
+    public static bool invectoryActivated = false;  // ì¸ë²¤í† ë¦¬ í™œì„±í™” ì—¬ë¶€. trueê°€ ë˜ë©´ ì¹´ë©”ë¼ ì›€ì§ì„ê³¼ ë‹¤ë¥¸ ì…ë ¥ì„ ë§‰ì„ ê²ƒì´ë‹¤.
 
     [SerializeField]
-    private GameObject go_InventoryBase; // Inventory_Base ÀÌ¹ÌÁö
+    private GameObject go_InventoryBase; // Inventory_Base ì´ë¯¸ì§€
     [SerializeField]
-    private GameObject go_SlotsParent;  // SlotµéÀÇ ºÎ¸ğÀÎ Grid Setting 
+    private GameObject go_SlotsParent;  // Slotë“¤ì˜ ë¶€ëª¨ì¸ Grid Setting 
 
-    private Slot[] slots;  // ½½·Ôµé ¹è¿­
+    private Slot[] slots;  // ìŠ¬ë¡¯ë“¤ ë°°ì—´
 
     void Start()
     {
@@ -53,7 +53,7 @@ public class Inventory : MonoBehaviour
         {
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i].item != null)  // null ÀÌ¶ó¸é slots[i].item.itemName ÇÒ ¶§ ·±Å¸ÀÓ ¿¡·¯ ³ª¼­
+                if (slots[i].item != null)  // null ì´ë¼ë©´ slots[i].item.itemName í•  ë•Œ ëŸ°íƒ€ì„ ì—ëŸ¬ ë‚˜ì„œ
                 {
                     if (slots[i].item.itemName == _item.itemName)
                     {
