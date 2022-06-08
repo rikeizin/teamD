@@ -21,9 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Stage/Stage_LastBossRoom.unity
     guid: 2c351022b3f94484288808e1a43d9b1c
   - enabled: 1
-    path: Assets/Scenes/old/Title.unity
-    guid: 5299144de7f2b1144be62bce6e3b4533
-  - enabled: 1
     path: Assets/Scenes/Stage/TitleScene.unity
     guid: d795750d5cbc37247a02dee219e37b78
   m_configObjects:

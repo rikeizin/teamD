@@ -4,27 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class OptionUI : MonoBehaviour {
 
     [SerializeField]
     private GameObject settings = null;
+    private OptionManager option;
+
+    private void Start()
+    {
+        option = settings.GetComponent<OptionManager>();
+    }
 
     public void OnEscape(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            if(settings.activeSelf == false)
+            Scene scene = SceneManager.GetActiveScene();
+            if (settings.activeSelf == false)
             {
+                //if(scene.name != "TitleScene")
+                //{
+                    
+                //}
                 settings.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Time.timeScale = 0;
             }
             else
             {
-                settings.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
-                Time.timeScale = 1;
+                option.OnClickBack();
             }
         }       
     }

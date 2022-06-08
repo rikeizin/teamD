@@ -35,7 +35,7 @@ public class OptionManager : MonoBehaviour
     }
     private void Start()
     {
-        player = StageManager.Inst.Player.GetComponent<Player>();
+        
     }
 
     public void Update()
@@ -90,7 +90,8 @@ public class OptionManager : MonoBehaviour
         }
         else
         {
-            player.OnStop();
+            player = StageManager.Inst.Player.GetComponent<Player>();
+            player?.OnStop();
             gameObject.SetActive(false);
         }
     }
