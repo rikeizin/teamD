@@ -123,7 +123,7 @@ public class Player_Swap : MonoBehaviour
     {
         if (other.tag == "Gold")
         {
-            Gold = Random.Range(1, 5);
+            Gold = Random.Range(1, 6);
             player.currentGold += Gold + player.goldUp;
             p_audio.clip = p_gold;
             p_audio.Play();
@@ -131,7 +131,7 @@ public class Player_Swap : MonoBehaviour
         }
         if(other.tag == "Arrow")
         {
-            Arrow = Random.Range(1, 5);
+            Arrow = Random.Range(1, 6);
             player.arrow += Arrow;
             p_audio.clip = p_Item;
             p_audio.Play();

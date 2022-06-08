@@ -36,7 +36,7 @@ public class Golem : MonsterController
     protected override void AnimEvent_DeadFinish()
     {
         base.AnimEvent_DeadFinish();
-        Instantiate(m_weapons[Random.Range(0, 3)], transform.position + Vector3.forward * 1.5f, transform.rotation);
+        Instantiate(m_weapons[Random.Range(0, 4)], transform.position + Vector3.forward * 1.5f, transform.rotation);
 
     }
     protected override void OnAwake()
