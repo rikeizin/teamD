@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 /* 
  * MonsterController 
- * 2022.06.02 수정
+ * 2022.06.08 수정
  */
 public class MonsterController : MonoBehaviour, IBattle
 {
@@ -38,6 +38,15 @@ public class MonsterController : MonoBehaviour, IBattle
     }
 
     #region Animation Event Methods
+
+    protected virtual void AnimEvent_Attack()
+    {
+        if (!isDead)
+        {
+            m_audio.clip = m_audioAttack;
+            m_audio.Play();
+        }
+    }
     protected virtual void AnimEvent_AttackFinish()
     {
         m_anim.SetBool("Attack", false);
@@ -56,6 +65,12 @@ public class MonsterController : MonoBehaviour, IBattle
         }
     }
 
+    protected virtual void AnimEvent_Dead()
+    {
+        m_audio.clip = m_audioDead;
+        m_audio.Play();
+    }
+
     protected virtual void AnimEvent_DeadFinish()
     {
         Destroy(gameObject);
@@ -67,7 +82,9 @@ public class MonsterController : MonoBehaviour, IBattle
     public Slider m_Hpbar;
     public GameObject[] m_rune;
     public GameObject m_gold;
-
+    public AudioSource m_audio;
+    public AudioClip m_audioAttack;
+    public AudioClip m_audioDead;
 
     [SerializeField] protected eMonsterState m_state;
     protected GameObject m_player;
@@ -76,6 +93,7 @@ public class MonsterController : MonoBehaviour, IBattle
     protected Vector3 m_dirPos;
     protected float m_dir;
     protected bool isDead;
+
 
     public void Awake()
     {
@@ -95,6 +113,7 @@ public class MonsterController : MonoBehaviour, IBattle
         m_rune = Resources.LoadAll<GameObject>("Prefab/Rune");
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
+        m_audio = GetComponent<AudioSource>();
         gameObject.SetActive(true);
         isDead = false;
     }
@@ -222,9 +241,13 @@ public class MonsterController : MonoBehaviour, IBattle
         }
     }
 
+    public void Attack(IBattle target)
+    {
+
+    }
     public virtual void Hit()
     {
-        if(!isDead)
+        if (!isDead)
         {
             m_anim.SetTrigger("Hit");
         }
@@ -237,14 +260,18 @@ public class MonsterController : MonoBehaviour, IBattle
         }
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
+    public void TakeDamage(float damage)
+    {
 
+    }
     public virtual void DropItem()
     {
         int runePer = Random.Range(0, 4);
-        if(runePer == 1)
+        if (runePer == 1)
         {
             Instantiate(m_rune[Random.Range(0, 9)], transform.position, transform.rotation);
         }
-        Instantiate(m_gold, transform.position + Vector3.forward * 1.5f , transform.rotation);
+        Instantiate(m_gold, transform.position + Vector3.forward * 1.5f, transform.rotation);
     }
+
 }
