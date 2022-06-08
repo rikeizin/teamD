@@ -10,12 +10,16 @@ public class Monster_Polygonal : MonsterController
     public Text m_monsterName;
     public Text m_monsterHp;
     public GameObject[] m_weapons;  // 무기 배열 선언
+    public AudioClip m_audioSpit;
     private GameObject m_spitPoint;
+   
 
     #region Animation Event Methods
     protected void AnimEvent_AttackSpitStart()
     {
         Instantiate(m_spit, m_spitPoint.transform.position, m_spitPoint.transform.rotation);
+        m_audio.clip = m_audioSpit;
+        m_audio.Play();
     }
 
     protected void AnimEvent_AttackSpitFinish()

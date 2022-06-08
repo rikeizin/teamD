@@ -38,6 +38,15 @@ public class MonsterController : MonoBehaviour
     }
 
     #region Animation Event Methods
+
+    protected virtual void AnimEvent_Attack()
+    {
+        if (!isDead)
+        {
+            m_audio.clip = m_audioAttack;
+            m_audio.Play();
+        }
+    }
     protected virtual void AnimEvent_AttackFinish()
     {
         m_anim.SetBool("Attack", false);
@@ -54,6 +63,12 @@ public class MonsterController : MonoBehaviour
         {
             SetState(eMonsterState.Idle);
         }
+    }
+
+    protected virtual void AnimEvent_Dead()
+    {
+        m_audio.clip = m_audioDead;
+        m_audio.Play();
     }
 
     protected virtual void AnimEvent_DeadFinish()
@@ -98,6 +113,7 @@ public class MonsterController : MonoBehaviour
         m_rune = Resources.LoadAll<GameObject>("Prefab/Rune");
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
+        m_audio = GetComponent<AudioSource>();
         gameObject.SetActive(true);
         isDead = false;
     }
@@ -218,7 +234,6 @@ public class MonsterController : MonoBehaviour
         ResetMove();
         FollowTarget();
         m_anim.SetBool("Attack", true);
-        m_audio.clip = m_audioAttack;
         if (m_dir > m_status.m_attackRange)
         {
             SetState(eMonsterState.Idle);
@@ -238,7 +253,6 @@ public class MonsterController : MonoBehaviour
             SetState(eMonsterState.Dead);
             isDead = true;
             m_anim.SetTrigger("Dead");
-            m_audio.clip = m_audioDead;
         }
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }

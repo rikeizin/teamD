@@ -10,6 +10,9 @@ public class Monster_Dragon : MonsterController
     public Text m_monsterHp;
     public GameObject m_effectFlame;
     public GameObject m_effectScream;
+    public AudioClip m_audioHand;
+    public AudioClip m_audioFlame;
+    public AudioClip m_audioScream;
 
     protected Collider m_collider;
     protected bool m_intro = true;
@@ -58,6 +61,8 @@ public class Monster_Dragon : MonsterController
         if (!isDead)
         {
             m_anim.SetBool("Intro_Scream", false);
+            m_audio.clip = m_audioScream;
+            m_audio.Play();
             m_collider.isTrigger = false;
             m_intro = false;
         }
@@ -75,6 +80,8 @@ public class Monster_Dragon : MonsterController
         if (!isDead)
         {
             m_effectFlame.SetActive(true);
+            m_audio.clip = m_audioFlame;
+            m_audio.Play();
         }
     }
 
@@ -94,6 +101,8 @@ public class Monster_Dragon : MonsterController
         if (!isDead)
         {
             m_effectScream.SetActive(true);
+            m_audio.clip = m_audioScream;
+            m_audio.Play();
         }
     }
 
@@ -166,6 +175,8 @@ public class Monster_Dragon : MonsterController
     public void Attack_Hand()
     {
         m_anim.SetBool("Attack_Hand", true);
+        m_audio.clip = m_audioHand;
+        m_audio.Play();
         ResetMove();
     }
 
