@@ -22,15 +22,6 @@ public class PlayerController : MonoBehaviour, IBattle
     [SerializeField]
     private float JUMP_FORCE = 10;
 
-    // 플레이어 스탯
-    [SerializeField]
-    private float _playerSpeed = 0;
-    private float _attackPower = 10;
-    private float _critical = 10;
-    private float _defencePower = 0;
-    private float _hp = 100;
-    private float _maxHP = 100;
-
     private Vector3 _moveForce;
     public bool isMove2D = false;
 
@@ -41,6 +32,8 @@ public class PlayerController : MonoBehaviour, IBattle
     public CharacterController characterController = null;          // 캐릭터 컨트롤러에 콜라이더와 리지드바디 정보가 담겨있으므로 불러온다.
     [HideInInspector]
     private MoveType2D _move2D = null;
+    private Player_Swap _swap = null;
+    private Player _player = null;
 
     // 특수공격
     public Transform p_MagicTransform;
@@ -50,7 +43,6 @@ public class PlayerController : MonoBehaviour, IBattle
     public Rigidbody p_Meteor;
     private float _lunchForce = 30f;
 
-    private Player_Swap _swap = null;
     #region hashes
     // State
     private readonly int hashIsRunning = Animator.StringToHash("isRunning");
@@ -91,12 +83,13 @@ public class PlayerController : MonoBehaviour, IBattle
         _animator = GetComponent<Animator>();
         _move2D = GetComponent<MoveType2D>();
         _swap = GetComponent<Player_Swap>();
+        _player = GetComponent<Player>();
         characterController = GetComponent<CharacterController>();
     }
 
     private void Start()
     {
-        _playerSpeed = RUN_SPEED;
+        _player.applySpeed = RUN_SPEED;
     }
 
     void Update()
@@ -115,6 +108,7 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         ApplyGravity();
     }
+
     private void OnEnable()
     {
         Invoke("SceneCheck", 0.3f);
@@ -123,9 +117,9 @@ public class PlayerController : MonoBehaviour, IBattle
     public void Jump()
     {
         if (isMove2D == false)
-            _moveForce.y = JUMP_FORCE;
+            _moveForce.y = JUMP_FORCE*_player.jump;
         else
-            _move2D._moveForce.y = JUMP_FORCE;
+            _move2D._moveForce.y = JUMP_FORCE * _player.jump;
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -152,7 +146,7 @@ public class PlayerController : MonoBehaviour, IBattle
     public void MoveTo(Vector3 direction)
     {
         direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
-        _moveForce = new Vector3(direction.x * _playerSpeed, _moveForce.y, direction.z * _playerSpeed);
+        _moveForce = new Vector3(direction.x * _player.applySpeed, _moveForce.y, direction.z * _player.applySpeed);
 
         MoveSpeed();
     }
@@ -181,72 +175,79 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void OnAttackLeft(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if(Player.IsGamePaused == false)
         {
-            if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating() && !IsRollAnimating())
+            if (context.started)
             {
-                StartCoroutine(FireWand());
-            }
-
-            if (!(IsAttackLeftAnimating() || IsAttackRightAnimating() || IsMagicAttackAnimating()))
-            {
-                if (IsAttackBow02Animating())
+                if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating() && !IsRollAnimating())
                 {
-                    _animator.SetTrigger(hashDoAttack);
-                    StartCoroutine(FireArrow());
-                }
-                else
-                {
-                    _animator.SetTrigger(hashDoAttack);
-                    _animator.SetInteger(hashAttackComboInteger, 0);
+                    StartCoroutine(FireWand());
                 }
 
+                if (!(IsAttackLeftAnimating() || IsAttackRightAnimating() || IsMagicAttackAnimating()))
+                {
+                    if (IsAttackBow02Animating())
+                    {
+                        _animator.SetTrigger(hashDoAttack);
+                        StartCoroutine(FireArrow());
+                    }
+                    else
+                    {
+                        _animator.SetTrigger(hashDoAttack);
+                        _animator.SetInteger(hashAttackComboInteger, 0);
+                    }
+
+                }
+                else if (IsAttackLeft0Animating())
+                {
+                    _animator.SetInteger(hashAttackComboInteger, 1);
+                }
+                else if (IsAttackLeft1Animating())
+                {
+                    _animator.SetInteger(hashAttackComboInteger, 2);
+                }
+
+
             }
-            else if (IsAttackLeft0Animating())
+
+            if (context.canceled)
             {
-                _animator.SetInteger(hashAttackComboInteger, 1);
+                _animator.ResetTrigger(hashDoAttack);
             }
-            else if (IsAttackLeft1Animating())
-            {
-                _animator.SetInteger(hashAttackComboInteger, 2);
-            }
-
-
-        }
-
-        if (context.canceled)
-        {
-            _animator.ResetTrigger(hashDoAttack);
         }
     }
 
     public void OnAttackRight(InputAction.CallbackContext context)
     {
-        if (!context.started)
+        if(Player.IsGamePaused == false)
         {
-            if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating())
+            if (!context.started)
             {
-                StartCoroutine(FireMeteor());
+                if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating())
+                {
+                    StartCoroutine(FireMeteor());
+                }
+
+                if (!IsAttackAnimating())
+                {
+                    _animator.SetTrigger(hashDoAttack2);
+                }
             }
 
-            if (!IsAttackAnimating())
+            if (context.canceled)
             {
-                _animator.SetTrigger(hashDoAttack2);
+                _animator.ResetTrigger(hashDoAttack2);
             }
         }
-
-        if (context.canceled)
-        {
-            _animator.ResetTrigger(hashDoAttack2);
-        }
+        
     }
 
     public void Attack(IBattle target)
     {
         if (target != null)
         {
-            float damage = _attackPower;
-            if (Random.Range(0.0f, 1.0f) < _critical)
+            float damage = _player.attackPower;
+            if (Random.Range(0.0f, 1.0f) < _player.critical)
             {
                 damage *= 2.0f;
             }
@@ -256,18 +257,19 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void TakeDamage(float damage)
     {
-        //Debug.Log($"{gameObject.name} : {damage} 데미지 입음");
-        float finalDamage = damage - _defencePower;
+        Debug.Log($"{gameObject.name} : {damage} 데미지 입음");
+        float finalDamage = damage - _player.defence;
         if (finalDamage < 1.0f)
         {
             finalDamage = 1.0f;
         }
-        _hp -= finalDamage;
-        if (_hp <= 0.0f)
+        if(!(Random.Range(0,100) >_player.evasion))
+            _player.hp -= finalDamage;
+        if (_player.hp <= 0.0f)
         {
-            //Die();
+            Die();
         }
-        _hp = Mathf.Clamp(_hp, 0.0f, _maxHP);
+        _player.hp = Mathf.Clamp(_player.hp, 0.0f, _player.maxHp);
     }
 
     public void OnWalk(InputAction.CallbackContext context)
@@ -293,6 +295,10 @@ public class PlayerController : MonoBehaviour, IBattle
         }
     }
 
+    public void Die()
+    {
+        gameObject.SetActive(false);
+    }
 
     public void ApplyGravity()
     {
@@ -306,18 +312,18 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         if (IsRollAnimating() || IsAttackAnimating())
         {
-            _playerSpeed = 0;
+            _player.applySpeed = 0;
             _move2D.moveSpeed2D = 0;
         }
         else if (IsWalkAnimating())
         {
-            _playerSpeed = WALK_SPEED;
-            _move2D.moveSpeed2D = WALK_SPEED / 2;
+            _player.applySpeed = WALK_SPEED * _player.speed;
+            _move2D.moveSpeed2D = WALK_SPEED / 2 * _player.speed;
         }
         else
         {
-            _playerSpeed = RUN_SPEED;
-            _move2D.moveSpeed2D = RUN_SPEED / 2;
+            _player.applySpeed = RUN_SPEED * _player.speed;
+            _move2D.moveSpeed2D = RUN_SPEED / 2 * _player.speed;
         }
     }
 
@@ -399,6 +405,7 @@ public class PlayerController : MonoBehaviour, IBattle
         }
     }
 
+    #region
     private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;
     private bool IsWalkAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashWalking;
     private bool IsRollAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashRolling;
@@ -419,5 +426,6 @@ public class PlayerController : MonoBehaviour, IBattle
     private bool IsAttackLeft2Animating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeft02;
     private bool IsAttackLeftWandAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackLeftWand;
     private bool IsAttackRightWandAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttackRightWand;
+    #endregion
 }
 

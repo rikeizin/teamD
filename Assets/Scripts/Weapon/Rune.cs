@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Rune : Player_Swap
 {
-    public enum Type { AttackSpeed, CriticalHit, Damage, Defence, Evasion, Gold, Health, Jump, Shield };
+    public enum Type { AttackSpeed, CriticalHit, Damage, Defence, Evasion, Gold, Health, Jump, Speed };
     public Type type;
     public int value;
 
-    public Status p_status;
-    private Player_Swap PS;
+    private Animator _animator = null;
+    private Player _player = null;
+
     private void Awake()
     {
-        PS = GetComponent<Player_Swap>();
-        
+        _animator = GameObject.Find("Player").GetComponent<Animator>();
+        _player = GameObject.Find("Player").GetComponent<Player>();
     }
-
     public void GainRunes()
     {
         switch (type)
@@ -52,56 +52,59 @@ public class Rune : Player_Swap
                 Gold();
                 break;
 
-            case Type.Shield:
-                Shield();
+            case Type.Speed:
+                Speed();
                 break;
         }
     }
 
     public void HP()
     {
-        p_status.p_hp = p_status.p_Maxhp;
-        p_status.p_Maxhp = p_status.p_Maxhp + 10;
-        Debug.Log("ÇÇ°¡ ´Ã¾î³²");
+        _player.hp = _player.maxHp;
+        _player.maxHp += 10;
+        Debug.Log("í”¼ê°€ ëŠ˜ì–´ë‚¨");
     }
     public void AttackSpeed()
     {
-        p_status.p_attackSpeed = p_status.p_attackSpeed + 20.0f;
-        Debug.Log("°ø°İ¼Óµµ°¡ ´Ã¾î³²");
+        _animator.SetFloat("AttackSpeed", _animator.GetFloat("AttackSpeed")+0.05f);
+        Debug.Log("ê³µê²©ì†ë„ê°€ ëŠ˜ì–´ë‚¨");
     }
     public void Defence()
     {
-        p_status.p_defence = p_status.p_defence + 20.0f;
-        Debug.Log("¹æ¾î·ÂÀÌ ´Ã¾î³²");
+        _player.defence += 1.0f;
+        Debug.Log("ë°©ì–´ë ¥ì´ ëŠ˜ì–´ë‚¨");
     }
     public void Damage()
     {
-        p_status.p_damage = p_status.p_damage + 15.0f;
-        Debug.Log("°ø°İ·ÂÀÌ ´Ã¾î³²");
+        _player.attackPower += 5.0f;
+        Debug.Log("ê³µê²©ë ¥ì´ ëŠ˜ì–´ë‚¨");
     }
     public void CriticalHit()
     {
-        Debug.Log("Ä¡¸íÅ¸°¡ ´Ã¾î³²");
+        _player.critical += 0.1f;
+        Debug.Log("ì¹˜ëª…íƒ€ê°€ ëŠ˜ì–´ë‚¨");
+        return;
+    }
+    public void Speed()
+    {
+        _player.speed += 0.1f;
+        Debug.Log("ì´ë™ì†ë„ê°€ ëŠ˜ì–´ë‚¨");
+    }
+    public void Jump()
+    {
+        _player.jump += + 0.1f;
+        Debug.Log("ì í”„ë ¥ì´ ëŠ˜ì–´ë‚¨");
+    }
+    public void Gold()
+    {
+        _player.goldUp += 1;
+        Debug.Log("ê³¨ë“œíšë“ëŸ‰ì´ ëŠ˜ì–´ë‚¨");
         return;
     }
     public void Evasion()
     {
-        p_status.p_speed = p_status.p_speed + 10.0f;
-        Debug.Log("ÀÌµ¿¼Óµµ°¡ ´Ã¾î³²");
-    }
-    public void Jump()
-    {
-        p_status.p_jump = p_status.p_jump + 5.0f;
-        Debug.Log("Á¡ÇÁ·ÂÀÌ ´Ã¾î³²");
-    }
-    public void Gold()
-    {
-        Debug.Log("°ñµåÈ¹µæ·®ÀÌ ´Ã¾î³²");
-        return;
-    }
-    public void Shield()
-    {
-        Debug.Log("ÀÏÈ¸¿ë ½¯µå°¡ »ı±è");
+        _player.evasion += 1f;
+        Debug.Log("íšŒí”¼ìœ¨ì´ ëŠ˜ì–´ë‚¨");
         return;
     }
 }

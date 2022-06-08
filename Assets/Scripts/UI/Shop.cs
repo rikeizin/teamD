@@ -31,15 +31,15 @@ public class Shop : MonoBehaviour
         ShopLoading();
 
         int price = 100;
-        enterPlayer.gold = 200;
-        if (price > enterPlayer.gold)
+        enterPlayer.currentGold = 200;
+        if (price > enterPlayer.currentGold)
         {
             StopCoroutine(Talk());
             StartCoroutine(Talk());
             return;
         }
 
-        enterPlayer.gold -= price;
+        enterPlayer.currentGold -= price;
 
         int per = Random.Range(0, 13);
         if (per < 9)

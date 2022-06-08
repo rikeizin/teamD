@@ -2,26 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatus : MonoBehaviour
-{
+//public class PlayerStatus : MonoBehaviour
+//{
     /*
      hp,Maxhp,attackspeed,CriticalHit,Damage,Defence,Speed,Gold,Jump,Shield
-    Ã¼·Â, ÃÖ´ëÃ¼·Â, °ø°İ¼Óµµ, Ä¡¸íÅ¸, °ø°İ·Â, ¹æ¾î·Â, ÀÌµ¿¼Óµµ, °ñµå,Á¡ÇÁ·Â,¹æ¾î¸·
+    ì²´ë ¥, ìµœëŒ€ì²´ë ¥, ê³µê²©ì†ë„, ì¹˜ëª…íƒ€, ê³µê²©ë ¥, ë°©ì–´ë ¥, ì´ë™ì†ë„, ê³¨ë“œ,ì í”„ë ¥,ë°©ì–´ë§‰
      */
     public struct Status
     {
-        public int p_hp; // ÇöÀç Ã¼·Â
-        public int p_Maxhp; // ÃÖ´ë Ã¼·Â
-        public float p_defence; // ¹æ¾î·Â
+        public int p_hp; // í˜„ì¬ ì²´ë ¥
+        public int p_Maxhp; // ìµœëŒ€ ì²´ë ¥
+        public float p_defence; // ë°©ì–´ë ¥
 
-        public float p_damage; // °ø°İ·Â
-        public float p_attackSpeed; // °ø°İ¼Óµµ
-        public float p_criticalhit; // Ä¡¸íÅ¸
-        public float p_speed; // ÀÌµ¿¼Óµµ
+        public float p_damage; // ê³µê²©ë ¥
+        public float p_attackSpeed; // ê³µê²©ì†ë„
+        public float p_criticalhit; // ì¹˜ëª…íƒ€
+        public float p_speed; // ì´ë™ì†ë„
 
-        public float p_jump; // Á¡ÇÁ·Â
+        public float p_jump; // ì í”„ë ¥
         
-        public float p_gold; // °ñµåÈ¹µæ(°ñµåÈ¹µæ·®)
+        public float p_gold; // ê³¨ë“œíšë“(ê³¨ë“œíšë“ëŸ‰)
         public Status(int hp, float defence, float damage, float attackspeed, float criticalhit, float speed, float jump, float gold)
         {
             p_hp = p_Maxhp = hp;
@@ -35,4 +35,4 @@ public class PlayerStatus : MonoBehaviour
         }
     }
    
-}
+//}

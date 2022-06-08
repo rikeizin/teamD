@@ -6367,7 +6367,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 21981468132fa90468b004e5ff11b7b6, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -6666,15 +6666,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13bbb94acdabfd7488df0284d9e8bafd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
-  maxHp: 0
+  hp: 100
+  maxHp: 100
   defence: 0
   attackPower: 0
-  attackSpeed: 0
   critical: 0
-  speed: 0
-  jump: 0
-  gold: 0
+  evasion: 0
+  applySpeed: 0
+  speed: 1
+  jump: 1
+  currentGold: 0
+  goldUp: 0
   animator: {fileID: 0}
 --- !u!114 &8508893349416522523
 MonoBehaviour:
@@ -6710,12 +6712,11 @@ MonoBehaviour:
   RUN_SPEED: 8
   WALK_SPEED: 4
   JUMP_FORCE: 10
-  _playerSpeed: 0
   isMove2D: 0
   camera2D: {fileID: 0}
   camera3D: {fileID: 8508893348879596653}
   characterController: {fileID: 0}
-  p_AttackTransform: {fileID: 7252606079890620540}
+  p_MagicTransform: {fileID: 7252606079890620540}
   p_MeteorTransform: {fileID: 1125831970934986841}
   p_Arrow: {fileID: 5241115233431377470, guid: 58eeb84c661fca14688e12d5216d0f4b, type: 3}
   p_Wand: {fileID: 7554101083897790368, guid: aa841e7b31da146448fafcea63da73f2, type: 3}
@@ -6751,6 +6752,8 @@ MonoBehaviour:
   - {fileID: 2564266170955872885}
   hasWeapons: 0101010101
   CurrentGold: 0
+  animator: {fileID: 0}
+  player: {fileID: 0}
   equipWeapons: {fileID: 0}
   equipWeaponIndex: -1
   runeIndex: 0
@@ -7749,6 +7752,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf9ce80584146644aaeeedf8642966e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  d_bsword: 5
+  d_sword: 10
+  d_mace: 30
+  d_arrow: 10
+  d_magic: 10
+  d_meteor: 40
   PName: 1
 --- !u!114 &234780285
 MonoBehaviour:
@@ -7762,6 +7771,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf9ce80584146644aaeeedf8642966e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  d_bsword: 5
+  d_sword: 10
+  d_mace: 30
+  d_arrow: 10
+  d_magic: 10
+  d_meteor: 40
   PName: 0
 --- !u!114 &2000539811
 MonoBehaviour:
@@ -7775,4 +7790,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf9ce80584146644aaeeedf8642966e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  d_bsword: 5
+  d_sword: 10
+  d_mace: 30
+  d_arrow: 10
+  d_magic: 10
+  d_meteor: 40
   PName: 2

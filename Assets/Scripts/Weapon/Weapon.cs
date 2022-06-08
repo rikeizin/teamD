@@ -9,36 +9,24 @@ public class Weapon : MonoBehaviour
     Player player = null;
     MonsterController mons = null;
 
-    public struct P_WeaponsDamage
-    {
-        public float d_sword;
-        public float d_bsword;
-        public float d_wand;
-        public float d_mace;
-        public float d_arrow;
-        public float d_meteor;
-        public P_WeaponsDamage(float bsword, float sword, float wand, float mace, float arrow,float meteor)
-        {
-            d_bsword = bsword = 5.0f ;
-            d_sword = sword = 15.0f;
-            d_wand = wand = 4.0f;
-            d_mace = mace = 30.0f;
-            d_arrow = arrow = 8.0f;
-            d_meteor = meteor = 45.0f;
-        }
-    }
+    public float d_bsword = 5f;
+    public float d_sword = 10f;
+    public float d_mace = 30f;
+    public float d_arrow = 10f;
+    public float d_magic = 10;
+    public float d_meteor = 40f;
+
     public enum P_WaeponName
     {
-        BasicSword = 0 ,
+        BasicSword = 0,
         Sword_Sample = 1,
         Mace_Sample = 2,
         Arrow = 3,
         WandAttack = 4,
-        Meteor2 = 5 
+        Meteor2 = 5
     }
 
-    public P_WeaponsDamage PDamage;
-    public  P_WaeponName PName;
+    public P_WaeponName PName;
     private void Awake()
     {
         player = FindObjectOfType<Player>();
@@ -55,27 +43,27 @@ public class Weapon : MonoBehaviour
             switch (PName)
             {
                 case P_WaeponName.BasicSword:
-                    mons.m_status.m_hp -= player.attackPower + PDamage.d_bsword;
+                    mons.m_status.m_hp -= player.attackPower + d_bsword;
                     Debug.Log("기본검으로..!");
                     break;
                 case P_WaeponName.Sword_Sample:
-                    mons.m_status.m_hp -= player.attackPower + PDamage.d_sword;
+                    mons.m_status.m_hp -= player.attackPower + d_sword;
                     Debug.Log("검으로..!");
                     break;
                 case P_WaeponName.Mace_Sample:
-                    mons.m_status.m_hp -= player.attackPower + PDamage.d_mace;
+                    mons.m_status.m_hp -= player.attackPower + d_mace;
                     Debug.Log("망치로..!");
                     break;
                 case P_WaeponName.Arrow:
-                    mons.m_status.m_hp -= player.attackPower + PDamage.d_arrow;
+                    mons.m_status.m_hp -= player.attackPower + d_arrow;
                     Debug.Log("Arrow..!");
                     break;
                 case P_WaeponName.WandAttack:
-                    mons.m_status.m_hp -= player.attackPower + PDamage.d_wand;
+                    mons.m_status.m_hp -= player.attackPower + d_magic;
                     Debug.Log("WandAttack..!");
                     break;
                 case P_WaeponName.Meteor2:
-                    mons.m_status.m_hp -= player.attackPower + PDamage.d_meteor;
+                    mons.m_status.m_hp -= player.attackPower + d_meteor;
                     Debug.Log("Meteor2..!");
                     break;
 
@@ -89,8 +77,6 @@ public class Weapon : MonoBehaviour
                 hitTarget.Enqueue(battle);
             }
         }
-
-
     }
 
     public IBattle GetHitTarget()

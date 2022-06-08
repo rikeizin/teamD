@@ -36288,9 +36288,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Enabled
+    attribute: m_IsActive
     path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/BasicSword/BasicSwordAttackCollision
-    classID: 136
+    classID: 1
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
@@ -36334,9 +36334,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Enabled
+    attribute: m_IsActive
     path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/Mace_Sample/MaceAttackCollision
-    classID: 136
+    classID: 1
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
@@ -36380,9 +36380,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Enabled
-    path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/Sword_Sample/AttackCollision
-    classID: 136
+    attribute: m_IsActive
+    path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/Sword_Sample/SwordAttackCollision
+    classID: 1
     script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 30
@@ -36429,23 +36429,23 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 1486130585
-      attribute: 3305885265
+      attribute: 2086281974
       script: {fileID: 0}
-      typeID: 136
+      typeID: 1
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 2475273506
-      attribute: 3305885265
+      attribute: 2086281974
       script: {fileID: 0}
-      typeID: 136
+      typeID: 1
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 748658228
-      attribute: 3305885265
+      path: 4000880592
+      attribute: 2086281974
       script: {fileID: 0}
-      typeID: 136
+      typeID: 1
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
@@ -73616,9 +73616,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Enabled
+    attribute: m_IsActive
     path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/BasicSword/BasicSwordAttackCollision
-    classID: 136
+    classID: 1
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
@@ -73662,9 +73662,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Enabled
+    attribute: m_IsActive
     path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/Mace_Sample/MaceAttackCollision
-    classID: 136
+    classID: 1
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
@@ -73708,9 +73708,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Enabled
-    path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/Sword_Sample/AttackCollision
-    classID: 136
+    attribute: m_IsActive
+    path: Character1_Reference/Character1_Hips/Character1_Spine/Character1_Spine1/Character1_Spine2/Character1_RightShoulder/Character1_RightArm/Character1_RightForeArm/Character1_RightHand/Weapon_Point_R/Sword_Sample/SwordAttackCollision
+    classID: 1
     script: {fileID: 0}
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0

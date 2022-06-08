@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 3737014024914643964}
   - component: {fileID: 190912597}
   m_Layer: 0
-  m_Name: Rune_Shield
+  m_Name: Rune_Speed
   m_TagString: Rune
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

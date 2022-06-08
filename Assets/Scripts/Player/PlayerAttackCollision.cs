@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class PlayerAttackCollision : MonoBehaviour
 {
-    Animator animator = null;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
-
     private void OnEnable()
     {
         StartCoroutine("AutoDisable");

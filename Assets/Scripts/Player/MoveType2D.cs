@@ -39,12 +39,10 @@ public class MoveType2D : MonoBehaviour
 
     private void Update()
     {
-        // LookPoint();
         Move2DUpdate();
         playerController.MoveTo(_moveForce);
         playerController.Move(_moveForce);
         _moveForce.y += playerController.PLAYER_GRAVITY * Time.deltaTime;
-        //Debug.Log(_wayNum);
     }
     public void Move2D(InputAction.CallbackContext context)
     {
@@ -133,7 +131,7 @@ public class MoveType2D : MonoBehaviour
 
     public void LookPoint()
     {
-        if (direction == -1) // µÚ¸¦ º¸°íÀÖ´Â »óÅÂ¿¡¼­ ³¡³µÀ¸¸é µÚÂÊ ¸ñÇ¥ ÁÂÇ¥ º¸±â
+        if (direction == -1) // ë’¤ë¥¼ ë³´ê³ ìˆëŠ” ìƒíƒœì—ì„œ ëë‚¬ìœ¼ë©´ ë’¤ìª½ ëª©í‘œ ì¢Œí‘œ ë³´ê¸°
         {
             if (_wayNum != 0)
                 _lookPoint = new Vector3(_wayPoint[_wayNum - 1].position.x, transform.position.y, _wayPoint[_wayNum - 1].position.z);
@@ -141,7 +139,7 @@ public class MoveType2D : MonoBehaviour
             else
                 _lookPoint = new Vector3(_wayPoint[24].position.x, transform.position.y, _wayPoint[24].position.z);
         }
-        else // ±×°Ô ¾Æ´Ï¶ó¸é ¾ÕÂÊ ¸ñÇ¥ ÁÂÇ¥ º¸±â
+        else // ê·¸ê²Œ ì•„ë‹ˆë¼ë©´ ì•ìª½ ëª©í‘œ ì¢Œí‘œ ë³´ê¸°
         {
             if (_wayNum != _wayPoint.Length - 1)
                 _lookPoint = new Vector3(_wayPoint[_wayNum].position.x, transform.position.y, _wayPoint[_wayNum].position.z);

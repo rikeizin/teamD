@@ -40,7 +40,7 @@ public class Monster_Polygonal : MonsterController
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(100f, 50f, 10f, 20f, 100f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
+        m_status = new Status(300f, 50f, 10f, 20f, 100f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
 
         m_rune = Resources.LoadAll<GameObject>("Prefab/Weapons"); // 리소스폴더의 웨폰 을 불러옴
 

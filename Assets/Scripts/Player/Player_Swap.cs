@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_Swap : PlayerStatus
+public class Player_Swap : MonoBehaviour
 {
     public GameObject[] Runes;
     public int[] hasRunes;
@@ -11,7 +11,8 @@ public class Player_Swap : PlayerStatus
     public bool[] hasWeapons;
     public int CurrentGold = 0;
 
-    Animator animator = null;
+    public Animator animator = null;
+    public Player player = null;
     PlayerController playerController = null;
     GameObject nearobject;
     public GameObject equipWeapons;
@@ -22,10 +23,10 @@ public class Player_Swap : PlayerStatus
 
     private int Gold;
 
-
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        player = GetComponent<Player>();
         playerController = GetComponent<PlayerController>();
     }
 
@@ -110,7 +111,7 @@ public class Player_Swap : PlayerStatus
         if (other.tag == "Gold")
         {
             Gold = Random.Range(1, 5);
-            CurrentGold = CurrentGold + Gold;
+            player.currentGold += Gold + player.goldUp;
 
             Destroy(other.gameObject);
         }
