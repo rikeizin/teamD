@@ -110,7 +110,7 @@ public class RotateToMouse : MonoBehaviour
         if(isCursorLock == false)
         {
             Cursor.visible = false;                                     // 마우스 커서를 보이지 않게 한다.
-            Cursor.lockState = CursorLockMode.Locked;                   // 마우스 커서를 현재 위치에 고정 시킨다.
+            //Cursor.lockState = CursorLockMode.Locked;                   // 마우스 커서를 현재 위치에 고정 시킨다.
             isCursorLock = true;
         }
         else
