@@ -189,7 +189,14 @@ public class PlayerController : MonoBehaviour, IBattle
                     if (IsAttackBow02Animating())
                     {
                         _animator.SetTrigger(hashDoAttack);
-                        StartCoroutine(FireArrow());
+                        if(_player.arrow > 0 )
+                        {
+                           StartCoroutine(FireArrow());
+                        }
+                        else if(_player.arrow <= 0)
+                        {
+                            return;
+                        }
                     }
                     else
                     {
@@ -375,7 +382,7 @@ public class PlayerController : MonoBehaviour, IBattle
     {
         Rigidbody Arrow = Instantiate(p_Arrow, p_MagicTransform.position, p_MagicTransform.rotation) as Rigidbody;
         Arrow.velocity = _lunchForce * p_MagicTransform.forward;
-
+        _player.arrow--;
         Destroy(Arrow.gameObject, 4.0f);
         yield return new WaitForSeconds(0.5f);
     }

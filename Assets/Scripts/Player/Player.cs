@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public float jump = 1; //
     public int currentGold = 0;
     public int goldUp = 0; //
+    public int arrow = 0;
     public bool IsAttack { get; set; }
 
     public static bool IsGamePaused = false;

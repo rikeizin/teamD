@@ -10,24 +10,34 @@ public class Player_Swap : MonoBehaviour
     public GameObject[] Weapons;
     public bool[] hasWeapons;
     public int CurrentGold = 0;
+    public AudioSource p_audio;
+    public AudioClip p_gold;
+    public AudioClip p_Item;
 
-    public Animator animator = null;
-    public Player player = null;
+    [HideInInspector]
     PlayerController playerController = null;
+    [HideInInspector]
     GameObject nearobject;
+    [HideInInspector]
+    public Animator animator = null;
+    [HideInInspector]
     public GameObject equipWeapons;
+    [HideInInspector]
+    public Player player = null;
+    [HideInInspector]
     public int equipWeaponIndex = -1;
-    //int equipWeaponIndex = -1;
     [HideInInspector]
     public int runeIndex = 0;
 
     private int Gold;
+    private int Arrow;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         player = GetComponent<Player>();
         playerController = GetComponent<PlayerController>();
+        p_audio = GetComponent<AudioSource>();
     }
 
     public void Swap(InputAction.CallbackContext context)
@@ -92,6 +102,8 @@ public class Player_Swap : MonoBehaviour
                     runeIndex = rune.value;
                     hasRunes[runeIndex]++;
                     rune.GainRunes();
+                    p_audio.clip = p_Item;
+                    p_audio.Play();
                     Destroy(nearobject);
                 }
 
@@ -100,7 +112,8 @@ public class Player_Swap : MonoBehaviour
                     Weapons weapons = nearobject.GetComponent<Weapons>();
                     int weaponIndex = weapons.value;
                     hasWeapons[weaponIndex] = true;
-
+                    p_audio.clip = p_Item;
+                    p_audio.Play();
                     Destroy(nearobject);
                 }
             }
@@ -112,7 +125,16 @@ public class Player_Swap : MonoBehaviour
         {
             Gold = Random.Range(1, 5);
             player.currentGold += Gold + player.goldUp;
-
+            p_audio.clip = p_gold;
+            p_audio.Play();
+            Destroy(other.gameObject);
+        }
+        if(other.tag == "Arrow")
+        {
+            Arrow = Random.Range(1, 5);
+            player.arrow += Arrow;
+            p_audio.clip = p_Item;
+            p_audio.Play();
             Destroy(other.gameObject);
         }
     }

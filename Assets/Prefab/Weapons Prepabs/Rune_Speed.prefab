@@ -256,7 +256,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4496889808704057819}
   - component: {fileID: 4496889808686969725}
-  - component: {fileID: 53077080338266952}
   - component: {fileID: 3162733615239837654}
   - component: {fileID: 3737014024914643964}
   - component: {fileID: 190912597}
@@ -313,22 +312,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 4496889808702225589}
   m_Enabled: 1
---- !u!54 &53077080338266952
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4496889808704492051}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!135 &3162733615239837654
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -372,6 +355,12 @@ MonoBehaviour:
   Weapons: []
   hasWeapons: 
   CurrentGold: 0
+  p_audio: {fileID: 0}
+  p_gold: {fileID: 0}
+  p_Item: {fileID: 0}
+  animator: {fileID: 0}
+  equipWeapons: {fileID: 0}
+  player: {fileID: 0}
   equipWeaponIndex: -1
   runeIndex: 0
   type: 8
