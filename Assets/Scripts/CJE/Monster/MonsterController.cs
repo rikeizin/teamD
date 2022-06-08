@@ -271,6 +271,7 @@ public class MonsterController : MonoBehaviour, IBattle
         {
             Instantiate(m_rune[Random.Range(0, 9)], transform.position, transform.rotation);
         }
+
         Instantiate(m_gold, transform.position + Vector3.forward * 1.5f, transform.rotation);
     }
 

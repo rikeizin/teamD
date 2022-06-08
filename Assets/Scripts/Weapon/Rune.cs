@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rune : Player_Swap
+public class Rune : MonoBehaviour
 {
     public enum Type { AttackSpeed, CriticalHit, Damage, Defence, Evasion, Gold, Health, Jump, Speed };
     public Type type;

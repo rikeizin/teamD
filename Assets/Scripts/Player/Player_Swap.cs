@@ -125,6 +125,7 @@ public class Player_Swap : MonoBehaviour
         {
             Gold = Random.Range(1, 6);
             player.currentGold += Gold + player.goldUp;
+           
             p_audio.clip = p_gold;
             p_audio.Play();
             Destroy(other.gameObject);
