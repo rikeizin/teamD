@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 /* 
  * MonsterController 
- * 2022.06.02 수정
+ * 2022.06.08 수정
  */
 public class MonsterController : MonoBehaviour
 {
@@ -67,7 +67,9 @@ public class MonsterController : MonoBehaviour
     public Slider m_Hpbar;
     public GameObject[] m_rune;
     public GameObject m_gold;
-
+    public AudioSource m_audio;
+    public AudioClip m_audioAttack;
+    public AudioClip m_audioDead;
 
     [SerializeField] protected eMonsterState m_state;
     protected GameObject m_player;
@@ -76,6 +78,7 @@ public class MonsterController : MonoBehaviour
     protected Vector3 m_dirPos;
     protected float m_dir;
     protected bool isDead;
+
 
     public void Awake()
     {
@@ -215,6 +218,7 @@ public class MonsterController : MonoBehaviour
         ResetMove();
         FollowTarget();
         m_anim.SetBool("Attack", true);
+        m_audio.clip = m_audioAttack;
         if (m_dir > m_status.m_attackRange)
         {
             SetState(eMonsterState.Idle);
@@ -234,6 +238,7 @@ public class MonsterController : MonoBehaviour
             SetState(eMonsterState.Dead);
             isDead = true;
             m_anim.SetTrigger("Dead");
+            m_audio.clip = m_audioDead;
         }
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
@@ -247,4 +252,5 @@ public class MonsterController : MonoBehaviour
         }
         Instantiate(m_gold, transform.position + Vector3.forward * 1.5f , transform.rotation);
     }
+
 }

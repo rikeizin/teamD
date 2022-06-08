@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using STAGE_MANAGEMENT;
 
 public class OptionManager : MonoBehaviour
@@ -83,7 +84,14 @@ public class OptionManager : MonoBehaviour
 
     public void OnClickBack()
     {
-        player.OnStop(); 
-        gameObject.SetActive(false);
+        if(SceneManager.GetActiveScene().name == "TitleScene")
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            player.OnStop();
+            gameObject.SetActive(false);
+        }
     }
 }
