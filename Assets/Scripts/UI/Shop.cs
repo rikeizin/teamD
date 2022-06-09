@@ -31,7 +31,6 @@ public class Shop : MonoBehaviour
         ShopLoading();
 
         int price = 100;
-        enterPlayer.currentGold = 200;
         if (price > enterPlayer.currentGold)
         {
             StopCoroutine(Talk());

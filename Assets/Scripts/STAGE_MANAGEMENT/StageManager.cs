@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace STAGE_MANAGEMENT
 {
-    public class Stage{
+    public class Stage
+    {
         public string sceneName;
         public int index;
         public Stage() { }
@@ -42,6 +44,10 @@ namespace STAGE_MANAGEMENT
         [SerializeField]
         private AudioManager bgm = null;
 
+        public float playtime;
+        public bool isBattle;
+        public Text playtimeText;
+        public Text stageText;
         public GameObject Player;
 
         private void Awake()
@@ -70,10 +76,10 @@ namespace STAGE_MANAGEMENT
             //bgm.InitAudioToCAM();
 
             // 랜덤 스테이지 확률 설정
-            percentage  = new RandPercent();
+            percentage = new RandPercent();
             percentage.regist.Add("Stage_Dungeon", 70);
             percentage.regist.Add("Stage_EliteBossRoom", 30);
-            
+
             StageInit();
         }
 
@@ -151,23 +157,44 @@ namespace STAGE_MANAGEMENT
             currentStageIndex++;
 
             // 마지막 스테이지 clear이후 이동시 초기화
-            if(currentStageIndex == stageList.Count)
+            if (currentStageIndex == stageList.Count)
             {
                 stageList.Clear();
                 StageInit();
                 currentFloor = 0;
-            }  
-            else if( currentStageIndex % 2 == 1 )
+            }
+            else if (currentStageIndex % 2 == 1)
             {
                 currentFloor++;
             }
-            
+
             string sceneName = stageList[currentStageIndex].sceneName;
             Player.SetActive(false);
             SceneManager.LoadScene(sceneName);
-            
+
             Player.SetActive(true);
         }
 
+        public void StageStart()
+        {
+            isBattle = true;
+        }
+
+        private void Update()
+        {
+            if (isBattle)
+                playtime += Time.deltaTime;
+            
+        }
+
+
+        void LateUpdate()
+        {
+            stageText.text = " Stage " + CurrentFloor;
+            int hour = (int)(playtime / 3600);
+            int min = (int)((playtime - hour * 3600) / 60);
+            int second = (int)(playtime % 60);
+            playtimeText.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
+        }
     }
 }
