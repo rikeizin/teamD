@@ -15,9 +15,9 @@ public class Shop : MonoBehaviour
 
     Player enterPlayer;
 
-    public void Awake()
+    public void Start()
     {
-        enterPlayer = GameObject.Find("Player").GetComponent<Player>();
+        enterPlayer = GameObject.FindObjectOfType<Player>();
     }
 
     public void ShopLoading()

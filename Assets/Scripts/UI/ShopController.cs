@@ -34,6 +34,7 @@ public class ShopController : MonoBehaviour
             ShopInfoAppear();
             if (Input.GetKeyDown(KeyCode.E))
             {
+                Debug.Log("122");
                 ShopActivated = !ShopActivated;
                 if (ShopActivated)
                     OpenShop();
@@ -56,6 +57,7 @@ public class ShopController : MonoBehaviour
                 return true;
         }
         return false;
+
     }
 
 
@@ -78,6 +80,7 @@ public class ShopController : MonoBehaviour
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
         actionText.text = hitInfo.transform + (" 열기 " + "<color=yellow>" + "(E)" + "</color>");
+        Debug.Log("1");
     }
 
     private void ShopInfoDisappear()
