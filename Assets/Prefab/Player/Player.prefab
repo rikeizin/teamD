@@ -6718,12 +6718,18 @@ MonoBehaviour:
   WALK_SPEED: 4
   JUMP_FORCE: 10
   isMove2D: 0
+  p_AudioSource: {fileID: 939779246}
+  p_Sword: {fileID: 8300000, guid: 5fa332f367764ed45a83c0177994256a, type: 3}
+  p_wand: {fileID: 8300000, guid: 02f677203bfc3dd4e986fc09816f165b, type: 3}
+  p_meteor: {fileID: 8300000, guid: 0d4f70085b43d1745a4cf019021cf3be, type: 3}
+  p_Mace: {fileID: 8300000, guid: 4fc81837b233b2d40a03907187188059, type: 3}
+  p_arrow: {fileID: 8300000, guid: 44d1a168c8bdaa540a0da9c89118c907, type: 3}
   camera2D: {fileID: 0}
   camera3D: {fileID: 8508893348879596653}
   characterController: {fileID: 0}
   p_MagicTransform: {fileID: 7252606079890620540}
   p_MeteorTransform: {fileID: 1125831970934986841}
-  p_Arrow: {fileID: 5241115233431377470, guid: 58eeb84c661fca14688e12d5216d0f4b, type: 3}
+  p_Arrow: {fileID: -9091130919638262422, guid: 58eeb84c661fca14688e12d5216d0f4b, type: 3}
   p_Wand: {fileID: 7554101083897790368, guid: aa841e7b31da146448fafcea63da73f2, type: 3}
   p_Meteor: {fileID: 998308444641365946, guid: 0a5e19404105e66439e2d89b58b6d4e4, type: 3}
 --- !u!114 &1350218518

@@ -24,6 +24,13 @@ public class PlayerController : MonoBehaviour, IBattle
 
     private Vector3 _moveForce;
     public bool isMove2D = false;
+    public AudioSource p_AudioSource;
+    public AudioClip p_Sword;
+    public AudioClip p_wand;
+    public AudioClip p_meteor;
+    public AudioClip p_Mace;
+    public AudioClip p_arrow;
+
 
     public GameObject camera2D;
     public GameObject camera3D;
@@ -85,6 +92,7 @@ public class PlayerController : MonoBehaviour, IBattle
         _swap = GetComponent<Player_Swap>();
         _player = GetComponent<Player>();
         characterController = GetComponent<CharacterController>();
+        p_AudioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -181,6 +189,8 @@ public class PlayerController : MonoBehaviour, IBattle
             {
                 if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating() && !IsRollAnimating())
                 {
+                    p_AudioSource.clip = p_wand;
+                    p_AudioSource.Play();
                     StartCoroutine(FireWand());
                 }
 
@@ -191,7 +201,9 @@ public class PlayerController : MonoBehaviour, IBattle
                         _animator.SetTrigger(hashDoAttack);
                         if(_player.arrow > 0 )
                         {
-                           StartCoroutine(FireArrow());
+                            p_AudioSource.clip = p_arrow;
+                            p_AudioSource.Play();
+                            StartCoroutine(FireArrow());
                         }
                         else if(_player.arrow <= 0)
                         {
@@ -202,6 +214,7 @@ public class PlayerController : MonoBehaviour, IBattle
                     {
                         _animator.SetTrigger(hashDoAttack);
                         _animator.SetInteger(hashAttackComboInteger, 0);
+                        
                     }
 
                 }
@@ -232,6 +245,8 @@ public class PlayerController : MonoBehaviour, IBattle
             {
                 if ((_swap.equipWeaponIndex == 3) && !IsAttackAnimating())
                 {
+                    p_AudioSource.clip = p_meteor;
+                    p_AudioSource.Play();
                     StartCoroutine(FireMeteor());
                 }
 
