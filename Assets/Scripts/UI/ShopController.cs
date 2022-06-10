@@ -29,8 +29,7 @@ public class ShopController : MonoBehaviour
     private void Start()
     {
         go_ShopBase.GetComponent<Shop>();
-        //actionText = GetComponent < "actionText" > ();
-        //actionText = StageManager.Inst.
+        actionText = StageManager.Inst.transform.Find("MainUi 1").transform.Find("ShowText").transform.Find("actionText (1)").GetComponent<Text>();
     }
 
     void Update()
