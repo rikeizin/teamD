@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3955297548818488549}
   - component: {fileID: 3955297548818488550}
   - component: {fileID: 3955297548818488571}
-  m_Layer: 0
+  - component: {fileID: 8504871341665846824}
+  m_Layer: 7
   m_Name: Sword
   m_TagString: Weapons
   m_Icon: {fileID: 0}
@@ -95,6 +96,19 @@ MonoBehaviour:
   type: 2
   value: 2
   turnSpeed: 50
+--- !u!114 &8504871341665846824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3955297548818488544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75510e238dfe3e44e9f45314b5bf6da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 4f33f964b2090d944a1aa98289cbbc34, type: 2}
 --- !u!1001 &2606293017696937482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -150,6 +164,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 2932443549857494209, guid: 7f25f31e160dba644bb0fe7e33d7b602, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1355411528588152439, guid: 7f25f31e160dba644bb0fe7e33d7b602, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7f25f31e160dba644bb0fe7e33d7b602, type: 3}
@@ -165,9 +183,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3955297548818488551}
     m_Modifications:
+    - target: {fileID: 1602288087390512, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1900756431413560, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
       propertyPath: m_Name
       value: Magic fire 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1900756431413560, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946108650276192, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4283311113454432, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
       propertyPath: m_RootOrder

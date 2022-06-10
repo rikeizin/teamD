@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 2854458421765435333}
   - component: {fileID: 2854458421765435334}
   - component: {fileID: 2854458421765435331}
-  m_Layer: 0
+  - component: {fileID: 8798801477999909467}
+  m_Layer: 7
   m_Name: Wand
   m_TagString: Weapons
   m_Icon: {fileID: 0}
@@ -94,6 +95,19 @@ MonoBehaviour:
   type: 1
   value: 1
   turnSpeed: 50
+--- !u!114 &8798801477999909467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2854458421765435336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75510e238dfe3e44e9f45314b5bf6da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: bec6bc3c2384cbd41935dc79193749b4, type: 2}
 --- !u!1001 &441686853490307786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,6 +179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand
       objectReference: {fileID: 0}
+    - target: {fileID: 1917765494711812411, guid: 384dff3436dad0b4d8095b877e9dd8c8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2660510889088778888, guid: 384dff3436dad0b4d8095b877e9dd8c8, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -224,9 +242,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2854458421765435335}
     m_Modifications:
+    - target: {fileID: 1294501370740376, guid: eca000ab44c908d4dab395f654753038, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434975849356750, guid: eca000ab44c908d4dab395f654753038, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1846678540981650, guid: eca000ab44c908d4dab395f654753038, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1975959190090480, guid: eca000ab44c908d4dab395f654753038, type: 3}
       propertyPath: m_Name
       value: Magic fire pro red
+      objectReference: {fileID: 0}
+    - target: {fileID: 1975959190090480, guid: eca000ab44c908d4dab395f654753038, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4335282639064450, guid: eca000ab44c908d4dab395f654753038, type: 3}
       propertyPath: m_RootOrder

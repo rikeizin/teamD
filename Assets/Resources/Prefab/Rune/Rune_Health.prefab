@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 598471132876966764}
   - component: {fileID: 7988829987488727700}
   - component: {fileID: 9143561261360954974}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4829,7 +4829,7 @@ GameObject:
   - component: {fileID: 8560670842005520786}
   - component: {fileID: 338139738916534657}
   - component: {fileID: 1486679603817834542}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Magic fire 2 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9648,7 +9648,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1496990994817972473}
   - component: {fileID: 1137219368011949}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9742,7 +9742,7 @@ GameObject:
   - component: {fileID: 6358559049862267917}
   - component: {fileID: 6358559049861482629}
   - component: {fileID: 6358559049860096505}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9824,7 +9824,7 @@ GameObject:
   - component: {fileID: 6358559049862242729}
   - component: {fileID: 6358559049861452489}
   - component: {fileID: 6358559049860118937}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9909,7 +9909,8 @@ GameObject:
   - component: {fileID: 392259121754581334}
   - component: {fileID: 9087423159941884838}
   - component: {fileID: 1329567840}
-  m_Layer: 0
+  - component: {fileID: -8605944371813828266}
+  m_Layer: 11
   m_Name: Rune_Health
   m_TagString: Rune
   m_Icon: {fileID: 0}
@@ -10016,8 +10017,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e55fc910d97ea34494a38fac9a22ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Runes: []
+  hasRunes: 
+  Weapons: []
+  hasWeapons: 
+  CurrentGold: 0
+  p_audio: {fileID: 0}
+  p_gold: {fileID: 0}
+  p_Item: {fileID: 0}
+  animator: {fileID: 0}
+  equipWeapons: {fileID: 0}
+  player: {fileID: 0}
+  equipWeaponIndex: -1
+  runeIndex: 0
   type: 6
   value: 6
+--- !u!114 &-8605944371813828266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6358559049862368079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75510e238dfe3e44e9f45314b5bf6da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: a1ea93cfbdf8831449e561d2b435b833, type: 2}
 --- !u!1 &6358559049862581291
 GameObject:
   m_ObjectHideFlags: 0
@@ -10029,7 +10056,7 @@ GameObject:
   - component: {fileID: 6358559049862270921}
   - component: {fileID: 6358559049861524515}
   - component: {fileID: 6358559049860107029}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10111,7 +10138,7 @@ GameObject:
   - component: {fileID: 667166193564322982}
   - component: {fileID: 3723961734632699512}
   - component: {fileID: 483036811240788775}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

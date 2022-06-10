@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7744848509743774144}
   - component: {fileID: 7996937597533928019}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 8528936947520751949}
   - component: {fileID: 2550541269871411399}
   - component: {fileID: 1662705276932213165}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Magic fire 2 (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4924,7 +4924,7 @@ GameObject:
   - component: {fileID: 1367478096791771846}
   - component: {fileID: 1028142554826101444}
   - component: {fileID: 1077851112595542098}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9742,7 +9742,7 @@ GameObject:
   - component: {fileID: 8361286777161517589}
   - component: {fileID: 2980461029000718292}
   - component: {fileID: 8817155472905198547}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14560,7 +14560,7 @@ GameObject:
   - component: {fileID: 8699849235377154352}
   - component: {fileID: 8699849235378375388}
   - component: {fileID: 8699849235379063884}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone03_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14642,7 +14642,7 @@ GameObject:
   - component: {fileID: 8699849235377058596}
   - component: {fileID: 8699849235378431226}
   - component: {fileID: 8699849235379066644}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone03_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14724,7 +14724,7 @@ GameObject:
   - component: {fileID: 8699849235377045744}
   - component: {fileID: 8699849235378388414}
   - component: {fileID: 8699849235379080120}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone03_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14809,7 +14809,8 @@ GameObject:
   - component: {fileID: 2403156910518234275}
   - component: {fileID: 3485851274103940324}
   - component: {fileID: 1111932114}
-  m_Layer: 0
+  - component: {fileID: 439133495174371611}
+  m_Layer: 11
   m_Name: Rune_Gold
   m_TagString: Rune
   m_Icon: {fileID: 0}
@@ -14916,5 +14917,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e55fc910d97ea34494a38fac9a22ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Runes: []
+  hasRunes: 
+  Weapons: []
+  hasWeapons: 
+  CurrentGold: 0
+  p_audio: {fileID: 0}
+  p_gold: {fileID: 0}
+  p_Item: {fileID: 0}
+  animator: {fileID: 0}
+  equipWeapons: {fileID: 0}
+  player: {fileID: 0}
+  equipWeaponIndex: -1
+  runeIndex: 0
   type: 5
   value: 5
+--- !u!114 &439133495174371611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8699849235377383556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75510e238dfe3e44e9f45314b5bf6da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 8e58d2d88266d11439ca48d0b5b88488, type: 2}

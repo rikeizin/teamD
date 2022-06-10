@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 314105027494058275}
   - component: {fileID: 314105027491164619}
   - component: {fileID: 314105027492295267}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 314105027494135655}
   - component: {fileID: 314105027491203757}
   - component: {fileID: 314105027492291547}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 314105027494042163}
   - component: {fileID: 314105027491161985}
   - component: {fileID: 314105027491845455}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FS_Stone01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,8 @@ GameObject:
   - component: {fileID: 8085094972895441260}
   - component: {fileID: 3222426478699701417}
   - component: {fileID: 1218124152}
-  m_Layer: 0
+  - component: {fileID: -9175791299450784879}
+  m_Layer: 11
   m_Name: Rune_Defence
   m_TagString: Rune
   m_Icon: {fileID: 0}
@@ -367,8 +368,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e55fc910d97ea34494a38fac9a22ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Runes: []
+  hasRunes: 
+  Weapons: []
+  hasWeapons: 
+  CurrentGold: 0
+  p_audio: {fileID: 0}
+  p_gold: {fileID: 0}
+  p_Item: {fileID: 0}
+  animator: {fileID: 0}
+  equipWeapons: {fileID: 0}
+  player: {fileID: 0}
+  equipWeaponIndex: -1
+  runeIndex: 0
   type: 3
   value: 3
+--- !u!114 &-9175791299450784879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314105027494324359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75510e238dfe3e44e9f45314b5bf6da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 05034b13a8de67e49b6b5dd164fe6160, type: 2}
 --- !u!1 &314105027692664784
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +406,7 @@ GameObject:
   m_Component:
   - component: {fileID: 314105027692664785}
   - component: {fileID: 314105027692664786}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,9 +496,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 314105027494030279}
     m_Modifications:
+    - target: {fileID: 1602288087390512, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 1900756431413560, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
       propertyPath: m_Name
       value: Magic fire 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1900756431413560, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946108650276192, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4283311113454432, guid: 529eb4216865eba419c1a4a68d0b0388, type: 3}
       propertyPath: m_RootOrder

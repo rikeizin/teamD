@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 204f1f2db5b58184b93498ebdeabda3e, type: 3}
+  m_Name: Rune_Health
+  m_EditorClassIdentifier: 
+  itemName: Health
+  itemType: 1
+  itemImage: {fileID: 21300000, guid: a3c226f1b7cc2db42aa0ae5ef2aa4939, type: 3}
+  itemPrefab: {fileID: 6358559049862368079, guid: ec0fbc73eafffc44f90dd2535f474259, type: 3}

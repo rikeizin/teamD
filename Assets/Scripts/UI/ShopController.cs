@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using STAGE_MANAGEMENT;
 
 public class ShopController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class ShopController : MonoBehaviour
     [SerializeField]
     private Text actionText;
 
-
+    
     private RaycastHit hitInfo;
 
     [SerializeField]
@@ -25,6 +26,12 @@ public class ShopController : MonoBehaviour
 
     public static bool ShopActivated = false;
 
+    private void Start()
+    {
+        go_ShopBase.GetComponent<Shop>();
+        //actionText = GetComponent < "actionText" > ();
+        //actionText = StageManager.Inst.
+    }
 
     void Update()
     {

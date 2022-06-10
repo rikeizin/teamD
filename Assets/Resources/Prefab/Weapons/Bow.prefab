@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6104187413977897134}
   - component: {fileID: 6104187413977897133}
   - component: {fileID: 6104187413977897120}
-  m_Layer: 0
+  - component: {fileID: -2843674449929209673}
+  m_Layer: 7
   m_Name: Bow
   m_TagString: Weapons
   m_Icon: {fileID: 0}
@@ -94,6 +95,19 @@ MonoBehaviour:
   type: 4
   value: 4
   turnSpeed: 50
+--- !u!114 &-2843674449929209673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6104187413977897131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75510e238dfe3e44e9f45314b5bf6da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 0cfadd0f39f84024cac86d7eca525890, type: 2}
 --- !u!1001 &5341700183840750803
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104,6 +118,10 @@ PrefabInstance:
     - target: {fileID: 836070610316759207, guid: b2cb94ada28b2c146a12d626a501d37a, type: 3}
       propertyPath: m_Name
       value: Bow
+      objectReference: {fileID: 0}
+    - target: {fileID: 836070610316759207, guid: b2cb94ada28b2c146a12d626a501d37a, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2113447183005342840, guid: b2cb94ada28b2c146a12d626a501d37a, type: 3}
       propertyPath: m_RootOrder
@@ -164,9 +182,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6104187413977897132}
     m_Modifications:
+    - target: {fileID: 1230380500995054, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522294441258966, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1537593200154216, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
       propertyPath: m_Name
       value: Magic fire 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1537593200154216, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4832750714773668, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
       propertyPath: m_RootOrder
