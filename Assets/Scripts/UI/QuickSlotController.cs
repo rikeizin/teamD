@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class QuickSlotController : MonoBehaviour
 {
-    [SerializeField] private Slot[] quickSlots;  // Äü½½·Ôµé (8°³)
-    [SerializeField] private Transform tf_parent;  // Äü½½·ÔµéÀÇ ºÎ¸ğ ¿ÀºêÁ§Æ®
+    [SerializeField] private Slot[] quickSlots;  // í€µìŠ¬ë¡¯ë“¤ (nê°œ)
+    [SerializeField] private Transform tf_parent;  // í€µìŠ¬ë¡¯ë“¤ì˜ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸
 
-    private int selectedSlot;  // ¼±ÅÃµÈ Äü½½·ÔÀÇ ÀÎµ¦½º (0~7)
-    [SerializeField] private GameObject go_SelectedImage;  // ¼±ÅÃµÈ Äü½½·Ô ÀÌ¹ÌÁö
+    private int selectedSlot;  // ì„ íƒëœ í€µìŠ¬ë¡¯ì˜ ì¸ë±ìŠ¤ (0~n)
+    [SerializeField] private GameObject go_SelectedImage;  // ì„ íƒëœ í€µìŠ¬ë¡¯ ì´ë¯¸ì§€
 
     void Start()
     {
@@ -41,10 +41,10 @@ public class QuickSlotController : MonoBehaviour
 
     private void SelectedSlot(int _num)
     {
-        // ¼±ÅÃµÈ ½½·Ô
+        // ì„ íƒëœ ìŠ¬ë¡¯
         selectedSlot = _num;
 
-        // ¼±ÅÃµÈ ½½·ÔÀ¸·Î ÀÌ¹ÌÁö ÀÌµ¿
+        // ì„ íƒëœ ìŠ¬ë¡¯ìœ¼ë¡œ ì´ë¯¸ì§€ ì´ë™
         go_SelectedImage.transform.position = quickSlots[selectedSlot].transform.position;
     }
 

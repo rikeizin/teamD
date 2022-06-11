@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using STAGE_MANAGEMENT;
 
 public class ActionController : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class ActionController : MonoBehaviour
     private Inventory theInventory;
 
     public static bool ShopActivated = false;
+
+    private void Start()
+    {
+        actionText = StageManager.Inst.transform.Find("MainUi 1").transform.Find("ShowText").transform.Find("actionText").GetComponent<Text>();
+    }
 
     void Update()
     {   

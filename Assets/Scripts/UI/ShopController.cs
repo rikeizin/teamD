@@ -15,7 +15,7 @@ public class ShopController : MonoBehaviour
     [SerializeField]
     private Text actionText;
 
-    
+
     private RaycastHit hitInfo;
 
     [SerializeField]
@@ -28,8 +28,18 @@ public class ShopController : MonoBehaviour
 
     private void Start()
     {
-        go_ShopBase.GetComponent<Shop>();
+        findactionText();
+        findShop();
+    }
+
+    private void findactionText()
+    {
         actionText = StageManager.Inst.transform.Find("MainUi 1").transform.Find("ShowText").transform.Find("actionText (1)").GetComponent<Text>();
+    }
+
+    private void findShop()
+    {
+        //go_ShopBase =
     }
 
     void Update()
@@ -40,7 +50,6 @@ public class ShopController : MonoBehaviour
             ShopInfoAppear();
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Debug.Log("122");
                 ShopActivated = !ShopActivated;
                 if (ShopActivated)
                     OpenShop();
@@ -59,7 +68,7 @@ public class ShopController : MonoBehaviour
     {
         if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hitInfo, range, layerMask))
         {
-            if (hitInfo.transform.tag == "Shop")
+            if (hitInfo.transform.tag == "Player")
                 return true;
         }
         return false;
@@ -86,7 +95,6 @@ public class ShopController : MonoBehaviour
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
         actionText.text = hitInfo.transform + (" 열기 " + "<color=yellow>" + "(E)" + "</color>");
-        Debug.Log("1");
     }
 
     private void ShopInfoDisappear()

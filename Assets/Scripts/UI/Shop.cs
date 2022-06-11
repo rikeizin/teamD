@@ -44,12 +44,12 @@ public class Shop : MonoBehaviour
         if (per < 9)
         {
             int itemPer = Random.Range(0, 9);
-            Instantiate(rune[itemPer], transform.position + Vector3.forward * 1.5f, transform.rotation);
+            Instantiate(rune[itemPer], transform.position + Vector3.right * 4.5f, transform.rotation);
         }
         else
         {
             int itemPer = Random.Range(0, 4);
-            Instantiate(weapons[itemPer], transform.position + Vector3.forward * 1.5f, transform.rotation);
+            Instantiate(weapons[itemPer], transform.position + Vector3.right * 4.5f, transform.rotation);
         }
 
     }
