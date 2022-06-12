@@ -13,7 +13,6 @@ public class Golem : MonsterController
 
     public Text m_monsterName;
     public Text m_monsterHp;
-    
 
     #region Animation Event Methods
     protected void AnimEvent_AttackThrow()
@@ -37,12 +36,11 @@ public class Golem : MonsterController
     {
         base.AnimEvent_DeadFinish();
         Instantiate(m_weapons[Random.Range(0, 4)], transform.position + Vector3.forward * 1.5f, transform.rotation);
-
     }
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(100.0f, 10.0f, 10.0f, 15.0f, 15.0f);
+        m_status = new Status(100.0f, 50.0f, 10.0f, 15.0f, 15.0f);
         m_weapons = Resources.LoadAll<GameObject>("Prefab/Weapons");
         m_rockPoint = GameObject.Find("RockPoint").gameObject;       
         

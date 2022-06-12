@@ -7,10 +7,15 @@ public class Skeleton_Mage : MonsterController
 {
     public GameObject m_magePoint;
     public GameObject m_mage;
-    
+
+    protected float magicSpeed = 5.0f;
+
     protected void AnimEvent_AttackStart()
     {
-        Instantiate(m_mage, m_magePoint.transform.position, m_magePoint.transform.rotation);
+        GameObject magic = Instantiate(m_mage, m_magePoint.transform.position, m_magePoint.transform.rotation);
+        magic.transform.LookAt(m_player.transform);
+        magic.GetComponent<Rigidbody>().velocity = transform.forward * magicSpeed;
+        Destroy(magic, 3f);
         m_mage.SetActive(true);
     }
     protected override void AnimEvent_AttackFinish()

@@ -205,6 +205,8 @@ MonoBehaviour:
   m_audioAttack: {fileID: 8300000, guid: 56eb0629a2551584d9c0bd46eadd3a75, type: 3}
   m_audioDead: {fileID: 8300000, guid: d48f7b7df9c34e54580f8d794370abdb, type: 3}
   m_state: 0
+  m_player: {fileID: 0}
+  isDead: 0
   m_magePoint: {fileID: 6510648717526418640}
   m_mage: {fileID: 8972193298699103520, guid: cbea0771ee7cf984ca210e946efff343, type: 3}
 --- !u!54 &4088295857344431418

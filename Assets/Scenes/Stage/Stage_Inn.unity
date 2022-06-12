@@ -1604,7 +1604,7 @@ MonoBehaviour:
   isBattle: 0
   playtimeText: {fileID: 879190274}
   stageText: {fileID: 919386224}
-  Player: {fileID: 8508893349416425440, guid: f394a7b8a678e6140aff337e97478c9e, type: 3}
+  Player: {fileID: 8508893349416425440, guid: 64f8929d33003ff48ab4f469a17720d0, type: 3}
 --- !u!1001 &803788187442252285
 PrefabInstance:
   m_ObjectHideFlags: 0

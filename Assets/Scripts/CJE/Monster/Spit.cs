@@ -6,24 +6,32 @@ public class Spit : MonoBehaviour
 {
     private GameObject m_player;
     private Rigidbody m_rigid;
+    private Monster_Polygonal _polygonal;
 
+    [HideInInspector]
+    public float damage = 0;
+    private float _speed = 5;
     private void Awake()
     {
-        m_player = GameObject.FindGameObjectWithTag("Player");
+        m_player = GameObject.Find("Player");
         m_rigid = GetComponent<Rigidbody>();
+        _polygonal = FindObjectOfType<Monster_Polygonal>();
     }
 
-    private void Update()
+    private void Start()
     {
-        m_rigid.AddForce(m_player.transform.position);
-        StartCoroutine(DestroyCoroutine());
+        transform.LookAt(m_player.transform);
+        m_rigid.velocity = transform.forward * _speed;
+        Destroy(gameObject, 3.0f);
+        damage = _polygonal.m_status.m_attack;
     }
 
-    IEnumerator DestroyCoroutine()
+    private void OnTriggerEnter(Collider other)
     {
-        yield return new WaitForSeconds(3.0f);
-        Destroy(gameObject);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            m_player.GetComponent<PlayerController>().TakeDamage(damage);
+            gameObject.SetActive(false);
+        }
     }
-
-
 }
