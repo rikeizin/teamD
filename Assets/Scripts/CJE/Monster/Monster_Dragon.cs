@@ -112,7 +112,7 @@ public class Monster_Dragon : MonsterController
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(500f, 25f, 3f, 20f, 300f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
+        m_status = new Status(500f, 25f, 7.5f, 20f, 300f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
         m_collider = GetComponent<Collider>();
         m_effectFlame.SetActive(false);
         m_effectScream.SetActive(false);
@@ -147,14 +147,15 @@ public class Monster_Dragon : MonsterController
         {
             Attack_Flame();
         }
-
-        if(m_status.m_hp <= 100 && m_scream == false)
+        else if(m_status.m_hp <= 100 && m_scream == false)
         {
             Attack_Scream();
         }
-
-        base.Attack();
-        StartCoroutine(HandCoroutine());
+        else
+        {
+            base.Attack();
+            StartCoroutine(HandCoroutine());
+        }
     }
 
     IEnumerator HandCoroutine()
