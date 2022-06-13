@@ -26,10 +26,13 @@ public class ShopController : MonoBehaviour
 
     public static bool ShopActivated = false;
 
+    Player player;
+
     private void Start()
     {
         findactionText();
         findShop();
+        player = GameObject.FindObjectOfType<Player>();
     }
 
     private void findactionText()
@@ -80,6 +83,7 @@ public class ShopController : MonoBehaviour
     private void OpenShop()
     {
         go_ShopBase.SetActive(true);
+        player?.OnStop();
     }
 
 
