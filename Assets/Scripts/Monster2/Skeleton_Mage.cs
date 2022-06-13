@@ -23,7 +23,7 @@ public class Skeleton_Mage : MonsterController
     protected override void OnAwake()
     {    
         base.OnAwake();
-        m_status = new Status(100.0f, 20.0f, 10.0f, 12.0f, 12.0f);
+        m_status = new Status(40f, 20.0f, 10.0f, 12.0f, 12.0f);
         m_magePoint = GameObject.Find("MagePoint").gameObject;
         
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;       

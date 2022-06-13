@@ -9,7 +9,7 @@ public class Skeleton_warrior : MonsterController
     {
         base.OnAwake();
 
-        m_status = new Status(100.0f, 10.0f, 2.0f, 7.0f, 7.0f);
+        m_status = new Status(40f, 10.0f, 2.0f, 7.0f, 7.0f);
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
 
