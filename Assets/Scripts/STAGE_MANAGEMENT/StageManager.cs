@@ -141,6 +141,9 @@ namespace STAGE_MANAGEMENT
             if (GameObject.FindGameObjectWithTag("Player") == null)
             {
                 Player = Instantiate(Player);
+                int index = Player.name.IndexOf("(Clone)");
+                if (index > 0)
+                    Player.name = Player.name.Substring(0, index);
                 DontDestroyOnLoad(Player);
             }
 

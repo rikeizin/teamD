@@ -483,6 +483,8 @@ MonoBehaviour:
   m_audioAttack: {fileID: 8300000, guid: 103dd3f9f597bf64dae023c1bc998995, type: 3}
   m_audioDead: {fileID: 8300000, guid: d48f7b7df9c34e54580f8d794370abdb, type: 3}
   m_state: 0
+  m_player: {fileID: 0}
+  isDead: 0
   m_rock: {fileID: 1375754531036840, guid: 86c6a4c0ee6ae5e468d092016626e9fc, type: 3}
   m_weapons: []
   m_audioThrow: {fileID: 8300000, guid: 685db36601b7666489694cf8febb0fe7, type: 3}

@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class Monster_TurtleShell : MonsterController
 {
-    // 2022.05.18 수정
+    // 2022.06.09 수정
+    protected readonly int hashTurtleShell_Attack = Animator.StringToHash("TurtleShell_Attack");
+
     protected override void OnAwake()
     {
         base.OnAwake();
@@ -17,5 +19,15 @@ public class Monster_TurtleShell : MonsterController
     {
         base.Hit();
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
+    }
+
+    public void AttackHead()
+    {
+        if ((m_anim.GetCurrentAnimatorStateInfo(0).shortNameHash == hashTurtleShell_Attack)
+            && (isAttackCool == false))
+        {
+            m_player.GetComponent<PlayerController>().TakeDamage(m_status.m_attack);
+            StartCoroutine(IsAttackCoolTime());
+        }
     }
 }

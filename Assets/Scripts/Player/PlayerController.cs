@@ -22,15 +22,17 @@ public class PlayerController : MonoBehaviour, IBattle
     [SerializeField]
     private float JUMP_FORCE = 10;
 
+    private int _arrowCool = 1;
+    private bool _isArrowCool = false;
     private Vector3 _moveForce;
     public bool isMove2D = false;
+
     public AudioSource p_AudioSource;
     public AudioClip p_Sword;
     public AudioClip p_wand;
     public AudioClip p_meteor;
     public AudioClip p_Mace;
     public AudioClip p_arrow;
-
 
     public GameObject camera2D;
     public GameObject camera3D;
@@ -125,7 +127,7 @@ public class PlayerController : MonoBehaviour, IBattle
     public void Jump()
     {
         if (isMove2D == false)
-            _moveForce.y = JUMP_FORCE*_player.jump;
+            _moveForce.y = JUMP_FORCE * _player.jump;
         else
             _move2D._moveForce.y = JUMP_FORCE * _player.jump;
     }
@@ -183,7 +185,7 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void OnAttackLeft(InputAction.CallbackContext context)
     {
-        if(Player.IsGamePaused == false)
+        if (Player.IsGamePaused == false)
         {
             if (context.started)
             {
@@ -199,13 +201,14 @@ public class PlayerController : MonoBehaviour, IBattle
                     if (IsAttackBow02Animating())
                     {
                         _animator.SetTrigger(hashDoAttack);
-                        if(_player.arrow > 0 )
+                        if ((_player.arrow > 0) && _isArrowCool == false)
                         {
                             p_AudioSource.clip = p_arrow;
                             p_AudioSource.Play();
                             StartCoroutine(FireArrow());
+                            _isArrowCool = true;
                         }
-                        else if(_player.arrow <= 0)
+                        else if (_player.arrow <= 0)
                         {
                             return;
                         }
@@ -214,7 +217,6 @@ public class PlayerController : MonoBehaviour, IBattle
                     {
                         _animator.SetTrigger(hashDoAttack);
                         _animator.SetInteger(hashAttackComboInteger, 0);
-                        
                     }
 
                 }
@@ -239,7 +241,7 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void OnAttackRight(InputAction.CallbackContext context)
     {
-        if(Player.IsGamePaused == false)
+        if (Player.IsGamePaused == false)
         {
             if (!context.started)
             {
@@ -261,7 +263,7 @@ public class PlayerController : MonoBehaviour, IBattle
                 _animator.ResetTrigger(hashDoAttack2);
             }
         }
-        
+
     }
 
     public void Attack(IBattle target)
@@ -279,14 +281,22 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void TakeDamage(float damage)
     {
-        Debug.Log($"{gameObject.name} : {damage} 데미지 입음");
         float finalDamage = damage - _player.defence;
         if (finalDamage < 1.0f)
         {
             finalDamage = 1.0f;
         }
-        if(!(Random.Range(0,100) >_player.evasion))
+
+        if (!(Random.Range(0, 100) < _player.evasion))
+        {
             _player.hp -= finalDamage;
+            Debug.Log($"{gameObject.name} : {finalDamage} 데미지 입음");
+        }
+        else
+        {
+            Debug.Log("회피");
+        }
+
         if (_player.hp <= 0.0f)
         {
             Die();
@@ -324,10 +334,7 @@ public class PlayerController : MonoBehaviour, IBattle
 
     public void ApplyGravity()
     {
-        if (!characterController.isGrounded)
-        {
-            _moveForce.y += PLAYER_GRAVITY * Time.deltaTime;
-        }
+        _moveForce.y += PLAYER_GRAVITY * Time.deltaTime;
     }
 
     public void MoveSpeed()
@@ -399,7 +406,8 @@ public class PlayerController : MonoBehaviour, IBattle
         Arrow.velocity = _lunchForce * p_MagicTransform.forward;
         _player.arrow--;
         Destroy(Arrow.gameObject, 4.0f);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_arrowCool);
+        _isArrowCool = false;
     }
 
     IEnumerator FireWand()
@@ -426,7 +434,6 @@ public class PlayerController : MonoBehaviour, IBattle
             yield return null;
         }
     }
-
     #region
     private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;
     private bool IsWalkAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashWalking;

@@ -6,33 +6,29 @@ public class Mage : MonoBehaviour
 {
     private GameObject m_player;
     private Rigidbody m_rigid;
+    private Skeleton_Mage mage;
 
+    [HideInInspector]
+    public float damage = 0;
     public float speed = 5.0f;
 
     private void Awake()
     {
-        m_player = GameObject.FindGameObjectWithTag("Player");
-        m_rigid = GetComponent<Rigidbody>();
+        m_player = GameObject.Find("Player");
+        mage = FindObjectOfType<Skeleton_Mage>();
     }
 
     private void Start()
     {
-        transform.LookAt(m_player.transform);
-        m_rigid.velocity = transform.forward * speed;
-        StartCoroutine(DestroyCoroutine());
-    }
-
-    IEnumerator DestroyCoroutine()
-    {
-        yield return new WaitForSeconds(3.0f);
-        Destroy(gameObject);
+        damage = mage.m_status.m_attack;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            m_player.GetComponent<PlayerController>().TakeDamage(damage);
+            gameObject.SetActive(false);
         }
     }
 }

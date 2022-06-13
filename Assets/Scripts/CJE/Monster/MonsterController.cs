@@ -87,13 +87,15 @@ public class MonsterController : MonoBehaviour, IBattle
     public AudioClip m_audioDead;
 
     [SerializeField] protected eMonsterState m_state;
+    [SerializeField]
     protected GameObject m_player;
     protected NavMeshAgent m_navAgent;
     protected Animator m_anim;
     protected Vector3 m_dirPos;
     protected float m_dir;
-    protected bool isDead;
 
+    public bool isDead;
+    protected bool isAttackCool = false;
 
     public void Awake()
     {
@@ -109,7 +111,7 @@ public class MonsterController : MonoBehaviour, IBattle
     protected virtual void Initialize()
     {
         SetMonster();
-        m_player = GameObject.FindGameObjectWithTag("Player");
+        m_player = GameObject.Find("Player");
         m_rune = Resources.LoadAll<GameObject>("Prefab/Rune");
         m_navAgent = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
@@ -135,6 +137,10 @@ public class MonsterController : MonoBehaviour, IBattle
     public void Update()
     {
         OnUpdate();
+        if(m_player == null)
+        {
+            m_player = GameObject.Find("Player");
+        }
     }
 
     public virtual void OnUpdate()
@@ -216,7 +222,6 @@ public class MonsterController : MonoBehaviour, IBattle
         m_navAgent.SetDestination(m_player.transform.position);
         m_anim.SetBool("Move", true);
 
-
         if (m_dir < m_status.m_attackRange)
         {
             SetState(eMonsterState.Attack);
@@ -240,11 +245,15 @@ public class MonsterController : MonoBehaviour, IBattle
             m_anim.SetBool("Attack", false);
         }
     }
-
     public void Attack(IBattle target)
     {
-
+        if (target != null)
+        {
+            float damage = m_status.m_attack;
+            target.TakeDamage(damage);
+        }
     }
+
     public virtual void Hit()
     {
         if (!isDead)
@@ -262,8 +271,15 @@ public class MonsterController : MonoBehaviour, IBattle
     }
     public void TakeDamage(float damage)
     {
-
+        m_status.m_hp -= damage;
+        if (m_status.m_hp <= 0.0f)
+        {
+            isDead = true;
+            SetState(eMonsterState.Dead);
+            m_anim.SetTrigger("Dead");
+        }
     }
+
     public virtual void DropItem()
     {
         int runePer = Random.Range(0, 4);
@@ -274,4 +290,10 @@ public class MonsterController : MonoBehaviour, IBattle
         Instantiate(m_gold, transform.position + Vector3.forward * 1.5f, transform.rotation);
     }
 
+    protected IEnumerator IsAttackCoolTime()
+    {
+        isAttackCool = true;
+        yield return new WaitForSeconds(1f);
+        isAttackCool = false;
+    }
 }

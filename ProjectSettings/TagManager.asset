@@ -11,7 +11,11 @@ TagManager:
   - Gold
   - Shop
   - Item
+  - Polygonal
+  - Golem
   - Arrow
+  - Mage
+  - Dragon_head
   layers:
   - Default
   - TransparentFX
@@ -24,10 +28,10 @@ TagManager:
   - Item
   - Shop
   - Monster
+  - CC
+  - MonsterCollider
   - Rune
   - Player
-  - 
-  - 
   - 
   - 
   - 

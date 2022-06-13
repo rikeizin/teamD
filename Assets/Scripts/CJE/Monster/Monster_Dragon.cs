@@ -16,6 +16,9 @@ public class Monster_Dragon : MonsterController
     protected bool m_flame = false;
     protected bool m_scream = false;
 
+    protected readonly int hashDragon_Attack = Animator.StringToHash("Dragon_Attack");
+    protected readonly int hashDragon_AttackHand = Animator.StringToHash("Dragon_AttackHand");
+
     #region Animation Event Methods
 
     protected void AnimEvent_IntroFlyUpFinish()
@@ -180,6 +183,26 @@ public class Monster_Dragon : MonsterController
     {
         m_anim.SetBool("Attack_Scream", true);
         ResetMove();
+    }
+
+    public void AttackHand()
+    {
+        if ((m_anim.GetCurrentAnimatorStateInfo(0).shortNameHash == hashDragon_AttackHand)
+            && (isAttackCool == false))
+        {
+            m_player.GetComponent<PlayerController>().TakeDamage(m_status.m_attack);
+            StartCoroutine(IsAttackCoolTime());
+        }
+    }
+
+    public void AttackHead()
+    {
+        if ((m_anim.GetCurrentAnimatorStateInfo(0).shortNameHash == hashDragon_Attack)
+            && (isAttackCool == false))
+        {
+            m_player.GetComponent<PlayerController>().TakeDamage(m_status.m_attack);
+            StartCoroutine(IsAttackCoolTime());
+        }
     }
 
 }
