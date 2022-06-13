@@ -11,7 +11,7 @@ public class Monster_TurtleShell : MonsterController
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(30f, 5f, 1f, 1f, 50f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
+        m_status = new Status(100f, 5f, 1f, 1f, 50f); //(int hp, float attack, float attackRange, float hitRange, float trackingRange)
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
 
