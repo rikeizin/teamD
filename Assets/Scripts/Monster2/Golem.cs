@@ -40,7 +40,7 @@ public class Golem : MonsterController
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_status = new Status(100.0f, 50.0f, 10.0f, 15.0f, 15.0f);
+        m_status = new Status(300.0f, 50.0f, 10.0f, 15.0f, 15.0f);
         m_weapons = Resources.LoadAll<GameObject>("Prefab/Weapons");
         m_rockPoint = GameObject.Find("RockPoint").gameObject;       
         
