@@ -132,15 +132,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3034195669723691434, guid: 409bfc255e6056e48b7a1aa6db2b93f4, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3034195669723691434, guid: 409bfc255e6056e48b7a1aa6db2b93f4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3173140332114096553, guid: 409bfc255e6056e48b7a1aa6db2b93f4, type: 3}
       propertyPath: m_Name
       value: Skeleton_Warrior
+      objectReference: {fileID: 0}
+    - target: {fileID: 3173140332114096553, guid: 409bfc255e6056e48b7a1aa6db2b93f4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3327778451489710210, guid: 409bfc255e6056e48b7a1aa6db2b93f4, type: 3}
       propertyPath: m_RootOrder
@@ -272,13 +276,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton_Mage
       objectReference: {fileID: 0}
-    - target: {fileID: 5775878280532051725, guid: d4d358f685d34fc419104931f92e3808, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 491983728666664087, guid: d4d358f685d34fc419104931f92e3808, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5775878280532051725, guid: d4d358f685d34fc419104931f92e3808, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5775878280532051725, guid: d4d358f685d34fc419104931f92e3808, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7396813073151409613, guid: d4d358f685d34fc419104931f92e3808, type: 3}
       propertyPath: m_RootOrder
@@ -546,13 +554,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: BeholderPBR
       objectReference: {fileID: 0}
-    - target: {fileID: 8161547267738577251, guid: 912c6e16c92885240943b0dc94cb21a8, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 5359130452103882937, guid: 912c6e16c92885240943b0dc94cb21a8, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8161547267738577251, guid: 912c6e16c92885240943b0dc94cb21a8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8161547267738577251, guid: 912c6e16c92885240943b0dc94cb21a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 912c6e16c92885240943b0dc94cb21a8, type: 3}
@@ -2682,6 +2694,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1350218518, guid: 64f8929d33003ff48ab4f469a17720d0, type: 3}
+      propertyPath: hasWeapons.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1350218518, guid: 64f8929d33003ff48ab4f469a17720d0, type: 3}
+      propertyPath: hasWeapons.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8101564786185555933, guid: 64f8929d33003ff48ab4f469a17720d0, type: 3}
       propertyPath: p_Mace
       value: 

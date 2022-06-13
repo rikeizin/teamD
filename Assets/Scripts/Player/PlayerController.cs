@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour, IBattle
     private bool _isArrowCool = false;
     private Vector3 _moveForce;
     public bool isMove2D = false;
+    private bool _isDead = false;
 
     public AudioSource p_AudioSource;
     public AudioClip p_Sword;
@@ -299,7 +300,12 @@ public class PlayerController : MonoBehaviour, IBattle
 
         if (_player.hp <= 0.0f)
         {
-            Die();
+            if(_isDead == false)
+            {
+                _isDead = true;
+                _animator.SetTrigger("Dead");
+                StartCoroutine(Die());
+            }
         }
         _player.hp = Mathf.Clamp(_player.hp, 0.0f, _player.maxHp);
     }
@@ -327,9 +333,16 @@ public class PlayerController : MonoBehaviour, IBattle
         }
     }
 
-    public void Die()
+    IEnumerator Die()
     {
-        gameObject.SetActive(false);
+        while (true)
+        {
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.97)
+            {
+                gameObject.SetActive(false);
+            }
+            yield return null;
+        }
     }
 
     public void ApplyGravity()
