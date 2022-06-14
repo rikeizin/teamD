@@ -257,8 +257,8 @@ GameObject:
   - component: {fileID: 314105027494030279}
   - component: {fileID: 314105027474756263}
   - component: {fileID: 8085094972895441260}
-  - component: {fileID: 3222426478699701417}
   - component: {fileID: 1218124152}
+  - component: {fileID: -5266031938310509817}
   m_Layer: 0
   m_Name: Rune_Defence
   m_TagString: Rune
@@ -325,19 +325,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &3222426478699701417
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 314105027494324359}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1218124152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,6 +352,22 @@ MonoBehaviour:
   runeIndex: 0
   type: 3
   value: 3
+--- !u!54 &-5266031938310509817
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314105027494324359}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &314105027692664784
 GameObject:
   m_ObjectHideFlags: 0
