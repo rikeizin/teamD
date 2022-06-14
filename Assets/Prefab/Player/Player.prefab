@@ -6722,11 +6722,11 @@ MonoBehaviour:
   critical: 0
   evasion: 0
   applySpeed: 1
-  speed: 1.2
+  speed: 1
   jump: 1
   currentGold: 0
   goldUp: 0
-  arrow: 10
+  arrow: 20
   animator: {fileID: 0}
 --- !u!114 &8508893349416522523
 MonoBehaviour:
@@ -6764,7 +6764,7 @@ MonoBehaviour:
   JUMP_FORCE: 10
   isMove2D: 0
   p_AudioSource: {fileID: 939779246}
-  p_Sword: {fileID: 8300000, guid: 5fa332f367764ed45a83c0177994256a, type: 3}
+  p_sword: {fileID: 0}
   p_wand: {fileID: 8300000, guid: 02f677203bfc3dd4e986fc09816f165b, type: 3}
   p_meteor: {fileID: 8300000, guid: 0d4f70085b43d1745a4cf019021cf3be, type: 3}
   p_Mace: {fileID: 8300000, guid: 4fc81837b233b2d40a03907187188059, type: 3}
@@ -6806,7 +6806,7 @@ MonoBehaviour:
   - {fileID: 3253607455599807253}
   - {fileID: 5964365392672703359}
   - {fileID: 2564266170955872885}
-  hasWeapons: 0101010101
+  hasWeapons: 0000010101
   CurrentGold: 0
   p_audio: {fileID: 939779246}
   p_gold: {fileID: 8300000, guid: 0a6fd2792181bbc4a8e360361c111991, type: 3}
@@ -7858,6 +7858,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 1784111127174971640, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3614967703341980517, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -7901,6 +7905,18 @@ PrefabInstance:
     - target: {fileID: 3614967703341980517, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832655751063146271, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832655751063146271, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.209
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832655751063146271, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4450991939067143559, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
       propertyPath: m_Height
@@ -7955,8 +7971,12 @@ PrefabInstance:
       value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7241095879699330443, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241095879699330443, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8207246040013679040, guid: d8e067b675cf0e84394a1709a87e6bc1, type: 3}
       propertyPath: m_Name

@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour, IBattle
     private bool _isDead = false;
 
     public AudioSource p_AudioSource;
-    public AudioClip p_Sword;
+    public AudioClip p_sword;
     public AudioClip p_wand;
     public AudioClip p_meteor;
     public AudioClip p_Mace;
@@ -218,16 +218,22 @@ public class PlayerController : MonoBehaviour, IBattle
                     {
                         _animator.SetTrigger(hashDoAttack);
                         _animator.SetInteger(hashAttackComboInteger, 0);
+                        p_AudioSource.clip = p_sword;
+                        p_AudioSource.Play();
                     }
 
                 }
                 else if (IsAttackLeft0Animating())
                 {
                     _animator.SetInteger(hashAttackComboInteger, 1);
+                    p_AudioSource.clip = p_sword;
+                    p_AudioSource.Play();
                 }
                 else if (IsAttackLeft1Animating())
                 {
                     _animator.SetInteger(hashAttackComboInteger, 2);
+                    p_AudioSource.clip = p_sword;
+                    p_AudioSource.Play();
                 }
 
 

@@ -137,9 +137,13 @@ public class MonsterController : MonoBehaviour, IBattle
     public void Update()
     {
         OnUpdate();
-        if(m_player == null)
+        if (m_player == null)
         {
             m_player = GameObject.Find("Player");
+        }
+        if (m_status.m_hp == 0)
+        {
+            Die();
         }
     }
 
@@ -259,14 +263,13 @@ public class MonsterController : MonoBehaviour, IBattle
         if (!isDead)
         {
             m_anim.SetTrigger("Hit");
+            if (m_status.m_hp <= 0)
+            {
+                m_status.m_hp = 0f;
+                Die();
+            }
         }
-        if (m_status.m_hp <= 0)
-        {
-            m_status.m_hp = 0f;
-            SetState(eMonsterState.Dead);
-            isDead = true;
-            m_anim.SetTrigger("Dead");
-        }
+        
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
     }
     public void TakeDamage(float damage)
@@ -274,9 +277,7 @@ public class MonsterController : MonoBehaviour, IBattle
         m_status.m_hp -= damage;
         if (m_status.m_hp <= 0.0f)
         {
-            isDead = true;
-            SetState(eMonsterState.Dead);
-            m_anim.SetTrigger("Dead");
+            Die();
         }
     }
 
@@ -295,5 +296,16 @@ public class MonsterController : MonoBehaviour, IBattle
         isAttackCool = true;
         yield return new WaitForSeconds(1f);
         isAttackCool = false;
+    }
+
+    public void Die()
+    {
+        SetState(eMonsterState.Dead);
+        if (isDead == false)
+        {
+            isDead = true;
+            m_anim.SetTrigger("Dead");
+            m_anim.SetBool("isDead", true);
+        }
     }
 }

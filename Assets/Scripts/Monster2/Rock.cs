@@ -27,12 +27,13 @@ public class Rock : MonoBehaviour
         damage = _golem.m_status.m_attack;
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             m_player.GetComponent<PlayerController>().TakeDamage(damage);
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
 }
