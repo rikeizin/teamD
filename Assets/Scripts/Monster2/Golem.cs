@@ -14,6 +14,8 @@ public class Golem : MonsterController
     public Text m_monsterName;
     public Text m_monsterHp;
 
+    protected readonly int hashAttack = Animator.StringToHash("Attack");
+
     #region Animation Event Methods
     protected void AnimEvent_AttackThrow()
     {
@@ -54,12 +56,10 @@ public class Golem : MonsterController
         base.Hit();
         m_Hpbar.value = m_status.m_hp / m_status.m_hpMax * 100;
         m_monsterHp.text = m_status.m_hp + "/" + m_status.m_hpMax;
-
     }
 
     public override void Attack()
     {
-        
             ResetMove();
             FollowTarget();
             if (m_dir <= 3.0f)
@@ -80,7 +80,6 @@ public class Golem : MonsterController
                 m_anim.SetBool("Attack_Throw", false);
 
             }
-        
     }
 
     public void Attack_Throw()
@@ -89,7 +88,16 @@ public class Golem : MonsterController
         ResetMove();
     }
 
-    
+    public void AttackHand()
+    {
+        if ((m_anim.GetCurrentAnimatorStateInfo(0).shortNameHash == hashAttack)
+            && (isAttackCool == false))
+        {
+            m_player.GetComponent<PlayerController>().TakeDamage(m_status.m_attack);
+            StartCoroutine(IsAttackCoolTime());
+        }
+    }
+
 }
 
 
