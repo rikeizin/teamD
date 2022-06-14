@@ -6682,22 +6682,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 818084af-9aa0-4ea7-b4a1-b7060b0cf91f
     m_ActionName: UI/Escape[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8508893349416522522}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: Stop
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: ce964da6-c6ab-4492-8f38-a50ea1f78ba3
-    m_ActionName: Player/Stop[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -6764,10 +6748,10 @@ MonoBehaviour:
   JUMP_FORCE: 10
   isMove2D: 0
   p_AudioSource: {fileID: 939779246}
-  p_sword: {fileID: 0}
+  p_sword: {fileID: 8300000, guid: 5fa332f367764ed45a83c0177994256a, type: 3}
   p_wand: {fileID: 8300000, guid: 02f677203bfc3dd4e986fc09816f165b, type: 3}
   p_meteor: {fileID: 8300000, guid: 0d4f70085b43d1745a4cf019021cf3be, type: 3}
-  p_Mace: {fileID: 8300000, guid: 4fc81837b233b2d40a03907187188059, type: 3}
+  p_mace: {fileID: 8300000, guid: 4fc81837b233b2d40a03907187188059, type: 3}
   p_arrow: {fileID: 8300000, guid: 44d1a168c8bdaa540a0da9c89118c907, type: 3}
   camera2D: {fileID: 0}
   camera3D: {fileID: 8508893348879596653}

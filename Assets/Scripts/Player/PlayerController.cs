@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour, IBattle
     public AudioClip p_sword;
     public AudioClip p_wand;
     public AudioClip p_meteor;
-    public AudioClip p_Mace;
+    public AudioClip p_mace;
     public AudioClip p_arrow;
 
     public GameObject camera2D;
@@ -218,22 +218,16 @@ public class PlayerController : MonoBehaviour, IBattle
                     {
                         _animator.SetTrigger(hashDoAttack);
                         _animator.SetInteger(hashAttackComboInteger, 0);
-                        p_AudioSource.clip = p_sword;
-                        p_AudioSource.Play();
                     }
 
                 }
                 else if (IsAttackLeft0Animating())
                 {
                     _animator.SetInteger(hashAttackComboInteger, 1);
-                    p_AudioSource.clip = p_sword;
-                    p_AudioSource.Play();
                 }
                 else if (IsAttackLeft1Animating())
                 {
                     _animator.SetInteger(hashAttackComboInteger, 2);
-                    p_AudioSource.clip = p_sword;
-                    p_AudioSource.Play();
                 }
 
 
@@ -452,6 +446,18 @@ public class PlayerController : MonoBehaviour, IBattle
             }
             yield return null;
         }
+    }
+
+    public void AudioSword()
+    {
+        p_AudioSource.clip = p_sword;
+        p_AudioSource.Play();
+    }
+
+    public void AudiMace()
+    {
+        p_AudioSource.clip = p_mace;
+        p_AudioSource.Play();
     }
     #region
     private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;
