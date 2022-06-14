@@ -48,6 +48,7 @@ namespace STAGE_MANAGEMENT
         public bool isBattle;
         public Text playtimeText;
         public Text stageText;
+        public Text gold;
         public GameObject Player;
 
         private void Awake()
@@ -183,11 +184,13 @@ namespace STAGE_MANAGEMENT
             isBattle = true;
         }
 
+
         private void Update()
         {
             if (isBattle)
                 playtime += Time.deltaTime;
-            
+
+            gold.text = GameObject.FindObjectOfType<Player>().currentGold.ToString();
         }
 
 
