@@ -620,7 +620,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -647,6 +647,7 @@ MonoBehaviour:
   m_audioAttack: {fileID: 8300000, guid: ec1f8053ebbc07e4e929c5f8bb7b645e, type: 3}
   m_audioDead: {fileID: 8300000, guid: d48f7b7df9c34e54580f8d794370abdb, type: 3}
   m_state: 0
+  m_player: {fileID: 0}
   isDead: 0
 --- !u!54 &558989881496945020
 Rigidbody:
