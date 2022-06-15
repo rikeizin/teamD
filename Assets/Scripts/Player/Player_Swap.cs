@@ -40,6 +40,27 @@ public class Player_Swap : MonoBehaviour
         p_audio = GetComponent<AudioSource>();
     }
 
+    public void OnEnable()
+    {
+        switch (equipWeaponIndex)
+        {
+            case 0:
+                animator.SetInteger("EquipState", 1);
+                break;
+            case 1:
+                animator.SetInteger("EquipState", 1);
+                break;
+            case 2:
+                animator.SetInteger("EquipState", 11);
+                break;
+            case 3:
+                animator.SetInteger("EquipState", 21);
+                break;
+            case 4:
+                animator.SetInteger("EquipState", 31);
+                break;
+        }
+    }
     public void Swap(InputAction.CallbackContext context)
     {
 

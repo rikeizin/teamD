@@ -26,12 +26,13 @@ public class PlayerController : MonoBehaviour, IBattle
     private bool _isArrowCool = false;
     private Vector3 _moveForce;
     public bool isMove2D = false;
+    private bool _isDead = false;
 
     public AudioSource p_AudioSource;
-    public AudioClip p_Sword;
+    public AudioClip p_sword;
     public AudioClip p_wand;
     public AudioClip p_meteor;
-    public AudioClip p_Mace;
+    public AudioClip p_mace;
     public AudioClip p_arrow;
 
     public GameObject camera2D;
@@ -299,7 +300,12 @@ public class PlayerController : MonoBehaviour, IBattle
 
         if (_player.hp <= 0.0f)
         {
-            Die();
+            if(_isDead == false)
+            {
+                _isDead = true;
+                _animator.SetTrigger("Dead");
+                StartCoroutine(Die());
+            }
         }
         _player.hp = Mathf.Clamp(_player.hp, 0.0f, _player.maxHp);
     }
@@ -327,9 +333,16 @@ public class PlayerController : MonoBehaviour, IBattle
         }
     }
 
-    public void Die()
+    IEnumerator Die()
     {
-        gameObject.SetActive(false);
+        while (true)
+        {
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.97)
+            {
+                gameObject.SetActive(false);
+            }
+            yield return null;
+        }
     }
 
     public void ApplyGravity()
@@ -433,6 +446,18 @@ public class PlayerController : MonoBehaviour, IBattle
             }
             yield return null;
         }
+    }
+
+    public void AudioSword()
+    {
+        p_AudioSource.clip = p_sword;
+        p_AudioSource.Play();
+    }
+
+    public void AudiMace()
+    {
+        p_AudioSource.clip = p_mace;
+        p_AudioSource.Play();
     }
     #region
     private bool IsJumpAnimating() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == hashJumping;

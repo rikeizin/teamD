@@ -95,11 +95,6 @@ public class Player : MonoBehaviour
         #endregion
     }
 
-    public void Stop(InputAction.CallbackContext context)
-    {
-        OnStop();
-    }
-
     public void OnStop()
     {
         if (IsGamePaused == false)
@@ -110,9 +105,9 @@ public class Player : MonoBehaviour
         }
         else
         {
+            Time.timeScale = 1;
             _rotateToMouse.CursorLock();
             IsGamePaused = false;
-            Time.timeScale = 1;
         }
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }

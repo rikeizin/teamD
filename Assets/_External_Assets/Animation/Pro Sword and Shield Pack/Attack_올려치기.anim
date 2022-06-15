@@ -61511,4 +61511,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.6666667
+    functionName: AudioSword
+    data: 
+    objectReferenceParameter: {fileID: 8508893349416425440, guid: 64f8929d33003ff48ab4f469a17720d0, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

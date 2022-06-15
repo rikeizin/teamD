@@ -8,7 +8,6 @@ public class RotateToMouse : MonoBehaviour
 {
     private Transform _cameraPivot;
     private Transform _mainCamera;
-
     [DllImport("user32.dll")]
     public static extern bool SetCursorPos(int X, int Y);
     [DllImport("user32.dll")]

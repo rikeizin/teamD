@@ -22,7 +22,7 @@ public class Shop : MonoBehaviour
 
     public void ShopLoading()
     {
-        weapons = Resources.LoadAll<GameObject>("Prefab/Weapons");
+        //weapons = Resources.LoadAll<GameObject>("Prefab/Weapons");
         rune = Resources.LoadAll<GameObject>("Prefab/Rune");
     }
 
@@ -40,17 +40,17 @@ public class Shop : MonoBehaviour
 
         enterPlayer.currentGold -= price;
 
-        int per = Random.Range(0, 13);
+        int per = Random.Range(0, 9);
         if (per < 9)
         {
             int itemPer = Random.Range(0, 9);
             Instantiate(rune[itemPer], transform.position + Vector3.right * 4.5f, transform.rotation);
         }
-        else
-        {
-            int itemPer = Random.Range(0, 4);
-            Instantiate(weapons[itemPer], transform.position + Vector3.right * 4.5f, transform.rotation);
-        }
+        //else
+        //{
+        //    int itemPer = Random.Range(0, 4);
+        //    Instantiate(weapons[itemPer], transform.position + Vector3.right * 4.5f, transform.rotation);
+        //}
 
     }
 
